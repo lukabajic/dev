@@ -111,7 +111,7 @@ export function Transaction({
   children
 }) {
   const [sendTransaction, transactionState] = useTransactionFunction(id, send);
-  const trigger = React.Children.only;
+  const trigger = React.Children.only(children);
 
   const failureReasons = (requires || [])
     .filter(([requirement]) => !requirement)

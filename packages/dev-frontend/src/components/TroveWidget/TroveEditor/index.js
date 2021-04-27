@@ -60,11 +60,13 @@ export const TroveDeposit = ({
 
   const maxEth = accountBalance.gt(gasRoomETH) ? accountBalance.sub(gasRoomETH) : Decimal.ZERO;
 
-  const recieve = original.isEmpty
-    ? Decimal.from(borrow || 0)
-        .sub(LUSD_LIQUIDATION_RESERVE)
-        .sub(fee)
-    : Decimal.from(borrow || 0).sub(fee);
+  const totalFee = original.isEmpty ? LUSD_LIQUIDATION_RESERVE.add(fee) : fee;
+
+  const recieve = borrow
+    ? Decimal.from(borrow).gt(totalFee)
+      ? Decimal.from(borrow).sub(totalFee)
+      : Decimal.ZERO
+    : Decimal.ZERO;
 
   return (
     <div className={classes.wrapper}>
@@ -145,7 +147,7 @@ export const TroveDeposit = ({
               className={classes.staticRowInfo}
               label="Recieve"
               inputId="trove-recieve-value"
-              amount={(recieve || 0).prettify(2)}
+              amount={recieve.prettify(2)}
             />
           )}
         </div>

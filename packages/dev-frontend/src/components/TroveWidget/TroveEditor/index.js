@@ -54,6 +54,12 @@ export const TroveDeposit = ({
 
   const maxEth = accountBalance.gt(gasRoomETH) ? accountBalance.sub(gasRoomETH) : Decimal.ZERO;
 
+  const recieve = original.isEmpty
+    ? Decimal.from(borrow || 0)
+        .sub(LUSD_LIQUIDATION_RESERVE)
+        .sub(fee)
+    : Decimal.from(borrow || 0).sub(fee);
+
   return (
     <div className={classes.wrapper}>
       <Input
@@ -127,12 +133,12 @@ export const TroveDeposit = ({
             />
           )}
 
-          {borrow && (
+          {borrow && recieve && (
             <StaticRow
               className={classes.staticRowInfo}
               label="Recieve"
               inputId="trove-recieve-value"
-              amount={Decimal.from(borrow).prettify(2)}
+              amount={recieve.prettify(2)}
             />
           )}
         </div>

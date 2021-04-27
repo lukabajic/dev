@@ -109,7 +109,7 @@ export const TroveDeposit = ({
               className={classes.staticRowInfo}
               label="Deposit"
               inputId="trove-collateral-value"
-              amount={edited.collateral.prettify(4)}
+              amount={Decimal.from(deposit).prettify(4)}
               unit={ETH}
             />
           )}

@@ -34,17 +34,16 @@ const TroveInfo = ({ label, amount, status = null, unit }) => (
   </div>
 );
 
-const selectActive = ({ trove, price, total }) => ({ trove, price, total });
+const selectActive = ({ trove, price }) => ({ trove, price });
 
 const ActiveTrove = ({ dispatchEvent }) => {
   const handleCloseTrove = useCallback(() => {
     dispatchEvent("CLOSE_TROVE_PRESSED");
   }, [dispatchEvent]);
 
-  const { trove, price, total } = useLiquitySelector(selectActive);
+  const { trove, price } = useLiquitySelector(selectActive);
 
-  const collateralRatio = total.collateralRatio(price);
-  const collateralRatioPct = new Percent(collateralRatio).prettify();
+  const collateralRatioPct = new Percent(trove.collateralRatio(price)).prettify();
 
   return (
     <>
@@ -56,11 +55,11 @@ const ActiveTrove = ({ dispatchEvent }) => {
             label="Ratio"
             amount={collateralRatioPct}
             status={
-              collateralRatio?.gt(CRITICAL_COLLATERAL_RATIO)
+              trove.collateral?.gt(CRITICAL_COLLATERAL_RATIO)
                 ? "success"
-                : collateralRatio?.gt(1.2)
+                : trove.collateral?.gt(1.2)
                 ? "warning"
-                : collateralRatio?.lte(1.2)
+                : trove.collateral?.lte(1.2)
                 ? "danger"
                 : "muted"
             }

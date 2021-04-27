@@ -46,7 +46,7 @@ const reduce = (state, action) => {
 
     case "setCollateral": {
       const newCollateral = action.newValue
-        ? Decimal.from(action.newValue).add(state.original.collateral)
+        ? Decimal.from(action.newValue).add(state.edited.collateral)
         : original.collateral;
 
       const newState = {
@@ -67,11 +67,16 @@ const reduce = (state, action) => {
     }
 
     case "substractCollateral": {
+      console.log("original", original.collateral.prettify());
+      console.log("cur", edited.collateral.prettify());
+
       const newCollateral = action.newValue
-        ? original.collateral < Decimal.from(action.newValue)
+        ? original.collateral.lt(Decimal.from(action.newValue))
           ? Decimal.ZERO
           : original.collateral.sub(Decimal.from(action.newValue))
         : original.collateral;
+
+      console.log("new", newCollateral.prettify(4));
 
       const newState = {
         ...state,
@@ -83,7 +88,7 @@ const reduce = (state, action) => {
 
     case "setDebt": {
       const newDebt = action.newValue
-        ? Decimal.from(action.newValue).add(state.original.debt)
+        ? Decimal.from(action.newValue).add(state.edit.debt)
         : original.debt;
 
       return {
@@ -95,9 +100,9 @@ const reduce = (state, action) => {
 
     case "substractDebt": {
       const newDebt = action.newValue
-        ? original.debt.gt(Decimal.from(action.newValue))
-          ? original.debt.sub(Decimal.from(action.newValue))
-          : Decimal.ZERO
+        ? original.debt.lt(Decimal.from(action.newValue))
+          ? Decimal.ZERO
+          : original.debt.sub(Decimal.from(action.newValue))
         : original.debt;
 
       return {

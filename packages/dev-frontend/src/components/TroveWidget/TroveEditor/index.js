@@ -81,6 +81,7 @@ export const TroveDeposit = ({
         maxedOut={maxEth.toString() === deposit.toString()}
         min={0}
         step={0.1}
+        autoFocus
       />
 
       <Input
@@ -215,6 +216,7 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
         maxedOut={maxWithdraw?.toString() === withdraw.toString()}
         min={0}
         step={0.1}
+        autoFocus
       />
 
       <Input

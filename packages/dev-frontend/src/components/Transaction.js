@@ -10,6 +10,8 @@ import { useLiquity } from "../hooks/LiquityContext";
 
 import { Icon } from "./Icon";
 import { Tooltip } from "./Tooltips";
+import Modal from "./Modal";
+import { Spinner } from "./Loader";
 
 const strokeWidth = 10;
 
@@ -176,33 +178,6 @@ const Donut = React.memo(
   ({ value: prev }, { value: next }) => prev === next
 );
 
-const TransactionProgressDonut = ({ state }) => {
-  const [value, setValue] = useState(0);
-  const maxValue = 1;
-
-  useEffect(() => {
-    if (state === "confirmed") {
-      setTimeout(() => setValue(maxValue), 40);
-    } else {
-      setTimeout(() => setValue(maxValue * 0.67), 20);
-    }
-  }, [state]);
-
-  return state === "confirmed" ? (
-    <Donut {...{ value, maxValue, ...fastProgress }}>
-      <Icon name="check" color="white" size="lg" />
-    </Donut>
-  ) : state === "failed" || state === "cancelled" ? (
-    <Donut value={0} {...{ maxValue, ...fastProgress }}>
-      <Icon name="times" color="white" size="lg" />
-    </Donut>
-  ) : (
-    <Donut {...{ value, maxValue, ...slowProgress }}>
-      <Icon name="cog" color="white" size="lg" spin />
-    </Donut>
-  );
-};
-
 export const TransactionMonitor = () => {
   const { provider } = useLiquity();
   const [transactionState, setTransactionState] = useTransactionState();
@@ -308,43 +283,34 @@ export const TransactionMonitor = () => {
     }
   }, [transactionState.type, setTransactionState, id]);
 
-  if (transactionState.type === "idle" || transactionState.type === "waitingForApproval") {
+  if (["idle", "waitingForApproval", "confirmed"].includes(transactionState.type)) {
     return null;
   }
 
   return (
-    <Flex
-      sx={{
-        alignItems: "center",
-        bg:
-          transactionState.type === "confirmed"
-            ? "success"
-            : transactionState.type === "cancelled"
-            ? "warning"
-            : transactionState.type === "failed"
-            ? "danger"
-            : "primary",
-        p: 3,
-        pl: 4,
-        position: "fixed",
-        width: "100vw",
-        bottom: 0,
-        overflow: "hidden"
-      }}
-    >
-      <Box sx={{ mr: 3, width: "40px", height: "40px" }}>
-        <TransactionProgressDonut state={transactionState.type} />
-      </Box>
-
-      <Text sx={{ fontSize: 3, color: "white" }}>
-        {transactionState.type === "waitingForConfirmation"
-          ? "Waiting for confirmation"
-          : transactionState.type === "cancelled"
-          ? "Cancelled"
+    <Modal
+      bigStatus={
+        transactionState.type === "cancelled"
+          ? "warning"
           : transactionState.type === "failed"
-          ? transactionState.error.message
-          : "Confirmed"}
-      </Text>
-    </Flex>
+          ? "danger"
+          : ""
+      }
+      title={
+        transactionState.type === "waitingForConfirmation"
+          ? "Waiting for confirmation"
+          : transactionState.type === "waitingForApproval"
+          ? "Pending"
+          : transactionState.type === "cancelled"
+          ? "Transaction cancelled"
+          : transactionState.type === "failed"
+          ? "Transaction rejected"
+          : ""
+      }
+    >
+      {["waitingForApproval", "waitingForConfirmation"].includes(transactionState.type) && (
+        <Spinner />
+      )}
+    </Modal>
   );
 };

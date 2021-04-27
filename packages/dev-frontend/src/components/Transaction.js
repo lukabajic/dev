@@ -1,41 +1,14 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
-import { Flex, Text, Box } from "theme-ui";
 import { hexDataSlice, hexDataLength } from "@ethersproject/bytes";
 import { defaultAbiCoder } from "@ethersproject/abi";
 
-import { buildStyles, CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import { useLiquity } from "../hooks/LiquityContext";
 
-import { Icon } from "./Icon";
 import { Tooltip } from "./Tooltips";
 import Modal from "./Modal";
 import { Spinner } from "./Loader";
-
-const strokeWidth = 10;
-
-const circularProgressbarStyle = {
-  strokeLinecap: "butt",
-  pathColor: "white",
-  trailColor: "rgba(255, 255, 255, 0.33)"
-};
-
-const slowProgress = {
-  strokeWidth,
-  styles: buildStyles({
-    ...circularProgressbarStyle,
-    pathTransitionDuration: 30
-  })
-};
-
-const fastProgress = {
-  strokeWidth,
-  styles: buildStyles({
-    ...circularProgressbarStyle,
-    pathTransitionDuration: 0.75
-  })
-};
 
 const TransactionContext = React.createContext(undefined);
 
@@ -172,11 +145,6 @@ const tryToGetRevertReason = async (provider, hash) => {
     return undefined;
   }
 };
-
-const Donut = React.memo(
-  CircularProgressbarWithChildren,
-  ({ value: prev }, { value: next }) => prev === next
-);
 
 export const TransactionMonitor = () => {
   const { provider } = useLiquity();

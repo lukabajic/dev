@@ -140,12 +140,12 @@ export const TroveDeposit = ({
             />
           )}
 
-          {borrow && recieve && (
+          {(borrow || recieve) && (
             <StaticRow
               className={classes.staticRowInfo}
               label="Recieve"
               inputId="trove-recieve-value"
-              amount={recieve.prettify(2)}
+              amount={(recieve || 0).prettify(2)}
             />
           )}
         </div>

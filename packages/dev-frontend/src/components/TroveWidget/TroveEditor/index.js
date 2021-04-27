@@ -127,8 +127,8 @@ export const TroveDeposit = ({
             className={classes.staticRowInfo}
             label="Borrowing Fee"
             amount={fee.toString(2)}
-            pendingAmount={feePct.toString(2)}
             unit={COIN}
+            brackets={feePct.prettify()}
           />
 
           {original.isEmpty && (

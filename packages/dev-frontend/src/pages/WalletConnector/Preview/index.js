@@ -20,7 +20,7 @@ const TABS = [
 
 const WithdrawPreview = ({ onClick }) => (
   <>
-    <Row labelId="withdraw-label" label="withdraw" unit={ETH}>
+    <Row label="withdraw" unit={ETH}>
       <StaticAmounts
         inputId="withdraw"
         placeholder={Decimal.from(0).prettify(4)}
@@ -31,7 +31,7 @@ const WithdrawPreview = ({ onClick }) => (
       </StaticAmounts>
     </Row>
 
-    <Row labelId="repay-label" label="repay" unit={ETH}>
+    <Row label="repay" unit={ETH}>
       <StaticAmounts
         onClick={onClick}
         placeholder={Decimal.from(0).prettify(4)}
@@ -46,7 +46,7 @@ const WithdrawPreview = ({ onClick }) => (
 
 const DepositPreview = ({ onClick }) => (
   <>
-    <Row labelId="trove-collateral-label" label="deposit" unit={ETH}>
+    <Row label="deposit" unit={ETH}>
       <StaticAmounts
         inputId="trove-collateral"
         placeholder={Decimal.from(0).prettify(4)}
@@ -57,7 +57,7 @@ const DepositPreview = ({ onClick }) => (
       </StaticAmounts>
     </Row>
 
-    <Row labelId="borrow-label" label="borrow" unit={ETH}>
+    <Row label="borrow" unit={ETH}>
       <StaticAmounts
         onClick={onClick}
         placeholder={Decimal.from(0).prettify(4)}
@@ -71,7 +71,7 @@ const DepositPreview = ({ onClick }) => (
 );
 
 const RedemptionPreview = ({ onClick }) => (
-  <Row labelId="reedem-label" label="reedem" unit={ETH}>
+  <Row label="reedem" unit={ETH}>
     <StaticAmounts
       inputId="reedem"
       placeholder={Decimal.from(0).prettify(4)}

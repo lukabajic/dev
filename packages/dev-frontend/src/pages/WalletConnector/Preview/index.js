@@ -6,6 +6,7 @@ import StaticAmounts from "../../../components/StaticAmounts";
 import Tabs from "../../../components/Tabs";
 import Button from "../../../components/Button";
 import ErrorDescription from "../../../components/ErrorDescription";
+import { ContentRight } from "../../../components/Input";
 
 import { ETH, COIN } from "../../../strings";
 
@@ -20,14 +21,24 @@ const TABS = [
 const WithdrawPreview = ({ onClick }) => (
   <>
     <Row labelId="withdraw-label" label="withdraw" unit={ETH}>
-      <StaticAmounts inputId="withdraw" placeholder={Decimal.from(0).prettify(4)} unit={ETH}>
-        {/* <ContentRight unit={ETH} icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"} /> */}
+      <StaticAmounts
+        inputId="withdraw"
+        placeholder={Decimal.from(0).prettify(4)}
+        unit={ETH}
+        className={classes.staticAmount}
+      >
+        <ContentRight unit={ETH} icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"} />
       </StaticAmounts>
     </Row>
 
     <Row labelId="repay-label" label="repay" unit={ETH}>
-      <StaticAmounts onClick={onClick} placeholder={Decimal.from(0).prettify(4)} unit={COIN}>
-        {/* <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} /> */}
+      <StaticAmounts
+        onClick={onClick}
+        placeholder={Decimal.from(0).prettify(4)}
+        unit={COIN}
+        className={classes.staticAmount}
+      >
+        <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} />
       </StaticAmounts>
     </Row>
   </>
@@ -36,14 +47,24 @@ const WithdrawPreview = ({ onClick }) => (
 const DepositPreview = ({ onClick }) => (
   <>
     <Row labelId="trove-collateral-label" label="deposit" unit={ETH}>
-      <StaticAmounts inputId="trove-collateral" placeholder={Decimal.from(0).prettify(4)} unit={ETH}>
-        {/* <ContentRight unit={ETH} icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"} /> */}
+      <StaticAmounts
+        inputId="trove-collateral"
+        placeholder={Decimal.from(0).prettify(4)}
+        unit={ETH}
+        className={classes.staticAmount}
+      >
+        <ContentRight unit={ETH} icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"} />
       </StaticAmounts>
     </Row>
 
     <Row labelId="borrow-label" label="borrow" unit={ETH}>
-      <StaticAmounts onClick={onClick} placeholder={Decimal.from(0).prettify(4)} unit={COIN}>
-        {/* <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} /> */}
+      <StaticAmounts
+        onClick={onClick}
+        placeholder={Decimal.from(0).prettify(4)}
+        unit={COIN}
+        className={classes.staticAmount}
+      >
+        <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} />
       </StaticAmounts>
     </Row>
   </>
@@ -51,8 +72,13 @@ const DepositPreview = ({ onClick }) => (
 
 const RedemptionPreview = ({ onClick }) => (
   <Row labelId="reedem-label" label="reedem" unit={ETH}>
-    <StaticAmounts inputId="reedem" placeholder={Decimal.from(0).prettify(4)} unit={COIN}>
-      {/* <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} /> */}
+    <StaticAmounts
+      inputId="reedem"
+      placeholder={Decimal.from(0).prettify(4)}
+      unit={COIN}
+      className={classes.staticAmount}
+    >
+      <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} />
     </StaticAmounts>
   </Row>
 );

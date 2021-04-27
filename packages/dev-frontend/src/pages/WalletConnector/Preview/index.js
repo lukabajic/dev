@@ -18,10 +18,11 @@ const TABS = [
   { tab: "redemption", content: "Redemtion" }
 ];
 
-const WithdrawPreview = ({ onClick }) => (
+export const WithdrawPreview = ({ onClick, children }) => (
   <>
     <Row label="withdraw" unit={ETH}>
       <StaticAmounts
+        onClick={onClick}
         inputId="withdraw"
         placeholder={Decimal.from(0).prettify(4)}
         unit={ETH}
@@ -41,6 +42,8 @@ const WithdrawPreview = ({ onClick }) => (
         <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} />
       </StaticAmounts>
     </Row>
+
+    {children}
   </>
 );
 
@@ -48,6 +51,7 @@ const DepositPreview = ({ onClick }) => (
   <>
     <Row label="deposit" unit={ETH}>
       <StaticAmounts
+        onClick={onClick}
         inputId="trove-collateral"
         placeholder={Decimal.from(0).prettify(4)}
         unit={ETH}
@@ -73,6 +77,7 @@ const DepositPreview = ({ onClick }) => (
 const RedemptionPreview = ({ onClick }) => (
   <Row label="reedem" unit={ETH}>
     <StaticAmounts
+      onClick={onClick}
       inputId="reedem"
       placeholder={Decimal.from(0).prettify(4)}
       unit={COIN}

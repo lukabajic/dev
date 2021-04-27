@@ -12,6 +12,8 @@ import { useLiquitySelector } from "@liquity/lib-react";
 import { LoadingOverlay } from "../../LoadingOverlay";
 import Input from "../../Input";
 import StaticRow from "../../StaticRow";
+import { WithdrawPreview } from "../../../pages/WalletConnector/Preview";
+import ErrorDescription from "../../ErrorDescription";
 
 import { ETH, COIN } from "../../../strings";
 
@@ -159,6 +161,7 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
   const [withdraw, setWithdraw] = useState("");
   const [repay, setRepay] = useState("");
   const [data, setData] = useState(null);
+  const [previewAlert, setPreviewAlert] = useState(false);
 
   useEffect(() => {
     dispatch({ type: "revert" });
@@ -175,6 +178,16 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
       .then(setData)
       .catch(console.warn);
   }, []);
+
+  if (original.isEmpty)
+    return (
+      <WithdrawPreview onClick={() => setPreviewAlert(true)}>
+        {previewAlert && (
+          <ErrorDescription>Please make a deposit before you withdraw.</ErrorDescription>
+        )}
+        {children}
+      </WithdrawPreview>
+    );
 
   const originalCollateralRatio = !original.isEmpty ? original.collateralRatio(price) : undefined;
   const collateralRatio = !edited.isEmpty ? edited.collateralRatio(price) : undefined;

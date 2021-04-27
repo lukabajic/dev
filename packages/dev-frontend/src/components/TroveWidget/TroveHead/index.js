@@ -15,7 +15,9 @@ import classes from "./TroveHead.module.css";
 
 const Heading = ({ children }) => <h3 className={classes.heading}>{children}</h3>;
 
-const Body = ({ children }) => <div className={classes.body}>{children}</div>;
+const Body = ({ children, className }) => (
+  <div className={cn(classes.body, className)}>{children}</div>
+);
 
 const Actions = ({ children }) => <div className={classes.actions}>{children}</div>;
 
@@ -81,10 +83,7 @@ const ActiveTrove = ({ dispatchEvent }) => {
 };
 
 const NoTrove = () => (
-  <>
-    <Heading>You haven't borrowed any LUSD yet</Heading>
-    <Body>You can borrow LUSD by opening a Trove.</Body>
-  </>
+  <Body className={classes.noTroveBody}>You have no active troves. Deposit to open trove.</Body>
 );
 
 const selectSurplus = ({ collateralSurplusBalance }) => ({

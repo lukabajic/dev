@@ -105,3 +105,10 @@
   color: var(--red);
   background-color: rgba(217, 78, 78, 0.22);
 }
+
+.noTroveBody {
+  padding: 1.2rem 3rem;
+  border-radius: 1rem;
+  border: solid 2px #ffffff;
+  background-color: #e6e6e5;
+}

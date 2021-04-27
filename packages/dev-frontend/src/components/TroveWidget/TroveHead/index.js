@@ -13,7 +13,9 @@ import classes from "./TroveHead.module.css";
 
 // LIQUIDATED
 
-const Heading = ({ children }) => <h3 className={classes.heading}>{children}</h3>;
+const Heading = ({ children, className }) => (
+  <h3 className={cn(classes.heading, className)}>{children}</h3>
+);
 
 const Body = ({ children, className }) => (
   <div className={cn(classes.body, className)}>{children}</div>
@@ -53,7 +55,7 @@ const ActiveTrove = ({ dispatchEvent }) => {
 
   return (
     <>
-      <Heading>Active trove</Heading>
+      <Heading className={classes.activeTroveHeading}>your trove</Heading>
       <Body>
         <div className={classes.trove}>
           <TroveInfo label="Collateral" amount={trove.collateral.prettify(2)} unit={ETH} />

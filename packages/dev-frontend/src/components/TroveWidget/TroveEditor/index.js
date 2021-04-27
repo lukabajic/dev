@@ -43,6 +43,10 @@ export const TroveDeposit = ({
   const [deposit, setDeposit] = useState("");
   const [borrow, setBorrow] = useState("");
 
+  useEffect(() => {
+    dispatch({ type: "revert" });
+  }, [dispatch]);
+
   const feePct = new Percent(borrowingRate);
 
   const originalCollateralRatio = !original.isEmpty ? original.collateralRatio(price) : undefined;
@@ -154,6 +158,10 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
   const [withdraw, setWithdraw] = useState("");
   const [repay, setRepay] = useState("");
   const [data, setData] = useState(null);
+
+  useEffect(() => {
+    dispatch({ type: "revert" });
+  }, [dispatch]);
 
   useEffect(() => {
     fetch(

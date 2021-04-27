@@ -3,6 +3,7 @@ import cn from "classnames";
 
 import { useLiquitySelector } from "@liquity/lib-react";
 import { CRITICAL_COLLATERAL_RATIO, Percent } from "@liquity/lib-base";
+import { useLiquity } from "../../../hooks/LiquityContext";
 
 import Button from "../../Button";
 
@@ -37,9 +38,12 @@ const TroveInfo = ({ label, amount, status = null, unit }) => (
 const selectActive = ({ trove, price }) => ({ trove, price });
 
 const ActiveTrove = ({ dispatchEvent }) => {
+  const { liquity } = useLiquity();
+
   const handleCloseTrove = useCallback(() => {
     dispatchEvent("CLOSE_TROVE_PRESSED");
-  }, [dispatchEvent]);
+    liquity.send.closeTrove();
+  }, [dispatchEvent, liquity.send]);
 
   const { trove, price } = useLiquitySelector(selectActive);
 

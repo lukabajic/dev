@@ -235,7 +235,7 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
 
           {repay > 0 && (
             <StaticRow
-              label="repay"
+              label="Repay"
               inputId="trove-repay-value"
               amount={Decimal.from(repay).prettify()}
               unit={COIN}

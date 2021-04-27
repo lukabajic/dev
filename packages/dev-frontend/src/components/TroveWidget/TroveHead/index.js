@@ -60,6 +60,7 @@ const ActiveTrove = ({ dispatchEvent }) => {
     <>
       {cancelModal && (
         <Modal
+          onClose={() => setCancelModal(null)}
           status="warning"
           title="Are you sure you want to 
 close trove?"

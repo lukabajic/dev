@@ -124,13 +124,11 @@ const StabilityDepositManager = () => {
     }
   }, [myTransactionState.type, dispatch, dispatchEvent]);
 
-  console.log(view);
-
   return (
     <>
       <Head
         total={validationContext.lusdInStabilityPool}
-        title={"Earn ETH and LQTY by depositing LUSD"}
+        title="Earn ETH and LQTY by depositing LUSD"
       />
       <StabilityDepositEditor
         modal={modal}

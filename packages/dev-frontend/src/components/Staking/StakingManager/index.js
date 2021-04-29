@@ -12,6 +12,8 @@ import { StakingManagerAction } from "./../StakingManagerAction";
 import { ActionDescription, Amount } from "../../ActionDescription";
 import ErrorDescription from "../../ErrorDescription";
 
+import classes from "./StakingManager.module.css";
+
 const init = ({ lqtyStake }) => ({
   originalStake: lqtyStake,
   editedLQTY: lqtyStake.stakedLQTY
@@ -45,7 +47,10 @@ const reduce = (state, action) => {
   }
 };
 
-const selectLQTYBalance = ({ lqtyBalance }) => lqtyBalance;
+const selectLQTYBalance = ({ lqtyBalance, lusdInStabilityPool }) => ({
+  lqtyBalance,
+  lusdInStabilityPool
+});
 
 const StakingManagerActionDescription = ({ originalStake, change }) => {
   const stakeLQTY = change.stakeLQTY?.prettify().concat(" ", GT);
@@ -93,10 +98,22 @@ const StakingManagerActionDescription = ({ originalStake, change }) => {
   );
 };
 
-const StakingManager = () => {
+const Head = ({ total, title }) => {
+  return (
+    <div className={classes.head}>
+      <div className={classes.total}>
+        <p className={classes.totalStaked}>total staked {total.div(1000).prettify(0)}k</p>
+        <p className={classes.totalAPR}>APR 25%</p>
+      </div>
+      <h3 className={classes.title}>{title}</h3>
+    </div>
+  );
+};
+
+const StakingManager = ({ view }) => {
   const { dispatch: dispatchStakingViewAction } = useStakingView();
   const [{ originalStake, editedLQTY }, dispatch] = useLiquityReducer(reduce, init);
-  const lqtyBalance = useLiquitySelector(selectLQTYBalance);
+  const { lqtyBalance, lusdInStabilityPool } = useLiquitySelector(selectLQTYBalance);
 
   const change = originalStake.whatChanged(editedLQTY);
   const [validChange, description] = !change
@@ -117,15 +134,19 @@ const StakingManager = () => {
   const makingNewStake = originalStake.isEmpty;
 
   return (
-    <StakingEditor title={"Staking"} {...{ originalStake, editedLQTY, dispatch }}>
-      {description ??
-        (makingNewStake ? (
-          <ActionDescription>Enter the amount of {GT} you'd like to stake.</ActionDescription>
-        ) : (
-          <ActionDescription>Adjust the {GT} amount to stake or withdraw.</ActionDescription>
-        ))}
+    <>
+      <Head
+        total={lusdInStabilityPool}
+        title="Stake LQTY to earn a share of borrowing and redemption fees"
+      />
+      <StakingEditor title={"Staking"} {...{ originalStake, editedLQTY, dispatch }}>
+        {description ??
+          (makingNewStake ? (
+            <ActionDescription>Enter the amount of {GT} you'd like to stake.</ActionDescription>
+          ) : (
+            <ActionDescription>Adjust the {GT} amount to stake or withdraw.</ActionDescription>
+          ))}
 
-      <Flex variant="layout.actions">
         <Button
           variant="cancel"
           onClick={() => dispatchStakingViewAction({ type: "cancelAdjusting" })}
@@ -138,8 +159,8 @@ const StakingManager = () => {
         ) : (
           <Button disabled>Confirm</Button>
         )}
-      </Flex>
-    </StakingEditor>
+      </StakingEditor>
+    </>
   );
 };
 

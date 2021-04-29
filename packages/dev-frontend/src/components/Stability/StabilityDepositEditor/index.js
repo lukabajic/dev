@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { Heading, Box, Card, Button } from "theme-ui";
+import { useState } from "react";
+import { Box, Card } from "theme-ui";
 
 import { Difference } from "@liquity/lib-base";
 
 import { useLiquitySelector } from "@liquity/lib-react";
 
-import { COIN, GT } from "../../strings";
+import { COIN, GT } from "../../../strings";
 
-import { Icon } from "../Icon";
-import { EditableRow, StaticRow } from "../Trove/Editor";
-import { LoadingOverlay } from "../LoadingOverlay";
-import { InfoIcon } from "../InfoIcon";
+import { EditableRow, StaticRow } from "../../Trove/Editor";
+import { LoadingOverlay } from "../../LoadingOverlay";
+import { InfoIcon } from "../../InfoIcon";
 
 const select = ({ lusdBalance, lusdInStabilityPool }) => ({
   lusdBalance,
@@ -43,20 +42,7 @@ export const StabilityDepositEditor = ({
     Difference.between(newPoolShare, originalPoolShare).nonZero;
 
   return (
-    <Card>
-      <Heading>
-        Stability Pool
-        {edited && !changePending && (
-          <Button
-            variant="titleIcon"
-            sx={{ ":enabled:hover": { color: "danger" } }}
-            onClick={() => dispatch({ type: "revert" })}
-          >
-            <Icon name="history" size="lg" />
-          </Button>
-        )}
-      </Heading>
-
+    <div>
       <Box sx={{ p: [2, 3] }}>
         <EditableRow
           label="Deposit"
@@ -117,6 +103,6 @@ export const StabilityDepositEditor = ({
       </Box>
 
       {changePending && <LoadingOverlay />}
-    </Card>
+    </div>
   );
 };

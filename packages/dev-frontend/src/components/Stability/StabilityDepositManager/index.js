@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect } from "react";
-import { Button, Flex } from "theme-ui";
+import { useCallback, useEffect, useState } from "react";
 
 import { Decimal } from "@liquity/lib-base";
 import { useLiquityReducer, useLiquitySelector } from "@liquity/lib-react";
 
 import { COIN } from "../../../strings";
 
-import { ActionDescription } from "../../ActionDescription";
 import { useMyTransactionState } from "../../Transaction";
 
 import { StabilityDepositEditor } from "../StabilityDepositEditor";
@@ -16,6 +14,7 @@ import {
   selectForStabilityDepositChangeValidation,
   validateStabilityDepositChange
 } from "../validation/validateStabilityDepositChange";
+import Button from "../../Button";
 
 import classes from "./StabilityDepositManager.module.css";
 
@@ -97,6 +96,7 @@ const StabilityDepositManager = () => {
   const [{ originalDeposit, editedLUSD, changePending }, dispatch] = useLiquityReducer(reduce, init);
   const validationContext = useLiquitySelector(selectForStabilityDepositChangeValidation);
   const { dispatchEvent, view } = useStabilityView();
+  const [modal, setModal] = useState(null);
 
   const handleCancel = useCallback(() => {
     dispatchEvent("CANCEL_PRESSED");
@@ -136,34 +136,29 @@ const StabilityDepositManager = () => {
         }
       />
       <StabilityDepositEditor
+        modal={modal}
+        setModal={setModal}
         originalDeposit={originalDeposit}
         editedLUSD={editedLUSD}
         changePending={changePending}
         dispatch={dispatch}
-      >
-        {description ??
-          (makingNewDeposit ? (
-            <ActionDescription>Enter the amount of {COIN} you'd like to deposit.</ActionDescription>
-          ) : (
-            <ActionDescription>Adjust the {COIN} amount to deposit or withdraw.</ActionDescription>
-          ))}
-
-        <Flex variant="layout.actions">
-          <Button variant="cancel" onClick={handleCancel}>
-            Cancel
-          </Button>
-
-          {validChange ? (
-            <StabilityDepositAction transactionId={transactionId} change={validChange}>
-              Confirm
-            </StabilityDepositAction>
-          ) : (
-            <Button disabled>Confirm</Button>
-          )}
-        </Flex>
-      </StabilityDepositEditor>
+      ></StabilityDepositEditor>
     </>
   );
 };
 
 export default StabilityDepositManager;
+
+{
+  /* <Button variant="cancel" onClick={handleCancel}>
+Cancel
+</Button> */
+}
+
+// {validChange ? (
+//   <StabilityDepositAction transactionId={transactionId} change={validChange}>
+//     Confirm
+//   </StabilityDepositAction>
+// ) : (
+//   <Button disabled>Confirm</Button>
+// )}

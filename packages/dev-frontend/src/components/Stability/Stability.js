@@ -1,4 +1,4 @@
-import { StabilityDepositManager } from "./StabilityDepositManager";
+import StabilityDepositManager from "./StabilityDepositManager";
 import { ActiveDeposit } from "./ActiveDeposit";
 import { NoDeposit } from "./NoDeposit";
 import { useStabilityView } from "./context/StabilityViewContext";

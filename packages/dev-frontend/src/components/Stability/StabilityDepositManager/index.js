@@ -1,21 +1,21 @@
 import React, { useCallback, useEffect } from "react";
 import { Button, Flex } from "theme-ui";
 
-import { Decimal, Decimalish, LiquityStoreState } from "@liquity/lib-base";
-import { LiquityStoreUpdate, useLiquityReducer, useLiquitySelector } from "@liquity/lib-react";
+import { Decimal } from "@liquity/lib-base";
+import { useLiquityReducer, useLiquitySelector } from "@liquity/lib-react";
 
-import { COIN } from "../../strings";
+import { COIN } from "../../../strings";
 
-import { ActionDescription } from "../ActionDescription";
-import { useMyTransactionState } from "../Transaction";
+import { ActionDescription } from "../../ActionDescription";
+import { useMyTransactionState } from "../../Transaction";
 
-import { StabilityDepositEditor } from "./StabilityDepositEditor";
-import { StabilityDepositAction } from "./StabilityDepositAction";
-import { useStabilityView } from "./context/StabilityViewContext";
+import { StabilityDepositEditor } from "../StabilityDepositEditor";
+import { StabilityDepositAction } from "../StabilityDepositAction";
+import { useStabilityView } from "../context/StabilityViewContext";
 import {
   selectForStabilityDepositChangeValidation,
   validateStabilityDepositChange
-} from "./validation/validateStabilityDepositChange";
+} from "../validation/validateStabilityDepositChange";
 
 const init = ({ stabilityDeposit }) => ({
   originalDeposit: stabilityDeposit,
@@ -79,7 +79,7 @@ const reduce = (state, action) => {
 
 const transactionId = "stability-deposit";
 
-export const StabilityDepositManager = () => {
+const StabilityDepositManager = () => {
   const [{ originalDeposit, editedLUSD, changePending }, dispatch] = useLiquityReducer(reduce, init);
   const validationContext = useLiquitySelector(selectForStabilityDepositChangeValidation);
   const { dispatchEvent } = useStabilityView();
@@ -141,3 +141,5 @@ export const StabilityDepositManager = () => {
     </StabilityDepositEditor>
   );
 };
+
+export default StabilityDepositManager;

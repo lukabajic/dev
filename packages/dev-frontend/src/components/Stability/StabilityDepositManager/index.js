@@ -34,7 +34,6 @@ const reduce = (state, action) => {
 
   switch (action.type) {
     case "startChange": {
-      console.log("changeStarted");
       return { ...state, changePending: true };
     }
 
@@ -124,6 +123,8 @@ const StabilityDepositManager = () => {
       dispatchEvent("DEPOSIT_CONFIRMED");
     }
   }, [myTransactionState.type, dispatch, dispatchEvent]);
+
+  console.log(view);
 
   return (
     <>

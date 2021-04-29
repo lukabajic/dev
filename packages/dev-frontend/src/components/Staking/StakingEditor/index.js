@@ -4,13 +4,13 @@ import { Heading, Box, Card, Button } from "theme-ui";
 import { Difference } from "@liquity/lib-base";
 import { useLiquitySelector } from "@liquity/lib-react";
 
-import { COIN, GT } from "../../strings";
+import { COIN, GT } from "../../../strings";
 
-import { Icon } from "../Icon";
-import { EditableRow, StaticRow } from "../Trove/Editor";
-import { LoadingOverlay } from "../LoadingOverlay";
+import { Icon } from "../../Icon";
+import { EditableRow, StaticRow } from "../../Trove/Editor";
+import { LoadingOverlay } from "../../LoadingOverlay";
 
-import { useStakingView } from "./context/StakingViewContext";
+import { useStakingView } from "./../context/StakingViewContext";
 
 const select = ({ lqtyBalance, totalStakedLQTY }) => ({
   lqtyBalance,

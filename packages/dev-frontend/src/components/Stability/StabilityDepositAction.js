@@ -1,12 +1,12 @@
-import { Button } from "theme-ui";
 import { useLiquitySelector } from "@liquity/lib-react";
 
 import { useLiquity } from "../../hooks/LiquityContext";
 import { useTransactionFunction } from "../Transaction";
+import Button from "../Button";
 
 const selectFrontendRegistered = ({ frontend }) => frontend.status === "registered";
 
-export const StabilityDepositAction = ({ children, transactionId, change }) => {
+const StabilityDepositAction = ({ transactionId, change }) => {
   const { config, liquity } = useLiquity();
   const frontendRegistered = useLiquitySelector(selectFrontendRegistered);
 
@@ -19,5 +19,11 @@ export const StabilityDepositAction = ({ children, transactionId, change }) => {
       : liquity.send.withdrawLUSDFromStabilityPool.bind(liquity.send, change.withdrawLUSD)
   );
 
-  return <Button onClick={sendTransaction}>{children}</Button>;
+  return (
+    <Button primary large onClick={sendTransaction}>
+      Confirm
+    </Button>
+  );
 };
+
+export default StabilityDepositAction;

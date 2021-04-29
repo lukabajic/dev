@@ -1,9 +1,8 @@
-import { Button } from "theme-ui";
-
 import { useLiquity } from "../../../hooks/LiquityContext";
 import { useTransactionFunction } from "../../Transaction";
+import Button from "../../Button";
 
-export const ClaimRewards = ({ disabled, children }) => {
+const ClaimRewards = ({ disabled }) => {
   const { liquity } = useLiquity();
 
   const [sendTransaction] = useTransactionFunction(
@@ -12,8 +11,10 @@ export const ClaimRewards = ({ disabled, children }) => {
   );
 
   return (
-    <Button onClick={sendTransaction} disabled={disabled}>
-      {children}
+    <Button primary large onClick={sendTransaction} disabled={disabled}>
+      Claim LQTY and ETH
     </Button>
   );
 };
+
+export default ClaimRewards;

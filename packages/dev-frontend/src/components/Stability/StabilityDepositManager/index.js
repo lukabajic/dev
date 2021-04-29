@@ -129,11 +129,7 @@ const StabilityDepositManager = () => {
     <>
       <Head
         total={validationContext.lusdInStabilityPool}
-        title={
-          view === "NONE"
-            ? "Earn ETH and liquity by depositing LUSD"
-            : "Earn ETH and LQTY by depositing LUSD"
-        }
+        title={"Earn ETH and LQTY by depositing LUSD"}
       />
       <StabilityDepositEditor
         modal={modal}
@@ -142,7 +138,10 @@ const StabilityDepositManager = () => {
         editedLUSD={editedLUSD}
         changePending={changePending}
         dispatch={dispatch}
-      ></StabilityDepositEditor>
+        validChange={validChange}
+        transactionId={transactionId}
+        view={view}
+      />
     </>
   );
 };

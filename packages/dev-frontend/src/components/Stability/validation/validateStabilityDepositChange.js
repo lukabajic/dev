@@ -1,10 +1,3 @@
-import {
-  Decimal,
-  LiquityStoreState,
-  StabilityDeposit,
-  StabilityDepositChange
-} from "@liquity/lib-base";
-
 import { COIN } from "../../../strings";
 import { Amount } from "../../ActionDescription";
 import ErrorDescription from "../../ErrorDescription";
@@ -15,29 +8,18 @@ export const selectForStabilityDepositChangeValidation = ({
   lusdBalance,
   ownFrontend,
   haveUndercollateralizedTroves
-}: LiquityStoreState) => ({
+}) => ({
   trove,
   lusdBalance,
   haveOwnFrontend: ownFrontend.status === "registered",
   haveUndercollateralizedTroves
 });
 
-type StabilityDepositChangeValidationContext = ReturnType<
-  typeof selectForStabilityDepositChangeValidation
->;
-
 export const validateStabilityDepositChange = (
-  originalDeposit: StabilityDeposit,
-  editedLUSD: Decimal,
-  {
-    lusdBalance,
-    haveOwnFrontend,
-    haveUndercollateralizedTroves
-  }: StabilityDepositChangeValidationContext
-): [
-  validChange: StabilityDepositChange<Decimal> | undefined,
-  description: JSX.Element | undefined
-] => {
+  originalDeposit,
+  editedLUSD,
+  { lusdBalance, haveOwnFrontend, haveUndercollateralizedTroves }
+) => {
   const change = originalDeposit.whatChanged(editedLUSD);
 
   if (haveOwnFrontend) {

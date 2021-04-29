@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { Heading, Box, Card, Button } from "theme-ui";
 
-import {
-  Decimal,
-  Decimalish,
-  StabilityDeposit,
-  LiquityStoreState,
-  Difference
-} from "@liquity/lib-base";
+import { Difference } from "@liquity/lib-base";
 
 import { useLiquitySelector } from "@liquity/lib-react";
 
@@ -18,19 +12,12 @@ import { EditableRow, StaticRow } from "../Trove/Editor";
 import { LoadingOverlay } from "../LoadingOverlay";
 import { InfoIcon } from "../InfoIcon";
 
-const select = ({ lusdBalance, lusdInStabilityPool }: LiquityStoreState) => ({
+const select = ({ lusdBalance, lusdInStabilityPool }) => ({
   lusdBalance,
   lusdInStabilityPool
 });
 
-type StabilityDepositEditorProps = {
-  originalDeposit: StabilityDeposit;
-  editedLUSD: Decimal;
-  changePending: boolean;
-  dispatch: (action: { type: "setDeposit"; newValue: Decimalish } | { type: "revert" }) => void;
-};
-
-export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
+export const StabilityDepositEditor = ({
   originalDeposit,
   editedLUSD,
   changePending,
@@ -38,7 +25,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
   children
 }) => {
   const { lusdBalance, lusdInStabilityPool } = useLiquitySelector(select);
-  const editingState = useState<string>();
+  const editingState = useState();
 
   const edited = !editedLUSD.eq(originalDeposit.currentLUSD);
 

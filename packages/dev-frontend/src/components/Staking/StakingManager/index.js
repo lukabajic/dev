@@ -1,17 +1,16 @@
-import React from "react";
 import { Button, Flex } from "theme-ui";
 
-import { Decimal, LiquityStoreState, LQTYStake, LQTYStakeChange } from "@liquity/lib-base";
+import { Decimal } from "@liquity/lib-base";
 
 import { useLiquityReducer, useLiquitySelector } from "@liquity/lib-react";
 
-import { GT, COIN } from "../../strings";
+import { GT, COIN } from "../../../strings";
 
-import { useStakingView } from "./context/StakingViewContext";
-import { StakingEditor } from "./StakingEditor";
-import { StakingManagerAction } from "./StakingManagerAction";
-import { ActionDescription, Amount } from "../ActionDescription";
-import ErrorDescription from "../ErrorDescription";
+import { useStakingView } from "./../context/StakingViewContext";
+import { StakingEditor } from "./../StakingEditor";
+import { StakingManagerAction } from "./../StakingManagerAction";
+import { ActionDescription, Amount } from "../../ActionDescription";
+import ErrorDescription from "../../ErrorDescription";
 
 const init = ({ lqtyStake }) => ({
   originalStake: lqtyStake,
@@ -39,7 +38,7 @@ const reduce = (state, action) => {
           editedLQTY: updatedStake.apply(originalStake.whatChanged(editedLQTY))
         };
       }
-      break;
+      return state;
     }
     default:
       return state;
@@ -94,7 +93,7 @@ const StakingManagerActionDescription = ({ originalStake, change }) => {
   );
 };
 
-export const StakingManager = () => {
+const StakingManager = () => {
   const { dispatch: dispatchStakingViewAction } = useStakingView();
   const [{ originalStake, editedLQTY }, dispatch] = useLiquityReducer(reduce, init);
   const lqtyBalance = useLiquitySelector(selectLQTYBalance);
@@ -143,3 +142,5 @@ export const StakingManager = () => {
     </StakingEditor>
   );
 };
+
+export default StakingManager;

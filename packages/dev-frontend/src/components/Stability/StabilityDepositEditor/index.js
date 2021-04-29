@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Box, Card } from "theme-ui";
 
 import { Decimal, Difference } from "@liquity/lib-base";
@@ -20,9 +20,10 @@ import ClaimRewards from "../actions/ClaimRewards";
 
 import classes from "./StabilityDepositEditor.module.css";
 
-const select = ({ lusdBalance, lusdInStabilityPool }) => ({
+const select = ({ lusdBalance, lusdInStabilityPool, stabilityDeposit }) => ({
   lusdBalance,
-  lusdInStabilityPool
+  lusdInStabilityPool,
+  stabilityDeposit
 });
 
 export const StabilityDepositEditor = ({
@@ -37,7 +38,7 @@ export const StabilityDepositEditor = ({
   transactionId,
   view
 }) => {
-  const { lusdBalance, lusdInStabilityPool } = useLiquitySelector(select);
+  const { lusdBalance, lusdInStabilityPool, stabilityDeposit } = useLiquitySelector(select);
   const editingState = useState();
   const [lqty, setLqty] = useState("");
 
@@ -46,7 +47,9 @@ export const StabilityDepositEditor = ({
   const maxAmount = originalDeposit.currentLUSD.add(lusdBalance);
   const maxedOut = editedLUSD.eq(maxAmount);
 
-  console.log(originalDeposit);
+  const handleOpenTrove = useCallback(() => {
+    dispatchEvent("DEPOSIT_PRESSED");
+  }, [dispatchEvent, view]);
 
   const lusdInStabilityPoolAfterChange = lusdInStabilityPool
     .sub(originalDeposit.currentLUSD)
@@ -57,6 +60,24 @@ export const StabilityDepositEditor = ({
   const poolShareChange =
     originalDeposit.currentLUSD.nonZero &&
     Difference.between(newPoolShare, originalPoolShare).nonZero;
+
+  const hasReward = !stabilityDeposit.lqtyReward.isZero;
+  const hasGain = !stabilityDeposit.collateralGain.isZero;
+
+  const staticPoolShare =
+    view === "NONE"
+      ? Decimal.ZERO.prettify(2)
+      : newPoolShare?.prettify(4) || Decimal.ZERO.prettify(2);
+
+  const staticLiquidationGain =
+    view === "NONE"
+      ? originalDeposit.isEmpty
+        ? Decimal.ZERO.prettify(2)
+        : originalDeposit.collateralGain.prettify(4)
+      : stabilityDeposit.collateralGain.prettify(4);
+
+  const staticReward =
+    view === "NONE" ? Decimal.ZERO.prettify(2) : stabilityDeposit.lqtyReward.prettify();
 
   return (
     <div className={classes.wrapper}>
@@ -90,39 +111,12 @@ export const StabilityDepositEditor = ({
         {newPoolShare.infinite ? (
           <StaticRow label="Pool share" amount="N/A" />
         ) : (
-          <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
+          <StaticRow label="Pool share" amount={staticPoolShare} unit="%" />
         )}
 
-        <StaticRow
-          label="Liquidation gain"
-          amount={
-            originalDeposit.isEmpty
-              ? Decimal.ZERO.prettify(2)
-              : originalDeposit.collateralGain.prettify(4)
-          }
-          color={
-            originalDeposit.isEmpty
-              ? Decimal.ZERO.prettify(2)
-              : originalDeposit.collateralGain.nonZero && "success"
-          }
-          unit="ETH"
-        />
+        <StaticRow label="Liquidation gain" amount={staticLiquidationGain} unit="ETH" />
 
-        <StaticRow
-          label="Reward"
-          amount={
-            originalDeposit.isEmpty
-              ? Decimal.ZERO.prettify(2)
-              : originalDeposit.lqtyReward.prettify()
-          }
-          color={
-            originalDeposit.isEmpty
-              ? Decimal.ZERO.prettify(2)
-              : originalDeposit.lqtyReward.nonZero && "success"
-          }
-          unit={GT}
-          boldLabel
-        />
+        <StaticRow label="Reward" amount={staticReward} unit={GT} boldLabel />
       </div>
 
       <div className={classes.stakedWrapper}>
@@ -137,11 +131,19 @@ export const StabilityDepositEditor = ({
       <div className={classes.actions}>
         {["ACTIVE", "ADJUSTING"].includes(view) ? (
           <>
-            <ClaimAndMove />
-            <ClaimRewards />
+            <ClaimRewards disabled={!hasGain && !hasReward} />
+            <ClaimAndMove disabled={!hasGain} />
           </>
         ) : (
-          <Button primary large uppercase onClick={() => setModal(true)}>
+          <Button
+            primary
+            large
+            uppercase
+            onClick={() => {
+              handleOpenTrove();
+              setModal(true);
+            }}
+          >
             Stake
           </Button>
         )}

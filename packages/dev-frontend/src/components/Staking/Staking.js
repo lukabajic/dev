@@ -3,7 +3,7 @@ import { ReadOnlyStake } from "./ReadOnlyStake";
 import { StakingManager } from "./StakingManager";
 import { NoStake } from "./NoStake";
 
-export const Staking: React.FC = () => {
+export const Staking = () => {
   const { view } = useStakingView();
 
   switch (view) {
@@ -15,5 +15,8 @@ export const Staking: React.FC = () => {
 
     case "NONE":
       return <NoStake />;
+
+    default:
+      return null;
   }
 };

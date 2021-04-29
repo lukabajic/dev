@@ -5,7 +5,7 @@ import { GT } from "../../strings";
 import { InfoMessage } from "../InfoMessage";
 import { useStakingView } from "./context/StakingViewContext";
 
-export const NoStake: React.FC = () => {
+export const NoStake = () => {
   const { dispatch } = useStakingView();
 
   return (

@@ -1,6 +1,5 @@
 import { Heading, Box, Card, Flex, Button } from "theme-ui";
 
-import { LiquityStoreState } from "@liquity/lib-base";
 import { useLiquitySelector } from "@liquity/lib-react";
 
 import { COIN, GT } from "../../strings";
@@ -12,12 +11,12 @@ import { Icon } from "../Icon";
 import { useStakingView } from "./context/StakingViewContext";
 import { StakingGainsAction } from "./StakingGainsAction";
 
-const select = ({ lqtyStake, totalStakedLQTY }: LiquityStoreState) => ({
+const select = ({ lqtyStake, totalStakedLQTY }) => ({
   lqtyStake,
   totalStakedLQTY
 });
 
-export const ReadOnlyStake: React.FC = () => {
+export const ReadOnlyStake = () => {
   const { changePending, dispatch } = useStakingView();
   const { lqtyStake, totalStakedLQTY } = useLiquitySelector(select);
 

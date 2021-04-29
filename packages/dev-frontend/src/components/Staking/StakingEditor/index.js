@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Heading, Box, Card, Button } from "theme-ui";
 
-import { Decimal, Decimalish, Difference, LiquityStoreState, LQTYStake } from "@liquity/lib-base";
+import { Difference } from "@liquity/lib-base";
 import { useLiquitySelector } from "@liquity/lib-react";
 
 import { COIN, GT } from "../../strings";
@@ -12,28 +12,15 @@ import { LoadingOverlay } from "../LoadingOverlay";
 
 import { useStakingView } from "./context/StakingViewContext";
 
-const select = ({ lqtyBalance, totalStakedLQTY }: LiquityStoreState) => ({
+const select = ({ lqtyBalance, totalStakedLQTY }) => ({
   lqtyBalance,
   totalStakedLQTY
 });
 
-type StakingEditorProps = {
-  title: string;
-  originalStake: LQTYStake;
-  editedLQTY: Decimal;
-  dispatch: (action: { type: "setStake"; newValue: Decimalish } | { type: "revert" }) => void;
-};
-
-export const StakingEditor: React.FC<StakingEditorProps> = ({
-  children,
-  title,
-  originalStake,
-  editedLQTY,
-  dispatch
-}) => {
+export const StakingEditor = ({ children, title, originalStake, editedLQTY, dispatch }) => {
   const { lqtyBalance, totalStakedLQTY } = useLiquitySelector(select);
   const { changePending } = useStakingView();
-  const editingState = useState<string>();
+  const editingState = useState();
 
   const edited = !editedLQTY.eq(originalStake.stakedLQTY);
 

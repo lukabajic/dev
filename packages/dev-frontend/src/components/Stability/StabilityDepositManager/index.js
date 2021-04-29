@@ -17,6 +17,8 @@ import {
   validateStabilityDepositChange
 } from "../validation/validateStabilityDepositChange";
 
+import classes from "./StabilityDepositManager.module.css";
+
 const init = ({ stabilityDeposit }) => ({
   originalDeposit: stabilityDeposit,
   editedLUSD: stabilityDeposit.currentLUSD,
@@ -79,10 +81,22 @@ const reduce = (state, action) => {
 
 const transactionId = "stability-deposit";
 
+const Head = ({ total, title }) => {
+  return (
+    <div className={classes.head}>
+      <div className={classes.total}>
+        <p className={classes.totalStaked}>total staked {total.div(1000).prettify(0)}k</p>
+        <p className={classes.totalAPR}>APR 25%</p>
+      </div>
+      <h3 className={classes.title}>{title}</h3>
+    </div>
+  );
+};
+
 const StabilityDepositManager = () => {
   const [{ originalDeposit, editedLUSD, changePending }, dispatch] = useLiquityReducer(reduce, init);
   const validationContext = useLiquitySelector(selectForStabilityDepositChangeValidation);
-  const { dispatchEvent } = useStabilityView();
+  const { dispatchEvent, view } = useStabilityView();
 
   const handleCancel = useCallback(() => {
     dispatchEvent("CANCEL_PRESSED");
@@ -112,33 +126,43 @@ const StabilityDepositManager = () => {
   }, [myTransactionState.type, dispatch, dispatchEvent]);
 
   return (
-    <StabilityDepositEditor
-      originalDeposit={originalDeposit}
-      editedLUSD={editedLUSD}
-      changePending={changePending}
-      dispatch={dispatch}
-    >
-      {description ??
-        (makingNewDeposit ? (
-          <ActionDescription>Enter the amount of {COIN} you'd like to deposit.</ActionDescription>
-        ) : (
-          <ActionDescription>Adjust the {COIN} amount to deposit or withdraw.</ActionDescription>
-        ))}
+    <>
+      <Head
+        total={validationContext.lusdInStabilityPool}
+        title={
+          view === "NONE"
+            ? "Earn ETH and liquity by depositing LUSD"
+            : "Earn ETH and LQTY by depositing LUSD"
+        }
+      />
+      <StabilityDepositEditor
+        originalDeposit={originalDeposit}
+        editedLUSD={editedLUSD}
+        changePending={changePending}
+        dispatch={dispatch}
+      >
+        {description ??
+          (makingNewDeposit ? (
+            <ActionDescription>Enter the amount of {COIN} you'd like to deposit.</ActionDescription>
+          ) : (
+            <ActionDescription>Adjust the {COIN} amount to deposit or withdraw.</ActionDescription>
+          ))}
 
-      <Flex variant="layout.actions">
-        <Button variant="cancel" onClick={handleCancel}>
-          Cancel
-        </Button>
+        <Flex variant="layout.actions">
+          <Button variant="cancel" onClick={handleCancel}>
+            Cancel
+          </Button>
 
-        {validChange ? (
-          <StabilityDepositAction transactionId={transactionId} change={validChange}>
-            Confirm
-          </StabilityDepositAction>
-        ) : (
-          <Button disabled>Confirm</Button>
-        )}
-      </Flex>
-    </StabilityDepositEditor>
+          {validChange ? (
+            <StabilityDepositAction transactionId={transactionId} change={validChange}>
+              Confirm
+            </StabilityDepositAction>
+          ) : (
+            <Button disabled>Confirm</Button>
+          )}
+        </Flex>
+      </StabilityDepositEditor>
+    </>
   );
 };
 

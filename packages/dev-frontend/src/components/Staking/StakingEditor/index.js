@@ -120,7 +120,7 @@ const StakingEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
-              label="Stake"
+              label="stake"
               unit={GT}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
               value={increment}
@@ -158,7 +158,7 @@ const StakingEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
-              label="Stake"
+              label="unstake"
               unit={GT}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
               value={decrement}

@@ -16,7 +16,7 @@ const Stake = () => {
   return (
     <>
       <Tabs activeTab={activeTab} tabs={TABS} setActiveTab={setActiveTab} />
-      <StakingManager />
+      <StakingManager view={view} />
     </>
   );
 };

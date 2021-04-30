@@ -4,7 +4,8 @@ import { Decimal } from "@liquity/lib-base";
 
 import { useLiquityReducer, useLiquitySelector } from "@liquity/lib-react";
 
-import { StakingEditor } from "./../StakingEditor";
+import StakingEditor from "./../StakingEditor";
+import { useStakingView } from "../context/StakingViewContext";
 
 import classes from "./StakingManager.module.css";
 
@@ -23,6 +24,12 @@ const reduce = (state, action) => {
         : originalStake.stakedLQTY;
 
       return { ...state, editedLQTY: newStake };
+
+    case "decrement":
+      return { ...state, editedLQTY: state.editedLQTY.sub(Decimal.from(100)) };
+
+    case "increment":
+      return { ...state, editedLQTY: state.editedLQTY.add(Decimal.from(100)) };
 
     case "revert":
       return { ...state, editedLQTY: originalStake.stakedLQTY };
@@ -66,6 +73,7 @@ const StakingManager = () => {
   const [{ originalStake, editedLQTY }, dispatch] = useLiquityReducer(reduce, init);
   const { lusdInStabilityPool } = useLiquitySelector(selectLQTYBalance);
   const [modal, setModal] = useState(null);
+  const { view } = useStakingView();
 
   return (
     <>
@@ -80,6 +88,7 @@ const StakingManager = () => {
         dispatch={dispatch}
         modal={modal}
         setModal={setModal}
+        view={view}
       />
     </>
   );

@@ -135,7 +135,7 @@ const StakingEditor = ({ view, modal, setModal, children, originalStake, editedL
             </div>
           </>
         ) : (
-          <StaticRow labelColor="primary" label="Staked" amount={staked.prettify(2)} unit={COIN} />
+          <StaticRow labelColor="primary" label="Staked" amount={staked.prettify(2)} unit={GT} />
         )}
       </div>
 

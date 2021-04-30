@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import cn from "classnames";
 
 import { Decimal } from "@liquity/lib-base";
 import { useLiquitySelector } from "@liquity/lib-react";
@@ -15,6 +16,7 @@ import { Amount } from "../../ActionDescription";
 
 import { useStakingView } from "./../context/StakingViewContext";
 import StakingManagerAction from "../StakingManagerAction";
+import StakingGainsAction from "../StakingGainsAction";
 
 import classes from "./StakingEditor.module.css";
 
@@ -23,17 +25,15 @@ const select = ({ lqtyBalance, totalStakedLQTY }) => ({
   totalStakedLQTY
 });
 
-export const StakingEditor = ({
-  modal,
-  setModal,
-  children,
-  originalStake,
-  editedLQTY,
-  dispatch
-}) => {
+const StakingEditor = ({ view, modal, setModal, children, originalStake, editedLQTY, dispatch }) => {
   const { lqtyBalance, totalStakedLQTY } = useLiquitySelector(select);
   const { changePending } = useStakingView();
   const [stakeLQTY, setStakeLQTY] = useState("");
+
+  useEffect(() => {
+    setStakeLQTY("");
+    dispatch({ type: "revert" });
+  }, [view, dispatch]);
 
   const totalStakedLQTYAfterChange = totalStakedLQTY.sub(originalStake.stakedLQTY).add(editedLQTY);
 
@@ -47,7 +47,7 @@ export const StakingEditor = ({
   const change = originalStake.whatChanged(editedLQTY);
 
   const [validChange, error] = !change
-    ? [undefined]
+    ? [undefined, undefined]
     : change.stakeLQTY?.gt(lqtyBalance)
     ? [
         undefined,
@@ -59,7 +59,7 @@ export const StakingEditor = ({
           .
         </ErrorDescription>
       ]
-    : [change];
+    : [change, undefined];
 
   return (
     <div className={classes.wrapper}>
@@ -108,11 +108,43 @@ export const StakingEditor = ({
       </div>
 
       <div className={classes.stakedWrapper}>
-        <StaticRow labelColor="primary" label="Staked" amount={staked.prettify(2)} unit={COIN} />
+        {view !== "NONE" ? (
+          <>
+            <p className={classes.editLabel}>Staked</p>
+            <p className={classes.editAmount}>
+              {editedLQTY.prettify(2)} {GT}
+            </p>
+            <div className={classes.editActions}>
+              <button
+                onClick={() => {
+                  dispatch({ type: "decrement" });
+                }}
+                disabled={editedLQTY.eq(originalStake.stakedLQTY)}
+                className={cn({ [classes.disabled]: editedLQTY.eq(originalStake.stakedLQTY) })}
+              >
+                &#8722;
+              </button>
+              <button
+                onClick={() => {
+                  dispatch({ type: "increment" });
+                }}
+                className={cn({ [classes.disabled]: false })}
+              >
+                &#43;
+              </button>
+            </div>
+          </>
+        ) : (
+          <StaticRow labelColor="primary" label="Staked" amount={staked.prettify(2)} unit={COIN} />
+        )}
       </div>
 
+      {error}
+
       <div className={classes.actions}>
-        {validChange ? (
+        {view !== "NONE" ? (
+          <StakingGainsAction />
+        ) : validChange ? (
           <StakingManagerAction change={validChange}>Confirm</StakingManagerAction>
         ) : (
           <Button primary large uppercase onClick={() => setModal(true)}>
@@ -127,3 +159,5 @@ export const StakingEditor = ({
     </div>
   );
 };
+
+export default StakingEditor;

@@ -1,16 +1,10 @@
-import { Button, Flex } from "theme-ui";
+import { useState } from "react";
 
 import { Decimal } from "@liquity/lib-base";
 
 import { useLiquityReducer, useLiquitySelector } from "@liquity/lib-react";
 
-import { GT, COIN } from "../../../strings";
-
-import { useStakingView } from "./../context/StakingViewContext";
 import { StakingEditor } from "./../StakingEditor";
-import { StakingManagerAction } from "./../StakingManagerAction";
-import { ActionDescription, Amount } from "../../ActionDescription";
-import ErrorDescription from "../../ErrorDescription";
 
 import classes from "./StakingManager.module.css";
 
@@ -24,7 +18,11 @@ const reduce = (state, action) => {
 
   switch (action.type) {
     case "setStake":
-      return { ...state, editedLQTY: Decimal.from(action.newValue) };
+      const newStake = action.newValue
+        ? originalStake.stakedLQTY.add(Decimal.from(action.newValue || 0))
+        : originalStake.stakedLQTY;
+
+      return { ...state, editedLQTY: newStake };
 
     case "revert":
       return { ...state, editedLQTY: originalStake.stakedLQTY };
@@ -52,52 +50,6 @@ const selectLQTYBalance = ({ lqtyBalance, lusdInStabilityPool }) => ({
   lusdInStabilityPool
 });
 
-const StakingManagerActionDescription = ({ originalStake, change }) => {
-  const stakeLQTY = change.stakeLQTY?.prettify().concat(" ", GT);
-  const unstakeLQTY = change.unstakeLQTY?.prettify().concat(" ", GT);
-  const collateralGain = originalStake.collateralGain.nonZero?.prettify(4).concat(" ETH");
-  const lusdGain = originalStake.lusdGain.nonZero?.prettify().concat(" ", COIN);
-
-  if (originalStake.isEmpty && stakeLQTY) {
-    return (
-      <ActionDescription>
-        You are staking <Amount>{stakeLQTY}</Amount>.
-      </ActionDescription>
-    );
-  }
-
-  return (
-    <ActionDescription>
-      {stakeLQTY && (
-        <>
-          You are adding <Amount>{stakeLQTY}</Amount> to your stake
-        </>
-      )}
-      {unstakeLQTY && (
-        <>
-          You are withdrawing <Amount>{unstakeLQTY}</Amount> to your wallet
-        </>
-      )}
-      {(collateralGain || lusdGain) && (
-        <>
-          {" "}
-          and claiming{" "}
-          {collateralGain && lusdGain ? (
-            <>
-              <Amount>{collateralGain}</Amount> and <Amount>{lusdGain}</Amount>
-            </>
-          ) : (
-            <>
-              <Amount>{collateralGain ?? lusdGain}</Amount>
-            </>
-          )}
-        </>
-      )}
-      .
-    </ActionDescription>
-  );
-};
-
 const Head = ({ total, title }) => {
   return (
     <div className={classes.head}>
@@ -110,28 +62,10 @@ const Head = ({ total, title }) => {
   );
 };
 
-const StakingManager = ({ view }) => {
-  const { dispatch: dispatchStakingViewAction } = useStakingView();
+const StakingManager = () => {
   const [{ originalStake, editedLQTY }, dispatch] = useLiquityReducer(reduce, init);
-  const { lqtyBalance, lusdInStabilityPool } = useLiquitySelector(selectLQTYBalance);
-
-  const change = originalStake.whatChanged(editedLQTY);
-  const [validChange, description] = !change
-    ? [undefined, undefined]
-    : change.stakeLQTY?.gt(lqtyBalance)
-    ? [
-        undefined,
-        <ErrorDescription>
-          The amount you're trying to stake exceeds your balance by{" "}
-          <Amount>
-            {change.stakeLQTY.sub(lqtyBalance).prettify()} {GT}
-          </Amount>
-          .
-        </ErrorDescription>
-      ]
-    : [change, <StakingManagerActionDescription originalStake={originalStake} change={change} />];
-
-  const makingNewStake = originalStake.isEmpty;
+  const { lusdInStabilityPool } = useLiquitySelector(selectLQTYBalance);
+  const [modal, setModal] = useState(null);
 
   return (
     <>
@@ -139,29 +73,74 @@ const StakingManager = ({ view }) => {
         total={lusdInStabilityPool}
         title="Stake LQTY to earn a share of borrowing and redemption fees"
       />
-      <StakingEditor title={"Staking"} {...{ originalStake, editedLQTY, dispatch }}>
-        {description ??
-          (makingNewStake ? (
-            <ActionDescription>Enter the amount of {GT} you'd like to stake.</ActionDescription>
-          ) : (
-            <ActionDescription>Adjust the {GT} amount to stake or withdraw.</ActionDescription>
-          ))}
-
-        <Button
-          variant="cancel"
-          onClick={() => dispatchStakingViewAction({ type: "cancelAdjusting" })}
-        >
-          Cancel
-        </Button>
-
-        {validChange ? (
-          <StakingManagerAction change={validChange}>Confirm</StakingManagerAction>
-        ) : (
-          <Button disabled>Confirm</Button>
-        )}
-      </StakingEditor>
+      <StakingEditor
+        title={"Staking"}
+        originalStake={originalStake}
+        editedLQTY={editedLQTY}
+        dispatch={dispatch}
+        modal={modal}
+        setModal={setModal}
+      />
     </>
   );
 };
 
 export default StakingManager;
+
+//<Button variant="cancel" onClick={() => dispatchStakingViewAction({ type: ////"cancelAdjusting" })}>
+//  Cancel
+//</Button>;
+
+//{
+//  validChange ? (
+//    <StakingManagerAction change={validChange}>Confirm</StakingManagerAction>
+//  ) : (
+//    <Button disabled>Confirm</Button>
+//  );
+//}
+
+// const StakingManagerActionDescription = ({ originalStake, change }) => {
+//   const stakeLQTY = change.stakeLQTY?.prettify().concat(" ", GT);
+//   const unstakeLQTY = change.unstakeLQTY?.prettify().concat(" ", GT);
+//   const collateralGain = originalStake.collateralGain.nonZero?.prettify(4).concat(" ETH");
+//   const lusdGain = originalStake.lusdGain.nonZero?.prettify().concat(" ", COIN);
+
+//   if (originalStake.isEmpty && stakeLQTY) {
+//     return (
+//       <ActionDescription>
+//         You are staking <Amount>{stakeLQTY}</Amount>.
+//       </ActionDescription>
+//     );
+//   }
+
+//   return (
+//     <ActionDescription>
+//       {stakeLQTY && (
+//         <>
+//           You are adding <Amount>{stakeLQTY}</Amount> to your stake
+//         </>
+//       )}
+//       {unstakeLQTY && (
+//         <>
+//           You are withdrawing <Amount>{unstakeLQTY}</Amount> to your wallet
+//         </>
+//       )}
+//       {(collateralGain || lusdGain) && (
+//         <>
+//           {" "}
+//           and claiming{" "}
+//           {collateralGain && lusdGain ? (
+//             <>
+//               <Amount>{collateralGain}</Amount> and <Amount>{lusdGain}</Amount>
+//             </>
+//           ) : (
+//             <>
+//               <Amount>{collateralGain ?? lusdGain}</Amount>
+//             </>
+//           )}
+//         </>
+//       )}
+//       .
+//     </ActionDescription>
+//   );
+// };

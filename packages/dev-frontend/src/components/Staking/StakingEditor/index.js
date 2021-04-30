@@ -36,7 +36,7 @@ const StakingEditor = ({
   dispatch,
   dispatchView
 }) => {
-  const { lqtyBalance, totalStakedLQTY, lusdBalance } = useLiquitySelector(select);
+  const { lqtyBalance, totalStakedLQTY } = useLiquitySelector(select);
   const { changePending } = useStakingView();
   const [stake, setStake] = useState(null);
   const [increment, setIncrement] = useState(null);
@@ -78,6 +78,7 @@ const StakingEditor = ({
           onClose={() => {
             setModal(null);
             dispatchView({ type: "cancelAdjusting" });
+            dispatch({ type: "revert" });
           }}
         >
           <div className={classes.modalContent}>
@@ -116,6 +117,7 @@ const StakingEditor = ({
           onClose={() => {
             setIncrement(null);
             dispatchView({ type: "cancelAdjusting" });
+            dispatch({ type: "revert" });
           }}
         >
           <div className={classes.modalContent}>
@@ -182,7 +184,7 @@ const StakingEditor = ({
             )}
 
             <div className={classes.modalActions}>
-              {validChange ? (
+              {validChange && editedLQTY.nonZero ? (
                 <StakingManagerAction change={validChange} />
               ) : (
                 <Button large primary disabled>
@@ -200,7 +202,7 @@ const StakingEditor = ({
         {newPoolShare.infinite ? (
           <StaticRow label="Pool share" amount="N/A" />
         ) : (
-          <StaticRow label="Pool share" amount={originalPoolShare.prettify(1)} unit="%" />
+          <StaticRow label="Pool share" amount={originalPoolShare.prettify(4)} unit="%" />
         )}
 
         <StaticRow label="Redemption gain" amount={redemptionGain.prettify(4)} unit="ETH" />
@@ -231,8 +233,8 @@ const StakingEditor = ({
                   dispatchView({ type: "startAdjusting" });
                   setIncrement("");
                 }}
-                disabled={lusdBalance.isZero}
-                className={cn({ [classes.disabled]: lusdBalance.isZero })}
+                disabled={lqtyBalance.isZero}
+                className={cn({ [classes.disabled]: lqtyBalance.isZero })}
               >
                 &#43;
               </button>

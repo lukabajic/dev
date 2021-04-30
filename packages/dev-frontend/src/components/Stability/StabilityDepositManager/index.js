@@ -37,6 +37,18 @@ const reduce = (state, action) => {
       return { ...state, changePending: true };
     }
 
+    case "decrement": {
+      const newStake = Decimal.from(action.newValue || 0).gt(originalDeposit.currentLUSD)
+        ? Decimal.ZERO
+        : originalDeposit.currentLUSD.sub(Decimal.from(action.newValue || 0));
+      return { ...state, editedLUSD: newStake };
+    }
+
+    case "increment": {
+      const newStake = originalDeposit.currentLUSD.add(Decimal.from(action.newValue || 0));
+      return { ...state, editedLUSD: newStake };
+    }
+
     case "finishChange":
       return { ...state, changePending: false };
 
@@ -97,11 +109,7 @@ const StabilityDepositManager = () => {
   const { dispatchEvent, view } = useStabilityView();
   const [modal, setModal] = useState(null);
 
-  const handleCancel = useCallback(() => {
-    dispatchEvent("CANCEL_PRESSED");
-  }, [dispatchEvent]);
-
-  const [validChange, description] = validateStabilityDepositChange(
+  const [validChange, error] = validateStabilityDepositChange(
     originalDeposit,
     editedLUSD,
     validationContext
@@ -140,6 +148,8 @@ const StabilityDepositManager = () => {
         validChange={validChange}
         transactionId={transactionId}
         view={view}
+        dispatchEvent={dispatchEvent}
+        error={error}
       />
     </>
   );

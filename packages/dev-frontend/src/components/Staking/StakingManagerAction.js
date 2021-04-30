@@ -13,8 +13,8 @@ export const StakingManagerAction = ({ change, children }) => {
   );
 
   return (
-    <Button priamry large onClick={sendTransaction}>
-      {children}
+    <Button primary large onClick={sendTransaction}>
+      Confirm
     </Button>
   );
 };

@@ -20,20 +20,29 @@ import StakingGainsAction from "../StakingGainsAction";
 
 import classes from "./StakingEditor.module.css";
 
-const select = ({ lqtyBalance, totalStakedLQTY }) => ({
+const select = ({ lqtyBalance, totalStakedLQTY, lusdBalance }) => ({
   lqtyBalance,
-  totalStakedLQTY
+  totalStakedLQTY,
+  lusdBalance
 });
 
-const StakingEditor = ({ view, modal, setModal, children, originalStake, editedLQTY, dispatch }) => {
-  const { lqtyBalance, totalStakedLQTY } = useLiquitySelector(select);
+const StakingEditor = ({
+  view,
+  modal,
+  setModal,
+  children,
+  originalStake,
+  editedLQTY,
+  dispatch,
+  dispatchView
+}) => {
+  const { lqtyBalance, totalStakedLQTY, lusdBalance } = useLiquitySelector(select);
   const { changePending } = useStakingView();
-  const [stakeLQTY, setStakeLQTY] = useState("");
+  const [stake, setStake] = useState(null);
+  const [increment, setIncrement] = useState(null);
+  const [decrement, setDecrement] = useState(null);
 
-  useEffect(() => {
-    setStakeLQTY("");
-    dispatch({ type: "revert" });
-  }, [view, dispatch]);
+  useEffect(() => {}, [view, dispatch]);
 
   const totalStakedLQTYAfterChange = totalStakedLQTY.sub(originalStake.stakedLQTY).add(editedLQTY);
 
@@ -63,22 +72,114 @@ const StakingEditor = ({ view, modal, setModal, children, originalStake, editedL
 
   return (
     <div className={classes.wrapper}>
-      {modal && (
-        <Modal title="STAKE LUSD" onClose={() => setModal(null)}>
+      {modal && stake !== null && (
+        <Modal
+          title="STAKE LQTY"
+          onClose={() => {
+            setModal(null);
+            dispatchView({ type: "cancelAdjusting" });
+          }}
+        >
           <div className={classes.modalContent}>
             <Input
               label="Stake"
               unit={GT}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
-              value={stakeLQTY}
+              value={stake}
               onChange={v => {
-                setStakeLQTY(v);
+                setStake(v);
                 dispatch({ type: "setStake", newValue: v });
               }}
-              placeholder={Decimal.from(stakeLQTY || 0).prettify(2)}
+              placeholder={Decimal.from(stake || 0).prettify(2)}
             />
 
             {error}
+
+            <div className={classes.modalActions}>
+              {validChange ? (
+                <StakingManagerAction change={validChange} />
+              ) : (
+                <Button large primary disabled>
+                  Confirm
+                </Button>
+              )}
+            </div>
+
+            <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={COIN} />
+          </div>
+        </Modal>
+      )}
+
+      {increment !== null && (
+        <Modal
+          title="STAKE LQTY"
+          onClose={() => {
+            setIncrement(null);
+            dispatchView({ type: "cancelAdjusting" });
+          }}
+        >
+          <div className={classes.modalContent}>
+            <Input
+              label="Stake"
+              unit={GT}
+              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              value={increment}
+              onChange={v => {
+                setIncrement(v);
+                dispatch({ type: "increment", newValue: v });
+              }}
+              placeholder={Decimal.from(increment || 0).prettify(2)}
+            />
+
+            {error}
+
+            <div className={classes.modalActions}>
+              {validChange ? (
+                <StakingManagerAction change={validChange} />
+              ) : (
+                <Button large primary disabled>
+                  Confirm
+                </Button>
+              )}
+            </div>
+
+            <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={COIN} />
+          </div>
+        </Modal>
+      )}
+
+      {decrement !== null && (
+        <Modal
+          title="UNSTAKE LQTY"
+          onClose={() => {
+            setDecrement(null);
+            dispatchView({ type: "cancelAdjusting" });
+          }}
+        >
+          <div className={classes.modalContent}>
+            <Input
+              label="Stake"
+              unit={GT}
+              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              value={decrement}
+              onChange={v => {
+                setDecrement(v);
+                dispatch({ type: "decrement", newValue: v });
+              }}
+              placeholder={Decimal.from(decrement || 0).prettify(2)}
+            />
+
+            {error}
+
+            {Decimal.from(decrement || 0).gt(originalStake.stakedLQTY) && (
+              <ErrorDescription>
+                The amount you're trying to unstake exceeds your stake by{" "}
+                <Amount>
+                  {Decimal.from(decrement).sub(originalStake.stakedLQTY).prettify()} {GT}
+                </Amount>
+                .
+              </ErrorDescription>
+            )}
 
             <div className={classes.modalActions}>
               {validChange ? (
@@ -117,18 +218,21 @@ const StakingEditor = ({ view, modal, setModal, children, originalStake, editedL
             <div className={classes.editActions}>
               <button
                 onClick={() => {
-                  dispatch({ type: "decrement" });
+                  dispatchView({ type: "startAdjusting" });
+                  setDecrement("");
                 }}
-                disabled={editedLQTY.eq(originalStake.stakedLQTY)}
-                className={cn({ [classes.disabled]: editedLQTY.eq(originalStake.stakedLQTY) })}
+                disabled={editedLQTY.isZero}
+                className={cn({ [classes.disabled]: editedLQTY.isZero })}
               >
                 &#8722;
               </button>
               <button
                 onClick={() => {
-                  dispatch({ type: "increment" });
+                  dispatchView({ type: "startAdjusting" });
+                  setIncrement("");
                 }}
-                className={cn({ [classes.disabled]: false })}
+                disabled={lusdBalance.isZero}
+                className={cn({ [classes.disabled]: lusdBalance.isZero })}
               >
                 &#43;
               </button>
@@ -144,10 +248,17 @@ const StakingEditor = ({ view, modal, setModal, children, originalStake, editedL
       <div className={classes.actions}>
         {view !== "NONE" ? (
           <StakingGainsAction />
-        ) : validChange ? (
-          <StakingManagerAction change={validChange}>Confirm</StakingManagerAction>
         ) : (
-          <Button primary large uppercase onClick={() => setModal(true)}>
+          <Button
+            primary
+            large
+            uppercase
+            onClick={() => {
+              dispatchView({ type: "startAdjusting" });
+              setStake("");
+              setModal(true);
+            }}
+          >
             Stake
           </Button>
         )}

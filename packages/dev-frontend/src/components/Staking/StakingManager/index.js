@@ -18,18 +18,22 @@ const reduce = (state, action) => {
   const { originalStake, editedLQTY } = state;
 
   switch (action.type) {
-    case "setStake":
-      const newStake = action.newValue
-        ? originalStake.stakedLQTY.add(Decimal.from(action.newValue || 0))
-        : originalStake.stakedLQTY;
-
+    case "setStake": {
+      const newStake = originalStake.stakedLQTY.add(Decimal.from(action.newValue || 0));
       return { ...state, editedLQTY: newStake };
+    }
 
-    case "decrement":
-      return { ...state, editedLQTY: state.editedLQTY.sub(Decimal.from(100)) };
+    case "decrement": {
+      const newStake = Decimal.from(action.newValue || 0).gt(originalStake.stakedLQTY)
+        ? Decimal.ZERO
+        : originalStake.stakedLQTY.sub(Decimal.from(action.newValue || 0));
+      return { ...state, editedLQTY: newStake };
+    }
 
-    case "increment":
-      return { ...state, editedLQTY: state.editedLQTY.add(Decimal.from(100)) };
+    case "increment": {
+      const newStake = originalStake.stakedLQTY.add(Decimal.from(action.newValue || 0));
+      return { ...state, editedLQTY: newStake };
+    }
 
     case "revert":
       return { ...state, editedLQTY: originalStake.stakedLQTY };
@@ -73,7 +77,7 @@ const StakingManager = () => {
   const [{ originalStake, editedLQTY }, dispatch] = useLiquityReducer(reduce, init);
   const { lusdInStabilityPool } = useLiquitySelector(selectLQTYBalance);
   const [modal, setModal] = useState(null);
-  const { view } = useStakingView();
+  const { view, dispatch: dispatchView } = useStakingView();
 
   return (
     <>
@@ -89,6 +93,7 @@ const StakingManager = () => {
         modal={modal}
         setModal={setModal}
         view={view}
+        dispatchView={dispatchView}
       />
     </>
   );

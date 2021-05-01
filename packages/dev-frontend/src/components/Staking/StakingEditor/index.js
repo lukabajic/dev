@@ -156,6 +156,7 @@ const StakingEditor = ({
           onClose={() => {
             setDecrement(null);
             dispatchView({ type: "cancelAdjusting" });
+            dispatch({ type: "revert" });
           }}
         >
           <div className={classes.modalContent}>

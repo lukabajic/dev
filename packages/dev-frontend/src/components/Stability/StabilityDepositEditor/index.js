@@ -136,7 +136,7 @@ export const StabilityDepositEditor = ({
               )}
             </div>
 
-            <StaticRow label="Staked" amount={originalDeposit.currentLUSD.prettify(2)} unit={COIN} />
+            <StaticRow label="Staked" amount={editedLUSD.prettify(2)} unit={COIN} />
           </div>
         </Modal>
       )}
@@ -185,7 +185,7 @@ export const StabilityDepositEditor = ({
               )}
             </div>
 
-            <StaticRow label="Staked" amount={originalDeposit.currentLUSD.prettify(2)} unit={COIN} />
+            <StaticRow label="Staked" amount={editedLUSD.prettify(2)} unit={COIN} />
           </div>
         </Modal>
       )}

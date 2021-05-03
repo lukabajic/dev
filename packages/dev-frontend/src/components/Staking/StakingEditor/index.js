@@ -185,7 +185,7 @@ const StakingEditor = ({
             )}
 
             <div className={classes.modalActions}>
-              {validChange && editedLQTY.nonZero ? (
+              {validChange && !Decimal.from(decrement || 0).gt(originalStake.stakedLQTY) ? (
                 <StakingManagerAction change={validChange} />
               ) : (
                 <Button large primary disabled>

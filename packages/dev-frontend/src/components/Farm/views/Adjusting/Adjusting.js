@@ -19,7 +19,7 @@ const selector = ({
   liquidityMiningLQTYReward,
   uniTokenBalance,
   totalStakedUniTokens
-}: LiquityStoreState) => ({
+}) => ({
   liquidityMiningStake,
   liquidityMiningLQTYReward,
   uniTokenBalance,
@@ -28,7 +28,7 @@ const selector = ({
 
 const transactionId = /farm-/;
 
-export const Adjusting: React.FC = () => {
+export const Adjusting = () => {
   const { dispatchEvent } = useFarmView();
   const {
     liquidityMiningStake,
@@ -36,8 +36,8 @@ export const Adjusting: React.FC = () => {
     uniTokenBalance,
     totalStakedUniTokens
   } = useLiquitySelector(selector);
-  const [amount, setAmount] = useState<Decimal>(liquidityMiningStake);
-  const editingState = useState<string>();
+  const [amount, setAmount] = useState < Decimal > liquidityMiningStake;
+  const editingState = useState();
 
   const transactionState = useMyTransactionState(transactionId);
   const isTransactionPending =

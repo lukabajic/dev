@@ -20,8 +20,8 @@ export const Yield = () => {
   } = useLiquity();
 
   const { remainingLiquidityMiningLQTYReward, totalStakedUniTokens } = useLiquitySelector(selector);
-  const [lqtyPrice, setLqtyPrice] = (useState < Decimal) | (undefined > undefined);
-  const [uniLpPrice, setUniLpPrice] = (useState < Decimal) | (undefined > undefined);
+  const [lqtyPrice, setLqtyPrice] = useState(undefined);
+  const [uniLpPrice, setUniLpPrice] = useState(undefined);
   const hasZeroValue = remainingLiquidityMiningLQTYReward.isZero || totalStakedUniTokens.isZero;
   const lqtyTokenAddress = addresses["lqtyToken"];
   const uniTokenAddress = addresses["uniToken"];

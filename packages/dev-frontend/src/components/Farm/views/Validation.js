@@ -3,14 +3,10 @@ import ErrorDescription from "../../ErrorDescription";
 import { useValidationState } from "../context/useValidationState";
 
 export const Validation = ({ amount }) => {
-  const { isValid, hasApproved, hasEnoughUniToken } = useValidationState(amount);
+  const { isValid, hasEnoughUniToken } = useValidationState(amount);
 
   if (isValid) {
     return null;
-  }
-
-  if (!hasApproved) {
-    return <ErrorDescription>You haven't approved enough {LP}</ErrorDescription>;
   }
 
   if (!hasEnoughUniToken) {

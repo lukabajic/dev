@@ -1,96 +1,105 @@
-import React, { useCallback, useState } from "react";
-import { Heading, Box, Flex, Card, Button } from "theme-ui";
-import { Decimal, LiquityStoreState } from "@liquity/lib-base";
-import { LP } from "../../../../strings";
-import { Icon } from "../../../Icon";
-import { EditableRow, StaticRow } from "../../../Trove/Editor";
+import { useState } from "react";
+
+import { Decimal } from "@liquity/lib-base";
+import { LP, GT } from "../../../../strings";
 import { LoadingOverlay } from "../../../LoadingOverlay";
-import { useFarmView } from "../../context/FarmViewContext";
 import { useMyTransactionState } from "../../../Transaction";
-import { Confirm } from "../Confirm.js";
-import { Description } from "../Description";
 import { Approve } from "../Approve";
-import { Validation } from "../Validation";
+import { Confirm } from "../Confirm";
+import StaticRow from "../../../StaticRow";
+import Button from "../../../Button";
+import Modal from "../../../Modal";
+import Input from "../../../Input";
+import ErrorDescription from "../../../ErrorDescription";
 import { useValidationState } from "../../context/useValidationState";
-import { useLiquitySelector } from "@liquity/lib-react";
+import { Validation } from "../Validation";
+
+import classes from "./Staking.module.css";
 
 const transactionId = /farm-/;
-const selector = ({ totalStakedUniTokens }) => ({ totalStakedUniTokens });
 
-export const Staking = () => {
-  const { dispatchEvent } = useFarmView();
-  const { totalStakedUniTokens } = useLiquitySelector(selector);
-
-  const [amount, setAmount] = useState(Decimal.from(0));
-  const editingState = useState();
-  const isDirty = !amount.isZero;
-
-  const { maximumStake, hasSetMaximumStake } = useValidationState(amount);
-
+export const Staking = ({ hasApproved }) => {
   const transactionState = useMyTransactionState(transactionId);
   const isTransactionPending =
     transactionState.type === "waitingForApproval" ||
     transactionState.type === "waitingForConfirmation";
 
-  const handleCancelPressed = useCallback(() => {
-    dispatchEvent("CANCEL_PRESSED");
-  }, [dispatchEvent]);
-
-  const nextTotalStakedUniTokens = totalStakedUniTokens.add(amount);
-
-  const poolShare = amount.mulDiv(100, nextTotalStakedUniTokens);
+  const [stake, setStake] = useState(null);
+  const { maximumStake, hasSetMaximumStake, isValid } = useValidationState(Decimal.from(stake || 0));
 
   return (
-    <Card>
-      <Heading>
-        Uniswap Liquidity Farm
-        {isDirty && !isTransactionPending && (
-          <Button
-            variant="titleIcon"
-            sx={{ ":enabled:hover": { color: "danger" } }}
-            onClick={() => setAmount(Decimal.from(0))}
-          >
-            <Icon name="history" size="lg" />
-          </Button>
-        )}
-      </Heading>
+    <>
+      {stake !== null && (
+        <Modal
+          title="STAKE LQTY"
+          onClose={() => {
+            setStake(null);
+          }}
+        >
+          <div className={classes.modalContent}>
+            <Input
+              label="Stake"
+              unit={LP}
+              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              value={stake}
+              onChange={v => {
+                setStake(v);
+                // dispatch({ type: "setStake", newValue: v });
+              }}
+              placeholder={Decimal.from(stake || 0).prettify(2)}
+              maxAmount={maximumStake.toString()}
+              maxedOut={hasSetMaximumStake}
+            />
 
-      <Box sx={{ p: [2, 3] }}>
-        <EditableRow
-          label="Stake"
-          inputId="amount-lp"
-          amount={amount.prettify(4)}
-          unit={LP}
-          editingState={editingState}
-          editedAmount={amount.toString(4)}
-          setEditedAmount={amount => setAmount(Decimal.from(amount))}
-          maxAmount={maximumStake.toString()}
-          maxedOut={hasSetMaximumStake}
-        ></EditableRow>
+            {stake && <Validation amount={Decimal.from(stake)} />}
 
-        {poolShare.infinite ? (
-          <StaticRow label="Pool share" inputId="farm-share" amount="N/A" />
-        ) : (
+            <div className={classes.modalAction}>
+              <Confirm isValid={isValid} amount={Decimal.from(stake || 0)} />
+            </div>
+
+            <StaticRow label="Staked" amount={Decimal.from(stake || 0).prettify(2)} unit={LP} />
+          </div>
+        </Modal>
+      )}
+
+      <div className={classes.infos}>
+        <StaticRow label="Pool share" amount={Decimal.from(0).prettify(4)} unit="%" />
+
+        <StaticRow boldLabel label="Reward" amount={Decimal.from(0).prettify(2)} unit={GT} />
+      </div>
+
+      {!hasApproved ? (
+        <ErrorDescription>
+          To stake your {LP} tokens you need to allow Liquity to stake them for you
+        </ErrorDescription>
+      ) : (
+        <div className={classes.stakedWrapper}>
           <StaticRow
-            label="Pool share"
-            inputId="farm-share"
-            amount={poolShare.prettify(4)}
-            unit="%"
+            label="Staked"
+            labelColor="primary"
+            amount={Decimal.from(0).prettify(0)}
+            unit={LP}
           />
-        )}
+        </div>
+      )}
 
-        {isDirty && <Validation amount={amount} />}
-        <Description amount={amount} />
-
-        <Flex variant="layout.actions">
-          <Button variant="cancel" onClick={handleCancelPressed}>
-            Cancel
+      <div className={classes.actions}>
+        {!hasApproved ? (
+          <Approve amount={Decimal.from(0)} />
+        ) : (
+          <Button primary large onClick={() => setStake("")}>
+            Stake
           </Button>
-          <Approve amount={amount} />
-          <Confirm amount={amount} />
-        </Flex>
-      </Box>
+        )}
+      </div>
+
       {isTransactionPending && <LoadingOverlay />}
-    </Card>
+    </>
   );
 };
+
+//<Button variant="cancel" onClick={handleCancelPressed}>
+//Cancel
+//</Button>
+//<Description amount={amount} />
+//{isDirty && <Validation amount={amount} />}

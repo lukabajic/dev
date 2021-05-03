@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { Button } from "theme-ui";
+
+import Button from "../../Button";
 import { useLiquity } from "../../../hooks/LiquityContext";
 import { Transaction, useMyTransactionState } from "../../Transaction";
 import { useValidationState } from "../context/useValidationState";
@@ -35,7 +36,9 @@ export const Confirm = ({ amount }) => {
       showFailure="asTooltip"
       tooltipPlacement="bottom"
     >
-      <Button disabled={shouldDisable}>Confirm</Button>
+      <Button large primary disabled={shouldDisable}>
+        Confirm
+      </Button>
     </Transaction>
   );
 };

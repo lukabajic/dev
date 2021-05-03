@@ -10,7 +10,6 @@ import { LoadingOverlay } from "../../../LoadingOverlay";
 import { useFarmView } from "../../context/FarmViewContext";
 import { useMyTransactionState } from "../../../Transaction";
 import { Confirm } from "../Confirm.js";
-import { Description } from "../Description";
 import { Approve } from "../Approve";
 import { Validation } from "../Validation";
 
@@ -88,7 +87,6 @@ export const Adjusting = () => {
           maxAmount={maximumAmount.toString()}
           maxedOut={hasSetMaximumAmount}
         ></EditableRow>
-
         {poolShare.infinite ? (
           <StaticRow label="Pool share" inputId="farm-share" amount="N/A" />
         ) : (
@@ -101,7 +99,6 @@ export const Adjusting = () => {
             pendingColor={poolShareChange?.positive ? "success" : "danger"}
           />
         )}
-
         <StaticRow
           label="Reward"
           inputId="farm-reward-amount"
@@ -109,10 +106,7 @@ export const Adjusting = () => {
           color={liquidityMiningLQTYReward.nonZero && "success"}
           unit={GT}
         />
-
         {isDirty && <Validation amount={amount} />}
-        {isDirty && <Description amount={amount} />}
-
         <Flex variant="layout.actions">
           <Button variant="cancel" onClick={handleCancelPressed}>
             Cancel

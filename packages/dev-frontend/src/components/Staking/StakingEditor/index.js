@@ -145,7 +145,7 @@ const StakingEditor = ({
               )}
             </div>
 
-            <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={COIN} />
+            <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={GT} />
           </div>
         </Modal>
       )}
@@ -194,7 +194,7 @@ const StakingEditor = ({
               )}
             </div>
 
-            <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={COIN} />
+            <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={GT} />
           </div>
         </Modal>
       )}

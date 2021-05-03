@@ -1,14 +1,8 @@
-import React from "react";
-import { Decimal } from "@liquity/lib-base";
 import { LP } from "../../../strings";
 import ErrorDescription from "../../ErrorDescription";
 import { useValidationState } from "../context/useValidationState";
 
-type ValidationProps = {
-  amount: Decimal;
-};
-
-export const Validation: React.FC<ValidationProps> = ({ amount }) => {
+export const Validation = ({ amount }) => {
   const { isValid, hasApproved, hasEnoughUniToken } = useValidationState(amount);
 
   if (isValid) {

@@ -7,9 +7,9 @@ import { useFarmView } from "../../context/FarmViewContext";
 import { RemainingLQTY } from "../RemainingLQTY";
 import { Yield } from "../Yield";
 
-const uniLink = (lusdAddress: string) => `https://app.uniswap.org/#/add/ETH/${lusdAddress}`;
+const uniLink = lusdAddress => `https://app.uniswap.org/#/add/ETH/${lusdAddress}`;
 
-export const Inactive: React.FC = () => {
+export const Inactive = () => {
   const { dispatchEvent } = useFarmView();
 
   const {

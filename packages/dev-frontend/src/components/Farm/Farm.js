@@ -6,7 +6,7 @@ import { Active } from "./views/Active/Active";
 import { Disabled } from "./views/Disabled/Disabled";
 import { useFarmView } from "./context/FarmViewContext";
 
-export const Farm: React.FC = props => {
+export const Farm = props => {
   const { view } = useFarmView();
 
   switch (view) {
@@ -25,5 +25,8 @@ export const Farm: React.FC = props => {
     case "DISABLED": {
       return <Disabled {...props} />;
     }
+
+    default:
+      return null;
   }
 };

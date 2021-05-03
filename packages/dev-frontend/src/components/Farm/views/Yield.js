@@ -7,15 +7,12 @@ import { useLiquity } from "../../../hooks/LiquityContext";
 import { Badge } from "../../Badge";
 import { fetchPrices } from "../context/fetchPrices";
 
-const selector = ({
-  remainingLiquidityMiningLQTYReward,
-  totalStakedUniTokens
-}: LiquityStoreState) => ({
+const selector = ({ remainingLiquidityMiningLQTYReward, totalStakedUniTokens }) => ({
   remainingLiquidityMiningLQTYReward,
   totalStakedUniTokens
 });
 
-export const Yield: React.FC = () => {
+export const Yield = () => {
   const {
     liquity: {
       connection: { addresses, liquidityMiningLQTYRewardRate }
@@ -23,8 +20,8 @@ export const Yield: React.FC = () => {
   } = useLiquity();
 
   const { remainingLiquidityMiningLQTYReward, totalStakedUniTokens } = useLiquitySelector(selector);
-  const [lqtyPrice, setLqtyPrice] = useState<Decimal | undefined>(undefined);
-  const [uniLpPrice, setUniLpPrice] = useState<Decimal | undefined>(undefined);
+  const [lqtyPrice, setLqtyPrice] = (useState < Decimal) | (undefined > undefined);
+  const [uniLpPrice, setUniLpPrice] = (useState < Decimal) | (undefined > undefined);
   const hasZeroValue = remainingLiquidityMiningLQTYReward.isZero || totalStakedUniTokens.isZero;
   const lqtyTokenAddress = addresses["lqtyToken"];
   const uniTokenAddress = addresses["uniToken"];

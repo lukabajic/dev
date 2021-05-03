@@ -13,18 +13,14 @@ import { ClaimReward } from "./ClaimReward";
 import { UnstakeAndClaim } from "../UnstakeAndClaim";
 import { Yield } from "../Yield";
 
-const selector = ({
-  liquidityMiningStake,
-  liquidityMiningLQTYReward,
-  totalStakedUniTokens
-}: LiquityStoreState) => ({
+const selector = ({ liquidityMiningStake, liquidityMiningLQTYReward, totalStakedUniTokens }) => ({
   liquidityMiningStake,
   liquidityMiningLQTYReward,
   totalStakedUniTokens
 });
 const transactionId = /farm-/i;
 
-export const Active: React.FC = () => {
+export const Active = () => {
   const { dispatchEvent } = useFarmView();
   const {
     liquidityMiningStake,

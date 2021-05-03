@@ -75,7 +75,7 @@ const Footer = ({ addresses }) => (
 );
 
 const renderBody = (view, props, hasApproved, dispatchEvent) => {
-  switch ("ACTIVE") {
+  switch (view) {
     case "INACTIVE":
     case "STAKING": {
       return <Staking {...props} hasApproved={hasApproved} dispatchEvent={dispatchEvent} />;

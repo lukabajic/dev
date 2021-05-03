@@ -18,7 +18,7 @@ import classes from "./Staking.module.css";
 
 const transactionId = /farm-/;
 
-export const Staking = ({ hasApproved }) => {
+export const Staking = ({ hasApproved, dispatchEvent }) => {
   const transactionState = useMyTransactionState(transactionId);
   const isTransactionPending =
     transactionState.type === "waitingForApproval" ||
@@ -34,6 +34,7 @@ export const Staking = ({ hasApproved }) => {
           title="STAKE LQTY"
           onClose={() => {
             setStake(null);
+            dispatchEvent("CANCEL_PRESSED");
           }}
         >
           <div className={classes.modalContent}>
@@ -44,7 +45,6 @@ export const Staking = ({ hasApproved }) => {
               value={stake}
               onChange={v => {
                 setStake(v);
-                // dispatch({ type: "setStake", newValue: v });
               }}
               placeholder={Decimal.from(stake || 0).prettify(2)}
               maxAmount={maximumStake.toString()}
@@ -87,7 +87,14 @@ export const Staking = ({ hasApproved }) => {
         {!hasApproved ? (
           <Approve amount={Decimal.from(0)} />
         ) : (
-          <Button primary large onClick={() => setStake("")}>
+          <Button
+            primary
+            large
+            onClick={() => {
+              setStake("");
+              dispatchEvent("STAKE_PRESSED");
+            }}
+          >
             Stake
           </Button>
         )}

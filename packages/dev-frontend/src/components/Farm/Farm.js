@@ -4,17 +4,15 @@ import { useLiquity } from "../../hooks/LiquityContext";
 
 import Link from "../Link";
 import Modal from "../Modal";
-import { Inactive } from "./views/Inactive/Inactive";
 import { Staking } from "./views/Staking/Staking";
 import { Adjusting } from "./views/Adjusting/Adjusting";
 import { Active } from "./views/Active/Active";
 import { Disabled } from "./views/Disabled/Disabled";
 import { useFarmView } from "./context/FarmViewContext";
-import { fetchPrices } from "./context/fetchPrices";
 import { useValidationState } from "./context/useValidationState";
 
 import classes from "./Farm.module.css";
-import { Decimal } from "@liquity/lib-base";
+import { Decimal, Percent } from "@liquity/lib-base";
 
 const uniLink = lusdAddress => `https://app.uniswap.org/#/add/ETH/${lusdAddress}`;
 
@@ -24,34 +22,27 @@ const headSelector = ({ remainingLiquidityMiningLQTYReward, totalStakedUniTokens
 });
 
 const Head = () => {
-  const {
-    liquity: {
-      connection: { addresses, liquidityMiningLQTYRewardRate }
-    }
-  } = useLiquity();
-
   const { remainingLiquidityMiningLQTYReward, totalStakedUniTokens } = useLiquitySelector(
     headSelector
   );
   const [lqtyPrice, setLqtyPrice] = useState(undefined);
   const [uniLpPrice, setUniLpPrice] = useState(undefined);
   const hasZeroValue = remainingLiquidityMiningLQTYReward.isZero || totalStakedUniTokens.isZero;
-  const lqtyTokenAddress = addresses["lqtyToken"];
-  const uniTokenAddress = addresses["uniToken"];
-  const secondsRemaining = remainingLiquidityMiningLQTYReward.div(liquidityMiningLQTYRewardRate);
-  const daysRemaining = secondsRemaining.div(60 * 60 * 24);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { lqtyPriceUSD, uniLpPriceUSD } = await fetchPrices(lqtyTokenAddress, uniTokenAddress);
-        setLqtyPrice(lqtyPriceUSD);
-        setUniLpPrice(uniLpPriceUSD);
-      } catch (error) {
-        console.error(error);
+    fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=liquity,uniswap&vs_currencies=usd&include_24hr_change=true",
+      {
+        method: "GET"
       }
-    })();
-  }, [lqtyTokenAddress, uniTokenAddress]);
+    )
+      .then(res => res.json())
+      .then(({ uniswap, liquity }) => {
+        setLqtyPrice(liquity.usd);
+        setUniLpPrice(uniswap.usd);
+      })
+      .catch(console.warn);
+  }, []);
 
   if (hasZeroValue || lqtyPrice === undefined || uniLpPrice === undefined) return null;
 
@@ -62,34 +53,12 @@ const Head = () => {
   return (
     <div className={classes.head}>
       <div className={classes.total}>
-        <p className={classes.totalStaked}>LQTY remaining {remainingLqtyInUSD.prettify(0)}k</p>
-        <p className={classes.totalAPR}>APR {yieldPercentage.prettify(0)}</p>
+        <p className={classes.totalStaked}>LQTY remaining {remainingLqtyInUSD.shorten()}</p>
+        <p className={classes.totalAPR}>yield {yieldPercentage.toString(2)}%</p>
       </div>
       <h3 className={classes.title}>
         Earn LQTY by staking <br />
         Uniswap ETH/LUSD LP tokens
-      </h3>
-    </div>
-  );
-};
-
-const selector = ({ remainingLiquidityMiningLQTYReward }) => ({
-  remainingLiquidityMiningLQTYReward
-});
-
-const InactiveHead = () => {
-  const { remainingLiquidityMiningLQTYReward } = useLiquitySelector(selector);
-
-  return (
-    <div className={classes.head}>
-      <div className={classes.total}>
-        <p className={classes.totalStaked}>
-          LQTY remaining {remainingLiquidityMiningLQTYReward.div(1000).prettify(0)}k
-        </p>
-        <p className={classes.totalAPR}>yield &mdash;</p>
-      </div>
-      <h3 className={classes.title}>
-        To stake your UNI LP tokens you need to allow Liquity to stake them for you
       </h3>
     </div>
   );
@@ -105,36 +74,19 @@ const Footer = ({ addresses }) => (
   </p>
 );
 
-const renderHead = (view, hasApproved) => {
-  switch (view) {
-    case "INACTIVE":
-      return <InactiveHead />;
-    case "STAKING":
-      return <InactiveHead />;
-    case "ADJUSTING":
-    case "ACTIVE":
-    case "DISABLED":
-      break;
-
-    default:
-      return null;
-  }
-};
-
-const renderBody = (view, props, hasApproved) => {
-  switch (view) {
+const renderBody = (view, props, hasApproved, dispatchEvent) => {
+  switch ("ACTIVE") {
     case "INACTIVE":
     case "STAKING": {
-      return <Staking {...props} hasApproved={hasApproved} />;
+      return <Staking {...props} hasApproved={hasApproved} dispatchEvent={dispatchEvent} />;
     }
+    case "ACTIVE":
     case "ADJUSTING": {
-      return <Adjusting {...props} />;
+      return <Adjusting {...props} dispatchEvent={dispatchEvent} />;
     }
-    case "ACTIVE": {
-      return <Active {...props} />;
-    }
+
     case "DISABLED": {
-      return <Disabled {...props} />;
+      return <Disabled {...props} dispatchEvent={dispatchEvent} />;
     }
 
     default:
@@ -151,14 +103,10 @@ export const Farm = props => {
     }
   } = useLiquity();
 
-  useEffect(() => {
-    dispatchEvent("STAKE_PRESSED");
-  }, [dispatchEvent]);
-
   return (
     <>
-      {renderHead(view, hasApproved)}
-      {renderBody(view, props, hasApproved)}
+      <Head />
+      {renderBody(view, props, hasApproved, dispatchEvent)}
       <Footer addresses={addresses} />
     </>
   );

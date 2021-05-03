@@ -13,6 +13,8 @@ import { ClaimReward } from "./ClaimReward";
 import { UnstakeAndClaim } from "../UnstakeAndClaim";
 import { Yield } from "../Yield";
 
+import classes from "./Active.module.css";
+
 const selector = ({ liquidityMiningStake, liquidityMiningLQTYReward, totalStakedUniTokens }) => ({
   liquidityMiningStake,
   liquidityMiningLQTYReward,

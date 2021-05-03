@@ -8,7 +8,7 @@ import { useFarmView } from "../context/FarmViewContext";
 
 const transactionId = "farm-confirm";
 
-export const Confirm = ({ amount }) => {
+export const Confirm = ({ amount, disabled }) => {
   const { dispatchEvent } = useFarmView();
   const {
     liquity: { send: liquity }
@@ -36,7 +36,7 @@ export const Confirm = ({ amount }) => {
       showFailure="asTooltip"
       tooltipPlacement="bottom"
     >
-      <Button large primary disabled={shouldDisable}>
+      <Button large primary disabled={shouldDisable || disabled}>
         Confirm
       </Button>
     </Transaction>

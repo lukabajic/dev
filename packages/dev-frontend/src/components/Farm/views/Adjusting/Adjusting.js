@@ -133,7 +133,6 @@ export const Adjusting = () => {
             dispatchEvent("CANCEL_PRESSED");
           }}
         >
-          ``
           <div className={classes.modalContent}>
             <Input
               label="Stake"

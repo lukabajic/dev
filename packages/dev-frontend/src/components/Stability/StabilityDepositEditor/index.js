@@ -81,7 +81,7 @@ export const StabilityDepositEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
-              label="Stake"
+              label="stake"
               unit={COIN}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
               value={stake}

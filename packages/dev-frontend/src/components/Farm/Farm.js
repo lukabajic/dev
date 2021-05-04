@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
 import { useLiquitySelector } from "@liquity/lib-react";
 import { useLiquity } from "../../hooks/LiquityContext";
+import { Decimal } from "@liquity/lib-base";
 
 import Link from "../Link";
-import Modal from "../Modal";
 import { Staking } from "./views/Staking/Staking";
 import { Adjusting } from "./views/Adjusting/Adjusting";
-import { Active } from "./views/Active/Active";
 import { Disabled } from "./views/Disabled/Disabled";
 import { useFarmView } from "./context/FarmViewContext";
 import { useValidationState } from "./context/useValidationState";
+import { Yield } from "./views/Yield";
 
 import classes from "./Farm.module.css";
-import { Decimal, Percent } from "@liquity/lib-base";
 
 const uniLink = lusdAddress => `https://app.uniswap.org/#/add/ETH/${lusdAddress}`;
 
@@ -22,39 +20,15 @@ const headSelector = ({ remainingLiquidityMiningLQTYReward, totalStakedUniTokens
 });
 
 const Head = () => {
-  const { remainingLiquidityMiningLQTYReward, totalStakedUniTokens } = useLiquitySelector(
-    headSelector
-  );
-  const [lqtyPrice, setLqtyPrice] = useState(undefined);
-  const [uniLpPrice, setUniLpPrice] = useState(undefined);
-  const hasZeroValue = remainingLiquidityMiningLQTYReward.isZero || totalStakedUniTokens.isZero;
-
-  useEffect(() => {
-    fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=liquity,uniswap&vs_currencies=usd&include_24hr_change=true",
-      {
-        method: "GET"
-      }
-    )
-      .then(res => res.json())
-      .then(({ uniswap, liquity }) => {
-        setLqtyPrice(liquity.usd);
-        setUniLpPrice(uniswap.usd);
-      })
-      .catch(console.warn);
-  }, []);
-
-  if (hasZeroValue || lqtyPrice === undefined || uniLpPrice === undefined) return null;
-
-  const remainingLqtyInUSD = remainingLiquidityMiningLQTYReward.mul(lqtyPrice);
-  const totalStakedUniLpInUSD = totalStakedUniTokens.mul(uniLpPrice);
-  const yieldPercentage = remainingLqtyInUSD.div(totalStakedUniLpInUSD).mul(100);
+  const { remainingLiquidityMiningLQTYReward } = useLiquitySelector(headSelector);
 
   return (
     <div className={classes.head}>
       <div className={classes.total}>
-        <p className={classes.totalStaked}>LQTY remaining {remainingLqtyInUSD.shorten()}</p>
-        <p className={classes.totalAPR}>yield {yieldPercentage.toString(2)}%</p>
+        <p className={classes.totalStaked}>
+          LQTY remaining {remainingLiquidityMiningLQTYReward.shorten()}
+        </p>
+        <Yield />
       </div>
       <h3 className={classes.title}>
         Earn LQTY by staking <br />

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { Card, Paragraph, Text } from "theme-ui";
 import { useLiquitySelector } from "@liquity/lib-react";
-import { InfoIcon } from "../../InfoIcon";
 import { useLiquity } from "../../../hooks/LiquityContext";
-import { Badge } from "../../Badge";
 import { fetchPrices } from "../context/fetchPrices";
+
+import classes from "./Yield.module.css";
 
 const selector = ({ remainingLiquidityMiningLQTYReward, totalStakedUniTokens }) => ({
   remainingLiquidityMiningLQTYReward,
@@ -37,7 +36,7 @@ export const Yield = () => {
         console.error(error);
       }
     })();
-  }, [lqtyTokenAddress, uniTokenAddress]);
+  }, [lqtyTokenAddress, setLqtyPrice, setUniLpPrice, uniTokenAddress]);
 
   if (hasZeroValue || lqtyPrice === undefined || uniLpPrice === undefined) return null;
 
@@ -47,30 +46,5 @@ export const Yield = () => {
 
   if (yieldPercentage.isZero) return null;
 
-  return (
-    <Badge>
-      <Text>
-        {daysRemaining?.prettify(0)} day yield {yieldPercentage.toString(2)}%
-      </Text>
-      <InfoIcon
-        tooltip={
-          <Card variant="tooltip" sx={{ minWidth: ["auto", "352px"] }}>
-            <Paragraph>
-              An <Text sx={{ fontWeight: "bold" }}>estimate</Text> of the LQTY return on staked UNI
-              LP tokens. The farm runs for 6-weeks, and the return is relative to the time remaining.
-            </Paragraph>
-            <Paragraph sx={{ fontSize: "12px", fontFamily: "monospace", mt: 2 }}>
-              ($LQTY_REWARDS / $STAKED_UNI_LP) * 100 ={" "}
-              <Text sx={{ fontWeight: "bold" }}> Yield</Text>
-            </Paragraph>
-            <Paragraph sx={{ fontSize: "12px", fontFamily: "monospace" }}>
-              ($
-              {remainingLqtyInUSD.shorten()} / ${totalStakedUniLpInUSD.shorten()}) * 100 =
-              <Text sx={{ fontWeight: "bold" }}> {yieldPercentage.toString(2)}%</Text>
-            </Paragraph>
-          </Card>
-        }
-      ></InfoIcon>
-    </Badge>
-  );
+  return <p className={classes.wrapper}>Yield {yieldPercentage.toString(2)}%</p>;
 };

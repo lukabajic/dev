@@ -32,8 +32,6 @@ export const StabilityDepositEditor = ({
   changePending,
   dispatch,
   children,
-  modal,
-  setModal,
   validChange,
   transactionId,
   view,
@@ -73,7 +71,14 @@ export const StabilityDepositEditor = ({
   return (
     <div className={classes.wrapper}>
       {stake !== null && (
-        <Modal title="STAKE LUSD" onClose={() => setModal(null)}>
+        <Modal
+          title="STAKE LUSD"
+          onClose={() => {
+            setStake(null);
+            dispatchEvent("CANCEL_PRESSED");
+            dispatch({ type: "revert" });
+          }}
+        >
           <div className={classes.modalContent}>
             <Input
               label="Stake"
@@ -85,17 +90,22 @@ export const StabilityDepositEditor = ({
                 dispatch({ type: "setDeposit", newValue: v });
               }}
               placeholder={Decimal.from(stake || 0).prettify(2)}
+              maxAmount={maxAmount.toString()}
+              available={`Available: ${maxAmount.prettify(2)}`}
+              maxedOut={maxedOut}
             />
 
             {error}
 
-            {validChange ? (
-              <StabilityDepositAction transactionId={transactionId} change={validChange} />
-            ) : (
-              <Button large primary disabled>
-                Confirm
-              </Button>
-            )}
+            <div className={classes.modalActions}>
+              {validChange ? (
+                <StabilityDepositAction transactionId={transactionId} change={validChange} />
+              ) : (
+                <Button large primary disabled>
+                  Confirm
+                </Button>
+              )}
+            </div>
 
             <StaticRow label="Pool share" amount={newPoolShare.prettify(1)} unit="%" />
           </div>
@@ -122,6 +132,9 @@ export const StabilityDepositEditor = ({
                 dispatch({ type: "increment", newValue: v });
               }}
               placeholder={Decimal.from(increment || 0).prettify(2)}
+              maxAmount={lusdBalance.toString()}
+              available={`Available: ${lusdBalance.prettify(2)}`}
+              maxedOut={Decimal.from(increment || 0).eq(lusdBalance)}
             />
 
             {error}
@@ -161,6 +174,9 @@ export const StabilityDepositEditor = ({
                 dispatch({ type: "decrement", newValue: v });
               }}
               placeholder={Decimal.from(decrement || 0).prettify(2)}
+              maxAmount={originalDeposit.currentLUSD.toString()}
+              maxedOut={Decimal.from(decrement || 0).eq(originalDeposit.currentLUSD)}
+              available={`Available: ${originalDeposit.currentLUSD.prettify(2)}`}
             />
 
             {error}

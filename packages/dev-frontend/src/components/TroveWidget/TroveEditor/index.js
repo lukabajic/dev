@@ -95,7 +95,7 @@ export const TroveDeposit = ({
         value={borrow}
         onChange={v => {
           setBorrow(v);
-          dispatch({ type: "setDebt", newValue: v });
+          dispatch({ type: "setDebt", newValue: v, fee: totalFee });
         }}
         icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
         min={0}
@@ -142,12 +142,12 @@ export const TroveDeposit = ({
             />
           )}
 
-          {(borrow || recieve) && (
+          {borrow && (
             <StaticRow
               className={classes.staticRowInfo}
               label="Recieve"
               inputId="trove-recieve-value"
-              amount={recieve.prettify(2)}
+              amount={Decimal.from(borrow || 0).prettify(2)}
             />
           )}
         </div>

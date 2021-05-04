@@ -59,7 +59,6 @@ const ActiveTrove = ({ dispatchEvent, view }) => {
 
   return (
     <>
-      <h1>{view}</h1>
       {cancelModal && (
         <Modal
           onClose={() => setCancelModal(null)}

@@ -29,7 +29,7 @@ export const UnstakeAndClaim = ({ hasStakeAndRewards }) => {
       showFailure="asTooltip"
       tooltipPlacement="bottom"
     >
-      <Button large priamry disabled={!hasStakeAndRewards}>
+      <Button large primary disabled={!hasStakeAndRewards}>
         Unstake and claim reward
       </Button>
     </Transaction>

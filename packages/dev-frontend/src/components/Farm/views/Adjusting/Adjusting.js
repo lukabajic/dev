@@ -107,23 +107,14 @@ export const Adjusting = () => {
                 setIncrement(v);
               }}
               placeholder={Decimal.from(increment || 0).prettify(2)}
-              available={`Available: ${maximumAmount.prettify(2)}`}
-              maxAmount={maximumAmount.toString()}
-              maxedOut={hasSetMaximumAmount}
+              available={`Available: ${uniTokenBalance.prettify(2)}`}
+              maxAmount={uniTokenBalance.toString()}
+              maxedOut={Decimal.from(increment || 0).eq(uniTokenBalance)}
             />
 
-            {isDirty && (
-              <Validation amount={liquidityMiningStake.add(Decimal.from(increment || 0))} />
-            )}
+            <Validation amount={liquidityMiningStake.add(Decimal.from(increment || 0))} />
 
             <Confirm amount={liquidityMiningStake.add(Decimal.from(increment || 0))} />
-
-            {/* 
-
-
-        <div className={classes.modalAction}>
-          <Confirm isValid={isValid} amount={Decimal.from(stake || 0)} />
-        </div> */}
 
             <StaticRow
               label="Staked"
@@ -142,6 +133,7 @@ export const Adjusting = () => {
             dispatchEvent("CANCEL_PRESSED");
           }}
         >
+          ``
           <div className={classes.modalContent}>
             <Input
               label="Stake"
@@ -152,9 +144,9 @@ export const Adjusting = () => {
                 setDecrement(v);
               }}
               placeholder={Decimal.from(decrement || 0).prettify(2)}
-              available={`Available: ${uniTokenBalance.prettify(2)}`}
-              maxAmount={uniTokenBalance.toString()}
-              maxedOut={uniTokenBalance.eq(Decimal.from(decrement || 0))}
+              available={`Available: ${liquidityMiningStake.prettify(2)}`}
+              maxAmount={liquidityMiningStake.toString()}
+              maxedOut={liquidityMiningStake.eq(Decimal.from(decrement || 0))}
             />
 
             {cannotDecrement && (

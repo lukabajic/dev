@@ -31,7 +31,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
   const { changePending } = useStakingView();
   const [stake, setStake] = useState(null);
   const [increment, setIncrement] = useState(null);
-  const [decrement, setDecrement] = useState("");
+  const [decrement, setDecrement] = useState(null);
 
   useEffect(() => {}, [view, dispatch]);
 

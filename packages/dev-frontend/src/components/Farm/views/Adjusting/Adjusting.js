@@ -127,7 +127,7 @@ export const Adjusting = () => {
 
             <StaticRow
               label="Staked"
-              amount={liquidityMiningStake.add(Decimal.from(increment || 0))}
+              amount={liquidityMiningStake.add(Decimal.from(increment || 0)).prettify(2)}
               unit={LP}
             />
           </div>
@@ -195,7 +195,7 @@ export const Adjusting = () => {
 
             <StaticRow
               label="Staked"
-              amount={liquidityMiningStake.add(Decimal.from(increment || 0))}
+              amount={liquidityMiningStake.add(Decimal.from(increment || 0)).prettify(2)}
               unit={LP}
             />
           </div>

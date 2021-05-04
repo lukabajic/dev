@@ -66,8 +66,6 @@ export const StabilityDepositEditor = ({
 
   const reward = originalDeposit.isEmpty ? Decimal.ZERO : stabilityDeposit.lqtyReward;
 
-  console.log(editedLUSD);
-
   return (
     <div className={classes.wrapper}>
       {stake !== null && (

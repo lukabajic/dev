@@ -225,9 +225,9 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
           setWithdraw(v);
           dispatch({ type: "substractCollateral", newValue: v });
         }}
-        available={`Wallet ${maxWithdraw?.prettify(2)}`}
+        available={`Available: ${maxWithdraw?.prettify(2) || ""}`}
         icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
-        maxAmount={maxWithdraw?.toString()}
+        maxAmount={maxWithdraw?.toString() || ""}
         maxedOut={maxWithdraw?.toString() === withdraw.toString()}
         min={0}
         step={0.1}
@@ -243,7 +243,7 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
           setRepay(v);
           dispatch({ type: "substractDebt", newValue: v });
         }}
-        available={`Available ${maxRepay.prettify(2)}`}
+        available={`Available: ${maxRepay.prettify(2)}`}
         icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
         maxAmount={maxRepay.toString()}
         maxedOut={maxRepay.toString() === repay.toString()}

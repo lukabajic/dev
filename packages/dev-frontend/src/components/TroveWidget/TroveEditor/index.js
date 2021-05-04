@@ -116,23 +116,6 @@ export const TroveDeposit = ({
             />
           )}
 
-          <StaticRow
-            className={classes.staticRowInfo}
-            label="Collateral ratio"
-            amount={collateralRatioPct.prettify()}
-            color={getColor(collateralRatio)}
-            oldAmount={originalCollateralRatio && originalCollateralRatioPct.prettify()}
-            oldColor={getColor(originalCollateralRatio)}
-          />
-
-          <StaticRow
-            className={classes.staticRowInfo}
-            label="Borrowing Fee"
-            amount={fee.toString(2)}
-            unit={COIN}
-            brackets={feePct.prettify()}
-          />
-
           {original.isEmpty && (
             <StaticRow
               className={classes.staticRowInfo}
@@ -142,6 +125,14 @@ export const TroveDeposit = ({
             />
           )}
 
+          <StaticRow
+            className={classes.staticRowInfo}
+            label="Borrowing Fee"
+            amount={fee.toString(2)}
+            unit={COIN}
+            brackets={feePct.prettify()}
+          />
+
           {borrow && (
             <StaticRow
               className={classes.staticRowInfo}
@@ -150,6 +141,15 @@ export const TroveDeposit = ({
               amount={Decimal.from(borrow || 0).prettify(2)}
             />
           )}
+
+          <StaticRow
+            className={classes.staticRowInfo}
+            label="Collateral ratio"
+            amount={collateralRatioPct.prettify()}
+            color={getColor(collateralRatio)}
+            oldAmount={originalCollateralRatio && originalCollateralRatioPct.prettify()}
+            oldColor={getColor(originalCollateralRatio)}
+          />
         </div>
       )}
 

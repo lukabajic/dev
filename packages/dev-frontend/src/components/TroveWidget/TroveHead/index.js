@@ -46,7 +46,7 @@ const TroveInfo = ({ label, amount, status = null, unit }) => (
 
 const selectActive = ({ trove, price, lusdBalance }) => ({ trove, price, lusdBalance });
 
-const ActiveTrove = ({}) => {
+const ActiveTrove = () => {
   const [cancelModal, setCancelModal] = useState(null);
   const { liquity } = useLiquity();
 
@@ -92,13 +92,18 @@ close trove?"
             {trove.debt.gt(lusdBalance) && (
               <ErrorDescription>
                 The amount you're trying to repay exceeds your balance by{" "}
-                <Amount>{trove.debt.sub(lusdBalance).prettify(2)} ETH</Amount>.
+                <Amount>
+                  {trove.debt.sub(lusdBalance).prettify(2)} {COIN}
+                </Amount>
+                .
               </ErrorDescription>
             )}
           </div>
         </Modal>
       )}
+
       <Heading className={classes.activeTroveHeading}>your trove</Heading>
+
       <Body>
         <div className={classes.trove}>
           <TroveInfo label="Collateral" amount={trove.collateral.prettify(2)} unit={ETH} />
@@ -117,6 +122,7 @@ close trove?"
           />
           <TroveInfo label="Debt" amount={trove.debt.prettify(0)} unit={COIN} />
         </div>
+
         <Actions>
           <Button tertiary small onClick={() => setCancelModal(true)}>
             close trove

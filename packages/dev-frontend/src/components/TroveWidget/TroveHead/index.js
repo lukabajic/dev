@@ -49,6 +49,7 @@ const selectActive = ({ trove, price, lusdBalance }) => ({ trove, price, lusdBal
 const ActiveTrove = () => {
   const [cancelModal, setCancelModal] = useState(null);
   const { liquity } = useLiquity();
+  const [expanded, setExpanded] = useState(false);
 
   const { trove, price, lusdBalance } = useLiquitySelector(selectActive);
 
@@ -60,7 +61,7 @@ const ActiveTrove = () => {
   );
 
   return (
-    <>
+    <div className={classes.activeTroveWrapper}>
       {cancelModal && (
         <Modal
           onClose={() => setCancelModal(null)}
@@ -105,7 +106,11 @@ close trove?"
       <Heading className={classes.activeTroveHeading}>your trove</Heading>
 
       <Body>
-        <div className={classes.trove}>
+        <div
+          className={cn(classes.trove, {
+            [classes.troveBorder]: expanded
+          })}
+        >
           <TroveInfo label="Collateral" amount={trove.collateral.prettify(2)} unit={ETH} />
           <TroveInfo
             label="Ratio"
@@ -123,13 +128,58 @@ close trove?"
           <TroveInfo label="Debt" amount={trove.debt.prettify(0)} unit={COIN} />
         </div>
 
+        <div
+          className={cn(classes.troveRisks, {
+            [classes.troveRisksExpanded]: expanded
+          })}
+        >
+          <div className={classes.troveRisksLeft}>
+            <p className={classes.troveRisksType}>Liquidation risk</p>
+            <p
+              className={cn(classes.troveRisksChance, {
+                [classes.riskHigh]: true,
+                [classes.riskMedium]: false,
+                [classes.riskLow]: false
+              })}
+            >
+              high
+            </p>
+            <p className={classes.troveRisksInfo}>liquidation price</p>
+            <p className={classes.troveRisksAmount}>1830 {COIN}</p>
+          </div>
+          <div className={classes.troveRisksRight}>
+            {" "}
+            <p className={classes.troveRisksType}>Redemtion risk</p>
+            <p
+              className={cn(classes.troveRisksChance, {
+                [classes.riskHigh]: false,
+                [classes.riskMedium]: true,
+                [classes.riskLow]: false
+              })}
+            >
+              medium
+            </p>
+            <p className={classes.troveRisksInfo}>debt in front of me</p>
+            <p className={classes.troveRisksAmount}>563k {COIN}</p>
+          </div>
+        </div>
+
+        <Button
+          className={cn(classes.toggleExpandButton, {
+            [classes.rotate]: expanded
+          })}
+          onClick={() => setExpanded(!expanded)}
+        >
+          <ion-icon name="chevron-down-outline"></ion-icon>
+        </Button>
+
         <Actions>
           <Button tertiary small onClick={() => setCancelModal(true)}>
             close trove
           </Button>
         </Actions>
       </Body>
-    </>
+    </div>
   );
 };
 

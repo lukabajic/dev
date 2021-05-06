@@ -5,10 +5,10 @@
 
 .header {
   font-family: "Futura BT light";
-  font-size: 1.7rem;
+  font-size: 2.2rem;
   font-weight: 300;
-  letter-spacing: -0.34px;
-  color: var(--text-tertiary);
+  letter-spacing: -0.44px;
+  color: var(--black);
   margin-right: 1.2rem;
 }
 

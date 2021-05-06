@@ -9,7 +9,7 @@
   font-weight: 300;
   letter-spacing: -0.34px;
   color: var(--text-tertiary);
-  margin-right: 1rem;
+  margin-right: 1.2rem;
 }
 
 .inputWrapper {
@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  margin-right: 1rem;
+  margin-right: 1.6rem;
 }
 
 .input {
@@ -35,7 +35,7 @@
   letter-spacing: -0.48px;
   font-size: 2rem;
   font-weight: 300;
-  color: var(--gray);
+  color: var(--primary-text);
 }
 
 .inputContent {

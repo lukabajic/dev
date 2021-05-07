@@ -213,7 +213,7 @@ export const StabilityDepositEditor = ({
 
         <StaticRow label="Liquidation gain" amount={liquidationGain.prettify(4)} unit="ETH" />
 
-        <StaticRow label="Reward" amount={reward.prettify(2)} unit={GT} boldLabel />
+        <StaticRow label="Reward" amount={reward.prettify(2)} unit={GT} />
       </div>
 
       <div className={classes.stakedWrapper}>

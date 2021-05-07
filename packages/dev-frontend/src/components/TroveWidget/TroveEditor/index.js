@@ -39,11 +39,19 @@ export const TroveDeposit = ({
   fee,
   borrowingRate,
   changePending,
-  dispatch
+  dispatch,
+  transactionType
 }) => {
   const { price, accountBalance } = useLiquitySelector(select);
   const [deposit, setDeposit] = useState("");
   const [borrow, setBorrow] = useState("");
+
+  useEffect(() => {
+    if (transactionType === "confirmedOneShot") {
+      setDeposit("");
+      setBorrow("");
+    }
+  }, [transactionType]);
 
   useEffect(() => {
     dispatch({ type: "revert" });
@@ -152,7 +160,14 @@ export const TroveDeposit = ({
   );
 };
 
-export const TroveWithdraw = ({ children, original, edited, changePending, dispatch }) => {
+export const TroveWithdraw = ({
+  children,
+  original,
+  edited,
+  changePending,
+  dispatch,
+  transactionType
+}) => {
   const { price } = useLiquitySelector(select);
   const [withdraw, setWithdraw] = useState("");
   const [repay, setRepay] = useState("");
@@ -162,6 +177,13 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
   useEffect(() => {
     dispatch({ type: "revert" });
   }, [dispatch]);
+
+  useEffect(() => {
+    if (transactionType === "confirmedOneShot") {
+      setRepay("");
+      setWithdraw("");
+    }
+  }, [transactionType]);
 
   useEffect(() => {
     fetch(

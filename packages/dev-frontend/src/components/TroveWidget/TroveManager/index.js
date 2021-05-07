@@ -233,6 +233,7 @@ const TroveManager = ({ collateral, debt, activeTab }) => {
       borrowingRate={borrowingRate}
       changePending={changePending}
       dispatch={dispatch}
+      transactionType={myTransactionState.type}
     >
       <div className={classes.container}>
         {description}

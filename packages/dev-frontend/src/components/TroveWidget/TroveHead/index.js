@@ -215,7 +215,7 @@ close trove?"
               </div>
               <div className={classes.troveRisksRight}>
                 {" "}
-                <p className={classes.troveRisksType}>Redemtion risk</p>
+                <p className={classes.troveRisksType}>Redemption risk</p>
                 <p
                   className={cn(classes.troveRisksChance, {
                     [classes.riskHigh]: redemptionRisk === "high",

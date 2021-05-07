@@ -62,12 +62,6 @@ export const TroveDeposit = ({
 
   const totalFee = original.isEmpty ? LUSD_LIQUIDATION_RESERVE.add(fee) : fee;
 
-  const recieve = borrow
-    ? Decimal.from(borrow).gt(totalFee)
-      ? Decimal.from(borrow).sub(totalFee)
-      : Decimal.ZERO
-    : Decimal.ZERO;
-
   return (
     <div className={classes.wrapper}>
       <Input
@@ -209,9 +203,11 @@ export const TroveWithdraw = ({ children, original, edited, changePending, dispa
 
     const ethereumInLusd = ETHEREUM_IN_USD / LUSD_IN_USD;
 
-    maxWithdraw = original.collateral.sub(
+    maxWithdraw = original.collateral.gt(
       edited.debt.mul(Decimal.from(1.1).div(Decimal.from(ethereumInLusd)))
-    );
+    )
+      ? original.collateral.sub(edited.debt.mul(Decimal.from(1.1).div(Decimal.from(ethereumInLusd))))
+      : null;
   }
 
   return (

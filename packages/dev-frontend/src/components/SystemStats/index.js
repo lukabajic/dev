@@ -41,6 +41,8 @@ const SystemStats = () => {
     total.debt.nonZero && new Percent(lusdInStabilityPool.div(total.debt));
   const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
 
+  const recoveryMode = total.debt.mulDiv(1.5, total.collateral);
+
   return (
     <div className={cn(classes.wrapper, "slide-in-right")}>
       <div className={classes.heading}>Protocol stats</div>
@@ -49,7 +51,7 @@ const SystemStats = () => {
         name="TVL"
         tooltip="The Total Value Locked (TVL) is the total value of Ether locked as collateral in the system, given in ETH and USD."
       >
-        {total.collateral.shorten()} ETH($
+        {total.collateral.shorten()} ETH ($
         {Decimal.from(total.collateral.mul(price)).shorten()})
       </Stat>
 
@@ -83,6 +85,13 @@ const SystemStats = () => {
         tooltip="The total amount of LQTY that is staked for earning fee revenue."
       >
         {totalStakedLQTY.shorten()}
+      </Stat>
+
+      <Stat
+        name="Recovery Mode"
+        tooltip="The Total Value Locked (TVL) is the total value of Ether locked as collateral in the system, given in ETH and USD."
+      >
+        {recoveryMode.prettify()}
       </Stat>
     </div>
   );

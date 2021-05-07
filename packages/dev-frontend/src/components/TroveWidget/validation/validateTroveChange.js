@@ -51,7 +51,7 @@ export const validateTroveChange = (originalTrove, adjustedTrove, borrowingRate,
     return [
       undefined,
       <ErrorDescription>
-        Debt must be at least{" "}
+        Total Debt must be at least
         <Amount>
           {LUSD_MINIMUM_DEBT.toString()} {COIN}
         </Amount>

@@ -19,7 +19,7 @@ import { ETH, COIN } from "../../../strings";
 
 import classes from "./TroveEditor.module.css";
 
-const gasRoomETH = Decimal.from(0.1);
+const gasRoomETH = Decimal.from(0.01);
 
 const getColor = ratio =>
   ratio?.gt(CRITICAL_COLLATERAL_RATIO)

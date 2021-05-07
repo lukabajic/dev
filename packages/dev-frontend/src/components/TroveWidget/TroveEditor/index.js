@@ -59,8 +59,6 @@ export const TroveDeposit = ({
 
   const feePct = new Percent(borrowingRate);
 
-  console.log(Infinity);
-
   const originalCollateralRatio = !original.isEmpty ? original.collateralRatio(price) : undefined;
   const collateralRatio = !edited.isEmpty ? edited.collateralRatio(price) : undefined;
   const collateralRatioPct = new Percent(collateralRatio ?? { toString: () => "N/A" });

@@ -35,7 +35,7 @@ const TroveInfo = ({ label, amount, status = null, unit }) => (
         [classes.status]: status,
         [classes.success]: status === "success",
         [classes.warning]: status === "warning",
-        [classes.warning]: status === "danger"
+        [classes.danger]: status === "danger"
       })}
     >
       {amount} {unit}
@@ -174,11 +174,11 @@ close trove?"
             label="Ratio"
             amount={collateralRatioPct}
             status={
-              trove.collateral?.gt(CRITICAL_COLLATERAL_RATIO)
+              collateralRatio.gt(CRITICAL_COLLATERAL_RATIO)
                 ? "success"
-                : trove.collateral?.gt(1.2)
+                : collateralRatio.gt(1.2)
                 ? "warning"
-                : trove.collateral?.lte(1.2)
+                : collateralRatio.lte(1.2)
                 ? "danger"
                 : "muted"
             }

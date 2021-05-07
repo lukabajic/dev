@@ -208,7 +208,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
 
         <StaticRow label="Redemption gain" amount={redemptionGain.prettify(4)} unit="ETH" />
 
-        <StaticRow label="Issuance gain" amount={issuanceGain.prettify(2)} unit={COIN} boldLabel />
+        <StaticRow label="Issuance gain" amount={issuanceGain.prettify(2)} unit={COIN} />
       </div>
 
       <div className={classes.stakedWrapper}>

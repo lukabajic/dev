@@ -65,7 +65,7 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
       <div className={classes.infos}>
         <StaticRow label="Pool share" amount={Decimal.from(0).prettify(4)} unit="%" />
 
-        <StaticRow boldLabel label="Reward" amount={Decimal.from(0).prettify(2)} unit={GT} />
+        <StaticRow label="Reward" amount={Decimal.from(0).prettify(2)} unit={GT} />
       </div>
 
       {!hasApproved ? (

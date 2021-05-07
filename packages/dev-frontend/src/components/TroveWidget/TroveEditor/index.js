@@ -30,7 +30,7 @@ const getColor = ratio =>
     ? "danger"
     : "muted";
 
-const select = ({ price, accountBalance }) => ({ price, accountBalance });
+const select = ({ price, accountBalance, lusdBalance }) => ({ price, accountBalance, lusdBalance });
 
 export const TroveDeposit = ({
   children,
@@ -174,7 +174,7 @@ export const TroveWithdraw = ({
   dispatch,
   transactionType
 }) => {
-  const { price } = useLiquitySelector(select);
+  const { price, lusdBalance } = useLiquitySelector(select);
   const [withdraw, setWithdraw] = useState("");
   const [repay, setRepay] = useState("");
   const [data, setData] = useState(null);
@@ -221,7 +221,8 @@ export const TroveWithdraw = ({
     originalCollateralRatio ?? { toString: () => "N/A" }
   );
 
-  const maxRepay = original.debt.sub(Decimal.from(LUSD_MINIMUM_DEBT));
+  let maxRepay = original.debt.sub(Decimal.from(LUSD_MINIMUM_DEBT));
+  maxRepay = maxRepay.gt(lusdBalance) ? lusdBalance : maxRepay;
 
   let maxWithdraw = null;
 
@@ -235,7 +236,7 @@ export const TroveWithdraw = ({
       edited.debt.mul(Decimal.from(1.1).div(Decimal.from(ethereumInLusd)))
     )
       ? original.collateral.sub(edited.debt.mul(Decimal.from(1.1).div(Decimal.from(ethereumInLusd))))
-      : null;
+      : Decimal.from(0);
   }
 
   return (

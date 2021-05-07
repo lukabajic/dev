@@ -59,6 +59,8 @@ export const TroveDeposit = ({
 
   const feePct = new Percent(borrowingRate);
 
+  console.log(Infinity);
+
   const originalCollateralRatio = !original.isEmpty ? original.collateralRatio(price) : undefined;
   const collateralRatio = !edited.isEmpty ? edited.collateralRatio(price) : undefined;
   const collateralRatioPct = new Percent(collateralRatio ?? { toString: () => "N/A" });
@@ -149,7 +151,13 @@ export const TroveDeposit = ({
             label="Collateral ratio"
             amount={collateralRatioPct.prettify()}
             color={getColor(collateralRatio)}
-            oldAmount={originalCollateralRatio && originalCollateralRatioPct.prettify()}
+            oldAmount={
+              original.isEmpty && !borrow ? (
+                <span>&infin;</span>
+              ) : (
+                originalCollateralRatio && originalCollateralRatioPct.prettify()
+              )
+            }
             oldColor={getColor(originalCollateralRatio)}
           />
         </div>

@@ -55,7 +55,7 @@ const SystemStats = () => {
         {Decimal.from(total.collateral.mul(price)).shorten()})
       </Stat>
 
-      <Stat name="Active trowes" tooltip="The total number of active Troves in the system.">
+      <Stat name="Active troves" tooltip="The total number of active Troves in the system.">
         {Decimal.from(numberOfTroves).prettify(0)}
       </Stat>
 

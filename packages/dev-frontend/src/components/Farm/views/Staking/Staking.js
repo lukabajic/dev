@@ -31,7 +31,7 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
     <>
       {stake !== null && (
         <Modal
-          title="STAKE LQTY"
+          title="STAKE UNI LP"
           onClose={() => {
             setStake(null);
             dispatchEvent("CANCEL_PRESSED");

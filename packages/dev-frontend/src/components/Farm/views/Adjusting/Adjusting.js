@@ -81,12 +81,7 @@ export const Adjusting = () => {
           <StaticRow label="Pool share" amount={poolShare.prettify(4)} unit="%" />
         )}
 
-        <StaticRow
-          boldLabel
-          label="Reward"
-          amount={liquidityMiningLQTYReward.prettify(2)}
-          unit={GT}
-        />
+        <StaticRow label="Reward" amount={liquidityMiningLQTYReward.prettify(2)} unit={GT} />
       </div>
 
       {increment !== null && (
@@ -114,7 +109,9 @@ export const Adjusting = () => {
 
             <Validation amount={liquidityMiningStake.add(Decimal.from(increment || 0))} />
 
-            <Confirm amount={liquidityMiningStake.add(Decimal.from(increment || 0))} />
+            <div className={classes.actions}>
+              <Confirm amount={liquidityMiningStake.add(Decimal.from(increment || 0))} />
+            </div>
 
             <StaticRow
               label="Staked"
@@ -168,14 +165,16 @@ export const Adjusting = () => {
               />
             )}
 
-            <Confirm
-              disabled={cannotDecrement}
-              amount={
-                cannotDecrement
-                  ? Decimal.ZERO
-                  : liquidityMiningStake.sub(Decimal.from(decrement || 0))
-              }
-            />
+            <div className={classes.actions}>
+              <Confirm
+                disabled={cannotDecrement}
+                amount={
+                  cannotDecrement
+                    ? Decimal.ZERO
+                    : liquidityMiningStake.sub(Decimal.from(decrement || 0))
+                }
+              />
+            </div>
 
             {/* 
 
@@ -186,7 +185,11 @@ export const Adjusting = () => {
 
             <StaticRow
               label="Staked"
-              amount={liquidityMiningStake.add(Decimal.from(increment || 0)).prettify(2)}
+              amount={
+                cannotDecrement
+                  ? Decimal.ZERO.prettify(2)
+                  : liquidityMiningStake.sub(Decimal.from(decrement || 0)).prettify(2)
+              }
               unit={LP}
             />
           </div>

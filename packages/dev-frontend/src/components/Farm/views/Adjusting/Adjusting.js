@@ -103,7 +103,7 @@ export const Adjusting = () => {
             <Input
               label="Stake"
               unit={LP}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
               value={increment}
               onChange={v => {
                 setIncrement(v);
@@ -141,7 +141,7 @@ export const Adjusting = () => {
             <Input
               label="Stake"
               unit={LP}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
               value={decrement}
               onChange={v => {
                 setDecrement(v);

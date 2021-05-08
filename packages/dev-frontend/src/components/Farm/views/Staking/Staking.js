@@ -41,7 +41,7 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
             <Input
               label="Stake"
               unit={LP}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
               value={stake}
               onChange={v => {
                 setStake(v);

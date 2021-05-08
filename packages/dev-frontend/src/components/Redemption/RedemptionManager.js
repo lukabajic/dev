@@ -89,7 +89,7 @@ const RedemptionManager = () => {
         maxAmount={lusdBalance.toString()}
         maxedOut={lusdAmount.eq(lusdBalance)}
         unit={COIN}
-        available={`Wallet ${lusdBalance.prettify(2)}`}
+        available={`Wallet: ${lusdBalance.prettify(2)}`}
         onChange={v => {
           setValue(v);
           setLUSDAmount(Decimal.from(v || 0));

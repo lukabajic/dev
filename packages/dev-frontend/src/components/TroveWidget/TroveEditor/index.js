@@ -81,7 +81,7 @@ export const TroveDeposit = ({
           setDeposit(v);
           dispatch({ type: "setCollateral", newValue: v });
         }}
-        available={`Wallet ${maxEth.prettify(2)}`}
+        available={`Wallet: ${maxEth.prettify(2)}`}
         icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
         maxAmount={maxEth.toString()}
         maxedOut={maxEth.toString() === deposit.toString()}

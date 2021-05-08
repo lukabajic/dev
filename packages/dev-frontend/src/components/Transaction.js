@@ -107,8 +107,7 @@ export function Transaction({
       ? React.cloneElement(
           trigger,
           {
-            disabled: true,
-            variant: "danger"
+            disabled: true
           },
           failureReasons[0]
         )
@@ -120,15 +119,7 @@ export function Transaction({
     tooltip = failureReasons[0];
   }
 
-  return tooltip ? (
-    <>
-      <Tooltip message={tooltip} placement={tooltipPlacement || "right"}>
-        {clonedTrigger}
-      </Tooltip>
-    </>
-  ) : (
-    clonedTrigger
-  );
+  return clonedTrigger;
 }
 
 // Doesn't work on Kovan:

@@ -256,7 +256,7 @@ const RiskyTroves = ({ pageSize = 10 }) => {
 
                     <Transaction
                       id={`liquidate-${trove.ownerAddress}`}
-                      tooltip="Liquidate"
+                      showFailure="asTooltip"
                       requires={[
                         recoveryMode
                           ? liquidatableInRecoveryMode(

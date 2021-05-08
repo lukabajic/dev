@@ -9,7 +9,7 @@ import ErrorDescription from "../../../components/ErrorDescription";
 import { ContentRight } from "../../../components/Input";
 import StaticRow from "../../../components/StaticRow";
 
-import { ETH, COIN, GT } from "../../../strings";
+import { ETH, COIN, GT, LP } from "../../../strings";
 
 import classes from "./Preview.module.css";
 
@@ -150,6 +150,81 @@ export const StabilityPrevies = ({ showModal }) => {
           unit={COIN}
         />
       </div>
+
+      {showAlert && (
+        <ErrorDescription>
+          Please connect your wallet first before using our services.
+        </ErrorDescription>
+      )}
+
+      <div className={classes.action}>
+        <Button large primary round onClick={showModal}>
+          Connect wallet
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+const STAKING_TABS = [
+  { tab: "lqty", content: "Stake LQTY" },
+  { tab: "unilp", content: "Stake UNI LP " }
+];
+
+const StakeLQTYPReview = () => (
+  <>
+    <div className={classes.head}>
+      <div className={classes.total}>
+        <p className={classes.totalStaked}>total staked --</p>
+      </div>
+      <h3 className={classes.title}>Deposit more LQTY to increase pool share.</h3>
+    </div>
+
+    <div className={classes.staticInfo}>
+      <StaticRow label="Pool share" amount="N/A" />
+
+      <StaticRow label="Redemption gain" amount={Decimal.ZERO.prettify(4)} unit="ETH" />
+
+      <StaticRow label="Issurance gain" amount={Decimal.ZERO.prettify(2)} unit={COIN} />
+    </div>
+
+    <div className={classes.stakedWrapper}>
+      <StaticRow labelColor="primary" label="Staked" amount={Decimal.ZERO.prettify(2)} unit={GT} />
+    </div>
+  </>
+);
+
+export const StakeUniLPPreview = () => (
+  <>
+    <div className={classes.head}>
+      <div className={classes.total}>
+        <p className={classes.totalStaked}>total staked --</p>
+      </div>
+      <h3 className={classes.title}>Deposit more LQTY to increase pool share.</h3>
+    </div>
+
+    <div className={classes.staticInfo}>
+      <StaticRow label="Pool share" amount="N/A" />
+
+      <StaticRow label="Reward" amount={Decimal.ZERO.prettify(2)} unit={GT} />
+    </div>
+
+    <div className={classes.stakedWrapper}>
+      <StaticRow labelColor="primary" label="Staked" amount={Decimal.ZERO.prettify(2)} unit={LP} />
+    </div>
+  </>
+);
+
+export const StakingPreview = ({ showModal }) => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [activeTab, setActiveTab] = useState("lqty");
+
+  return (
+    <div className={classes.wrapper}>
+      <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={STAKING_TABS} />
+
+      {activeTab === "lqty" && <StakeLQTYPReview />}
+      {activeTab === "unilp" && <StakeUniLPPreview />}
 
       {showAlert && (
         <ErrorDescription>

@@ -51,6 +51,13 @@ export const Adjusting = () => {
   const [increment, setIncrement] = useState(null);
   const [decrement, setDecrement] = useState(null);
 
+  useEffect(() => {
+    if (transactionState.type === "confirmedOneShot") {
+      setIncrement(null);
+      setDecrement(null);
+    }
+  }, [transactionState]);
+
   const isTransactionPending =
     transactionState.type === "waitingForApproval" ||
     transactionState.type === "waitingForConfirmation";

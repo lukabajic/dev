@@ -55,10 +55,12 @@ const selectActive = ({ trove, price, lusdBalance, blockTag, total }) => ({
 const transactionIdPrefix = "trove-";
 const transactionIdMatcher = new RegExp(`^${transactionIdPrefix}`);
 
+let expandedTroveInfo = false;
+
 const ActiveTrove = () => {
   const [cancelModal, setCancelModal] = useState(null);
   const { liquity, account } = useLiquity();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(expandedTroveInfo || false);
   const [loading, setLoading] = useState(false);
   const [troves, setTroves] = useState(null);
   const myTransactionState = useMyTransactionState(transactionIdMatcher);
@@ -243,7 +245,10 @@ close trove?"
           className={cn(classes.toggleExpandButton, {
             [classes.rotate]: expanded
           })}
-          onClick={() => setExpanded(!expanded)}
+          onClick={() => {
+            setExpanded(!expanded);
+            expandedTroveInfo = !expandedTroveInfo;
+          }}
         >
           <ion-icon name="chevron-down-outline"></ion-icon>
         </Button>

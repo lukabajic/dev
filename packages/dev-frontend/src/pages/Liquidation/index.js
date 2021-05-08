@@ -207,8 +207,10 @@ const RiskyTroves = ({ pageSize = 10 }) => {
           </div>
 
           <div className={classes.tableBody}>
-            {troves.map(
-              trove =>
+            {troves.map(trove => {
+              const liquidationPrice = trove.debt.mulDiv(1.1, trove.collateral).prettify();
+
+              return (
                 !trove.isEmpty && (
                   <div className={classes.tableRow} key={trove.ownerAddress}>
                     <div className={classes.addressData}>
@@ -231,10 +233,11 @@ const RiskyTroves = ({ pageSize = 10 }) => {
                       {new Percent(trove.collateralRatio(price)).prettify()}
                     </p>
 
-                    <p className={classes.tableData}>--</p>
+                    <p className={classes.tableData}>{liquidationPrice}</p>
 
                     <Transaction
                       id={`liquidate-${trove.ownerAddress}`}
+                      showFailure="asTooltip"
                       requires={[
                         recoveryMode
                           ? liquidatableInRecoveryMode(
@@ -251,7 +254,8 @@ const RiskyTroves = ({ pageSize = 10 }) => {
                     </Transaction>
                   </div>
                 )
-            )}
+              );
+            })}
           </div>
         </div>
       )}

@@ -123,6 +123,7 @@
   border-radius: 1rem;
   border: solid 2px var(--white);
   background-color: #e6e6e5;
+  max-width: 42rem;
 }
 
 .activeTroveHeading {

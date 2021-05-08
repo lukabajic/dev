@@ -1,6 +1,5 @@
 import React from "react";
 import Tippy, { TippyProps } from "@tippyjs/react";
-import { Icon } from "./Icon";
 import { Ionicon } from "./IonIcon";
 import { FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import classes from "./InfoIcon.module.css";

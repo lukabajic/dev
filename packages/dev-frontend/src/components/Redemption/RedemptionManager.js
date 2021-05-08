@@ -120,6 +120,8 @@ const RedemptionManager = () => {
             amount={ethFee.toString(4)}
             pendingAmount={feePct.toString(2)}
             unit="ETH"
+            tooltip="The Redemption Fee is charged as a percentage of the redeemed Ether. The Redemption
+            Fee depends on LUSD redemption volumes and is 0.5% at minimum."
           />
 
           <StaticRow

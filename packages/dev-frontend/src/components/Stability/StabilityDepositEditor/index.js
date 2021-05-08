@@ -216,7 +216,14 @@ export const StabilityDepositEditor = ({
 
         <StaticRow label="Liquidation gain" amount={liquidationGain.prettify(4)} unit="ETH" />
 
-        <StaticRow label="Reward" amount={reward.prettify(2)} unit={GT} />
+        <StaticRow
+          label="Reward"
+          amount={reward.prettify(2)}
+          unit={GT}
+          tooltip=" Although the LQTY rewards accrue every minute, the value on the UI only updates
+                      when a user transacts with the Stability Pool. Therefore you may receive more
+                      rewards than is displayed when you claim or adjust your deposit."
+        />
       </div>
 
       <div className={classes.stakedWrapper}>
@@ -286,9 +293,3 @@ export const StabilityDepositEditor = ({
     </div>
   );
 };
-
-//<Card variant="tooltip" sx={{ width: "240px" }}>
-//Although the LQTY rewards accrue every minute, the value on the UI only updates
-//when a user transacts with the Stability Pool. Therefore you may receive more
-//rewards than is displayed when you claim or adjust your deposit.
-//</Card>

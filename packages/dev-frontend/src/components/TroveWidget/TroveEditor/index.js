@@ -47,6 +47,13 @@ export const TroveDeposit = ({
   const [borrow, setBorrow] = useState("");
 
   useEffect(() => {
+    if (deposit && !borrow) {
+      dispatch({ type: "addMinimumDebt" });
+      setBorrow(1800);
+    }
+  }, [deposit, borrow, dispatch]);
+
+  useEffect(() => {
     if (transactionType === "confirmedOneShot") {
       setDeposit("");
       setBorrow("");

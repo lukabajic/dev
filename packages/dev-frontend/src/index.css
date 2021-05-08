@@ -36,13 +36,13 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-@media only screen and (min-width: 960) {
+@media only screen and (min-width: 960px) {
   html {
     font-size: 50%;
   }
 }
 
-@media only screen and (min-width: 960) {
+@media only screen and (min-width: 1200px) {
   html {
     font-size: 56.25%;
   }

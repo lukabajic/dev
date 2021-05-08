@@ -1,6 +1,7 @@
 import React from "react";
 import Tippy, { TippyProps } from "@tippyjs/react";
 import { Icon } from "./Icon";
+import { Ionicon } from "./IonIcon";
 import { FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import classes from "./InfoIcon.module.css";
 
@@ -18,9 +19,9 @@ export const InfoIcon: React.FC<InfoIconProps> = ({ placement = "right", tooltip
       content={tooltip}
       maxWidth="268px"
     >
-      <span>
+      <span style={{ display: "inline-flex", color: "var(--gray)" }}>
         &nbsp;
-        <Icon name="question-circle" size={size} />
+        <Ionicon name="help-circle-outline" />
       </span>
     </Tippy>
   );

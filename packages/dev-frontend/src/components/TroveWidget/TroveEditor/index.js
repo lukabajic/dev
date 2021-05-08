@@ -145,6 +145,7 @@ export const TroveDeposit = ({
           )}
 
           <StaticRow
+            scrollIntoView
             className={classes.staticRowInfo}
             label="Collateral ratio"
             amount={collateralRatioPct.prettify()}
@@ -299,6 +300,7 @@ export const TroveWithdraw = ({
           )}
 
           <StaticRow
+            scrollIntoView
             label="Collateral ratio"
             inputId="trove-collateral-ratio"
             amount={collateralRatioPct.prettify()}

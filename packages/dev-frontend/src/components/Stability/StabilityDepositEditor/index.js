@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import cn from "classnames";
 
-import { Decimal, Difference } from "@liquity/lib-base";
+import { Decimal } from "@liquity/lib-base";
 
 import { useLiquitySelector } from "@liquity/lib-react";
 
@@ -36,14 +36,21 @@ export const StabilityDepositEditor = ({
   transactionId,
   view,
   dispatchEvent,
-  error
+  error,
+  transactionType
 }) => {
   const { lusdBalance, lusdInStabilityPool, stabilityDeposit } = useLiquitySelector(select);
   const [stake, setStake] = useState(null);
   const [increment, setIncrement] = useState(null);
   const [decrement, setDecrement] = useState(null);
 
-  const edited = !editedLUSD.eq(originalDeposit.currentLUSD);
+  useEffect(() => {
+    if (transactionType === "confirmedOneShot") {
+      setStake(null);
+      setIncrement(null);
+      setDecrement(null);
+    }
+  }, [transactionType]);
 
   const maxAmount = originalDeposit.currentLUSD.add(lusdBalance);
   const maxedOut = editedLUSD.eq(maxAmount);
@@ -54,10 +61,6 @@ export const StabilityDepositEditor = ({
 
   const originalPoolShare = originalDeposit.currentLUSD.mulDiv(100, lusdInStabilityPool);
   const newPoolShare = editedLUSD.mulDiv(100, lusdInStabilityPoolAfterChange);
-
-  const poolShareChange =
-    originalDeposit.currentLUSD.nonZero &&
-    Difference.between(newPoolShare, originalPoolShare).nonZero;
 
   const hasReward = !stabilityDeposit.lqtyReward.isZero;
   const hasGain = !stabilityDeposit.collateralGain.isZero;

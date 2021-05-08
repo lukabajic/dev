@@ -91,7 +91,7 @@ const SystemStats = () => {
         name="Recovery Mode"
         tooltip="The Total Value Locked (TVL) is the total value of Ether locked as collateral in the system, given in ETH and USD."
       >
-        {recoveryMode.prettify()}
+        {recoveryMode.shorten()}
       </Stat>
     </div>
   );

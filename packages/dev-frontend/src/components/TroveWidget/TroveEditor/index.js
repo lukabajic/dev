@@ -156,6 +156,18 @@ export const TroveDeposit = ({
             />
           )}
 
+          {borrow && (
+            <StaticRow
+              label="Total debt"
+              inputId="trove-total-debt"
+              amount={Decimal.from(borrow || 0)
+                .add(totalFee)
+                .prettify(2)}
+              unit={COIN}
+              tooltip="The total amount of LUSD your Trove will hold"
+            />
+          )}
+
           <StaticRow
             scrollIntoView
             className={classes.staticRowInfo}

@@ -268,7 +268,7 @@ export const TroveWithdraw = ({
           setWithdraw(v);
           dispatch({ type: "substractCollateral", newValue: v });
         }}
-        available={`Available: ${maxWithdraw?.prettify(2) || ""}`}
+        available={`Available: ${maxWithdraw?.prettify(4) || ""}`}
         icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
         maxAmount={maxWithdraw?.toString() || ""}
         maxedOut={maxWithdraw?.toString() === withdraw.toString()}

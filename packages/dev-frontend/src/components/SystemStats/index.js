@@ -4,6 +4,7 @@ import { Decimal, Percent } from "@liquity/lib-base";
 import { useLiquitySelector } from "@liquity/lib-react";
 
 import { InfoIcon } from "../InfoIcon";
+import { COIN } from "../../strings";
 
 import classes from "./SystemStats.module.css";
 
@@ -97,7 +98,7 @@ const SystemStats = () => {
         name="Recovery Mode"
         tooltip="Recovery Mode is activated when the Total Collateral Ratio (TCR) falls below 150%. When active, your Trove can be liquidated if its collateral ratio is below the TCR. The maximum collateral you can lose from liquidation is capped at 110% of your Trove's debt. Operations are also restricted that would negatively impact the TCR."
       >
-        {recoveryMode.shorten()}
+        {recoveryMode.prettify(0)} {COIN}
       </Stat>
     </div>
   );

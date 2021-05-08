@@ -243,7 +243,7 @@ export const TransactionMonitor = () => {
         if (!cancelled) {
           setTransactionState({ type: "idle" });
         }
-      }, 5000);
+      }, 3000);
 
       return () => {
         cancelled = true;

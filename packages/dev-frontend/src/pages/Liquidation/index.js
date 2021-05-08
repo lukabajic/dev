@@ -201,8 +201,14 @@ const RiskyTroves = ({ pageSize = 10 }) => {
               Ratio
             </p>
             <div className={classes.tableHeadBox}>
-              <p className={classes.tableHeadText}>Liquidation Price</p>
-              <p className={classes.tableHeadUnit}>{COIN}</p>
+              <p className={classes.tableHeadText}>
+                Liquidation
+                <br />
+                Price
+              </p>
+              <p className={classes.tableHeadUnit}>
+                {COIN} / {ETH}
+              </p>
             </div>
           </div>
 

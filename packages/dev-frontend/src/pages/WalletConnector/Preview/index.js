@@ -307,8 +307,14 @@ export const LiquidationPrevriew = ({ showModal }) => (
           Ratio
         </p>
         <div className={liqClasses.tableHeadBox}>
-          <p className={liqClasses.tableHeadText}>Liquidation Price</p>
-          <p className={liqClasses.tableHeadUnit}>{COIN}</p>
+          <p className={liqClasses.tableHeadText}>
+            Liquidation
+            <br />
+            Price
+          </p>
+          <p className={liqClasses.tableHeadUnit}>
+            {COIN} / {ETH}
+          </p>
         </div>
       </div>
 

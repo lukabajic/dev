@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import cn from "classnames";
 
 import { useLiquitySelector } from "@liquity/lib-react";
@@ -12,6 +12,7 @@ import StaticRow from "../../StaticRow";
 import { useTransactionFunction } from "../../Transaction";
 import ErrorDescription from "../../ErrorDescription";
 import { Amount } from "../../ActionDescription";
+import { useMyTransactionState } from "../../Transaction";
 
 import { COIN, ETH } from "../../../strings";
 
@@ -51,12 +52,16 @@ const selectActive = ({ trove, price, lusdBalance, blockTag, total }) => ({
   total
 });
 
+const transactionIdPrefix = "trove-";
+const transactionIdMatcher = new RegExp(`^${transactionIdPrefix}`);
+
 const ActiveTrove = () => {
   const [cancelModal, setCancelModal] = useState(null);
   const { liquity, account } = useLiquity();
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [troves, setTroves] = useState(null);
+  const myTransactionState = useMyTransactionState(transactionIdMatcher);
 
   const { trove, price, lusdBalance, blockTag, total } = useLiquitySelector(selectActive);
 
@@ -68,33 +73,33 @@ const ActiveTrove = () => {
     liquity.send.closeTrove.bind(liquity.send)
   );
 
-  useEffect(() => {
-    let mounted = true;
-
+  const fetchTroves = useCallback(() => {
     setLoading(true);
 
     liquity
       .getTroves(
         {
-          first: 1000,
+          first: 5000,
           sortedBy: "ascendingCollateralRatio",
           startingAt: 0
         },
         { blockTag }
       )
       .then(troves => {
-        if (mounted) {
-          setTroves(troves);
-          setLoading(false);
-        }
+        setTroves(troves);
+        setLoading(false);
       });
+  }, [blockTag, liquity]);
 
-    return () => {
-      mounted = false;
-    };
-    // Omit blockTag from deps on purpose
-    // eslint-disable-next-line
-  }, [liquity]);
+  useEffect(() => {
+    if (myTransactionState.type === "confirmedOneShot") {
+      fetchTroves();
+    }
+  }, [fetchTroves, myTransactionState]);
+
+  useEffect(() => {
+    fetchTroves();
+  }, [fetchTroves]);
 
   const liquidationRisk = collateralRatio.mul(100).lt(150)
     ? "high"

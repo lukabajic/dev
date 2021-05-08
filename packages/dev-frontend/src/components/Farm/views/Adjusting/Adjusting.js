@@ -101,7 +101,7 @@ export const Adjusting = () => {
         >
           <div className={classes.modalContent}>
             <Input
-              label="Stake"
+              label="stake"
               unit={LP}
               icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
               value={increment}
@@ -131,7 +131,7 @@ export const Adjusting = () => {
 
       {decrement !== null && (
         <Modal
-          title="STAKE UNI LP"
+          title="UNSTAKE UNI LP"
           onClose={() => {
             setDecrement(null);
             dispatchEvent("CANCEL_PRESSED");
@@ -139,7 +139,7 @@ export const Adjusting = () => {
         >
           <div className={classes.modalContent}>
             <Input
-              label="Stake"
+              label="unstake"
               unit={LP}
               icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
               value={decrement}

@@ -186,7 +186,7 @@ const RiskyTroves = ({ pageSize = 10 }) => {
       ) : (
         <div className={classes.table}>
           <div className={classes.tableHead}>
-            <p className={classes.tableHeadText}>Owner</p>
+            <p className={cn(classes.tableHeadText, classes.firstChild)}>Owner</p>
             <div className={classes.tableHeadBox}>
               <p className={classes.tableHeadText}>Collateral</p>
               <p className={classes.tableHeadUnit}>{ETH}</p>
@@ -210,6 +210,17 @@ const RiskyTroves = ({ pageSize = 10 }) => {
                 {COIN} / {ETH}
               </p>
             </div>
+            <div className={classes.tableHeadBox}>
+              <p className={classes.tableHeadText}>
+                Potential
+                <br />
+                Profit
+              </p>
+              <p className={classes.tableHeadUnit}>{COIN}</p>
+            </div>
+            <Button disabled className={classes.hiddenButton}>
+              Liquidate
+            </Button>
           </div>
 
           <div className={classes.tableBody}>
@@ -240,6 +251,8 @@ const RiskyTroves = ({ pageSize = 10 }) => {
                     </p>
 
                     <p className={classes.tableData}>{liquidationPrice}</p>
+
+                    <p className={classes.tableData}>{trove.debt.mul(0.0945).prettify(0)}</p>
 
                     <Transaction
                       id={`liquidate-${trove.ownerAddress}`}

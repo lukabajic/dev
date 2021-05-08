@@ -94,11 +94,8 @@ const SystemStats = () => {
         {totalStakedLQTY.shorten()}
       </Stat>
 
-      <Stat
-        name="Recovery Mode"
-        tooltip="Recovery Mode is activated when the Total Collateral Ratio (TCR) falls below 150%. When active, your Trove can be liquidated if its collateral ratio is below the TCR. The maximum collateral you can lose from liquidation is capped at 110% of your Trove's debt. Operations are also restricted that would negatively impact the TCR."
-      >
-        {recoveryMode.prettify(0)} {COIN}
+      <Stat name="Recovery Mode ETH Price">
+        {total.debt.mulDiv(1.5, total.collateral).prettify(0)} {COIN}
       </Stat>
     </div>
   );

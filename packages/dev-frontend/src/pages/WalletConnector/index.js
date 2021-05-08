@@ -20,9 +20,6 @@ import { walletLinkConnector } from "../../connectors/coinbase";
 import classes from "./WalletConnector.module.css";
 
 const connectionReducer = (state, action) => {
-  console.log(action);
-  console.log(state);
-
   switch (action.type) {
     case "setConnector":
       return {

@@ -94,7 +94,7 @@ const SystemStats = () => {
         {totalStakedLQTY.shorten()}
       </Stat>
 
-      <Stat name="Recovery Mode ETH Price">
+      <Stat name="Recovery Mode ETH Price" tooltip="The Dollar value of ETH below which the Total Collateral Ratio will drop below 150% and the system will enter Recovery Mode"> 
         {total.debt.mulDiv(1.5, total.collateral).prettify(0)} {COIN}
       </Stat>
     </div>

@@ -124,6 +124,9 @@ export const TroveDeposit = ({
               label="Liquidation Reserve"
               amount={`${LUSD_LIQUIDATION_RESERVE}`}
               unit={COIN}
+              tooltip="An amount set aside to cover the liquidator’s gas costs if your Trove needs to be
+              liquidated. The amount increases your debt and is refunded if you close your
+              Trove by fully paying off its net debt."
             />
           )}
 
@@ -133,6 +136,8 @@ export const TroveDeposit = ({
             amount={fee.toString(2)}
             unit={COIN}
             brackets={feePct.prettify()}
+            tooltip="This amount is deducted from the borrowed amount as a one-time fee. There are no
+            recurring fees for borrowing, which is thus interest-free."
           />
 
           {borrow && (

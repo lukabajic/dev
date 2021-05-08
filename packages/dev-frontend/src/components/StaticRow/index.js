@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import cn from "classnames";
 
+import { InfoIcon } from "../InfoIcon";
+
 import classes from "./StaticRow.module.css";
 
 const StaticRow = ({
@@ -15,7 +17,8 @@ const StaticRow = ({
   boldAmount,
   boldLabel,
   labelColor,
-  scrollIntoView
+  scrollIntoView,
+  tooltip
 }) => {
   const el = useRef(null);
 
@@ -32,6 +35,7 @@ const StaticRow = ({
         })}
       >
         {label}
+        {tooltip && <InfoIcon size="xs" tooltip={tooltip} />}
       </p>
       <p className={cn(classes.staticRowAmount, classes[color])}>
         {oldAmount && <span className={classes[oldColor]}>{oldAmount}</span>}

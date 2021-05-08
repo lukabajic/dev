@@ -7,8 +7,9 @@ import Tabs from "../../../components/Tabs";
 import Button from "../../../components/Button";
 import ErrorDescription from "../../../components/ErrorDescription";
 import { ContentRight } from "../../../components/Input";
+import StaticRow from "../../../components/StaticRow";
 
-import { ETH, COIN } from "../../../strings";
+import { ETH, COIN, GT } from "../../../strings";
 
 import classes from "./Preview.module.css";
 
@@ -88,7 +89,7 @@ const RedemptionPreview = ({ onClick }) => (
   </Row>
 );
 
-const Preview = ({ showModal }) => {
+export const TrovePreview = ({ showModal }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [activeTab, setActiveTab] = useState("deposit");
 
@@ -115,4 +116,52 @@ const Preview = ({ showModal }) => {
   );
 };
 
-export default Preview;
+export const StabilityPrevies = ({ showModal }) => {
+  const [showAlert, setShowAlert] = useState(false);
+
+  return (
+    <div className={classes.wrapper}>
+      <Tabs
+        activeTab={"stake"}
+        setActiveTab={() => {}}
+        tabs={[{ tab: "stake", content: "STAKE LUSD" }]}
+      />
+
+      <div className={classes.head}>
+        <div className={classes.total}>
+          <p className={classes.totalStaked}>total staked --</p>
+        </div>
+        <h3 className={classes.title}>Earn ETH and liquity by depositing LUSD</h3>
+      </div>
+
+      <div className={classes.staticInfo}>
+        <StaticRow label="Pool share" amount="N/A" />
+
+        <StaticRow label="Liquidation gain" amount={Decimal.ZERO.prettify(4)} unit="ETH" />
+
+        <StaticRow label="Reward" amount={Decimal.ZERO.prettify(2)} unit={GT} />
+      </div>
+
+      <div className={classes.stakedWrapper}>
+        <StaticRow
+          labelColor="primary"
+          label="Staked"
+          amount={Decimal.ZERO.prettify(2)}
+          unit={COIN}
+        />
+      </div>
+
+      {showAlert && (
+        <ErrorDescription>
+          Please connect your wallet first before using our services.
+        </ErrorDescription>
+      )}
+
+      <div className={classes.action}>
+        <Button large primary round onClick={showModal}>
+          Connect wallet
+        </Button>
+      </div>
+    </div>
+  );
+};

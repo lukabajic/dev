@@ -13,7 +13,7 @@ import Modal from "../../components/Modal";
 import Link from "../../components/Link";
 import { UnregisteredKickbackRate } from "../../components/KickbackRate";
 import Body from "../../components/Body";
-import Preview from "./Preview";
+import { TrovePreview, StabilityPrevies } from "./Preview";
 import { walletConnectConnector } from "../../connectors/walletConnect";
 import { walletLinkConnector } from "../../connectors/coinbase";
 
@@ -109,7 +109,7 @@ const WalletConnector = ({ children }) => {
       dispatch({ type: "fail", error });
       deactivate();
     }
-  }, [error, deactivate]);
+  }, [error, deactivate, connectionState]);
 
   useEffect(() => {
     if (active) {
@@ -138,8 +138,11 @@ const WalletConnector = ({ children }) => {
       <Body>
         <Switch>
           <Route path="/" exact>
-            {/* TODO check what's this */}
-            <Preview showModal={() => setWalletModal(true)} />
+            <TrovePreview showModal={() => setWalletModal(true)} />
+          </Route>
+
+          <Route path="/stability-pool">
+            <StabilityPrevies showModal={() => setWalletModal(true)} />
           </Route>
         </Switch>
       </Body>

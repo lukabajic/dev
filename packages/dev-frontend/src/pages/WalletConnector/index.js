@@ -13,7 +13,7 @@ import Modal from "../../components/Modal";
 import Link from "../../components/Link";
 import { UnregisteredKickbackRate } from "../../components/KickbackRate";
 import Body from "../../components/Body";
-import { TrovePreview, StabilityPrevies, StakingPreview } from "./Preview";
+import { TrovePreview, StabilityPrevies, StakingPreview, LiquidationPrevriew } from "./Preview";
 import { walletConnectConnector } from "../../connectors/walletConnect";
 import { walletLinkConnector } from "../../connectors/coinbase";
 
@@ -147,6 +147,10 @@ const WalletConnector = ({ children }) => {
 
           <Route path="/stake">
             <StakingPreview showModal={() => setWalletModal(true)} />
+          </Route>
+
+          <Route path="/liquidation">
+            <LiquidationPrevriew showModal={() => setWalletModal(true)} />
           </Route>
         </Switch>
       </Body>

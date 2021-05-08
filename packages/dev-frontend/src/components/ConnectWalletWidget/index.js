@@ -37,13 +37,14 @@ export const ConnectWalletButton = ({ onClick }) => (
   </div>
 );
 
-const Metamask = ({ dispatch, activate, injectedConnector, onItemClick, connected }) => (
+const Metamask = ({ dispatch, deactivate, activate, injectedConnector, onItemClick, connected }) => (
   <div
     className={cn(classes.item, {
       [classes.itemConnected]: connected
     })}
     onClick={() => {
       onItemClick();
+      deactivate();
       dispatch({ type: "setConnector", connector: injectedConnector });
       dispatch({ type: "startActivating" });
       activate(injectedConnector);
@@ -58,13 +59,21 @@ const Metamask = ({ dispatch, activate, injectedConnector, onItemClick, connecte
   </div>
 );
 
-const WalletConnect = ({ dispatch, activate, walletConnectConnector, onItemClick, connected }) => (
+const WalletConnect = ({
+  dispatch,
+  deactivate,
+  activate,
+  walletConnectConnector,
+  onItemClick,
+  connected
+}) => (
   <div
     className={cn(classes.item, {
       [classes.itemConnected]: connected
     })}
     onClick={() => {
       onItemClick();
+      deactivate();
       dispatch({ type: "setConnector", connector: walletConnectConnector });
       dispatch({ type: "startActivating" });
       activate(walletConnectConnector);
@@ -79,13 +88,21 @@ const WalletConnect = ({ dispatch, activate, walletConnectConnector, onItemClick
   </div>
 );
 
-const WalletLink = ({ dispatch, activate, walletLinkConnector, onItemClick, connected }) => (
+const WalletLink = ({
+  dispatch,
+  deactivate,
+  activate,
+  walletLinkConnector,
+  onItemClick,
+  connected
+}) => (
   <div
     className={cn(classes.item, {
       [classes.itemConnected]: connected
     })}
     onClick={() => {
       onItemClick();
+      deactivate();
       dispatch({ type: "setConnector", connector: walletLinkConnector });
       dispatch({ type: "startActivating" });
       activate(walletLinkConnector);

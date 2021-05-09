@@ -166,7 +166,7 @@ export const LiquityFrontend = () => {
                       </Link>
                     </div>
                     <p className={classes.connection}>
-                      {isMetamaskConnection ? "Connected with MetaMask" : "Connected with wallet"}{" "}
+                      {isMetamaskConnection ? "Connected with MetaMask" : "Connected"}{" "}
                       {isMetamaskConnection && (
                         <img
                           className={classes.metaMaskIcon}

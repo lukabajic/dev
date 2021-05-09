@@ -217,7 +217,7 @@ close trove?"
                 </p>
                 <p className={classes.troveRisksInfo}>liquidation price</p>
                 <p className={classes.troveRisksAmount}>
-                  {trove.debt.mulDiv(1.1, trove.collateral).prettify()} {COIN}
+                  {trove.debt.mulDiv(1.1, trove.collateral).prettify()} $
                 </p>
               </div>
               <div className={classes.troveRisksRight}>

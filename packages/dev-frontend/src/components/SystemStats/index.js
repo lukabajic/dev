@@ -98,7 +98,7 @@ const SystemStats = () => {
         name="Recovery Mode ETH"
         tooltip="The Dollar value of ETH below which the Total Collateral Ratio will drop below 150% and the system will enter Recovery Mode"
       >
-        {total.debt.mulDiv(1.5, total.collateral).prettify(0)} {COIN}
+        {total.debt.mulDiv(1.5, total.collateral).prettify(0)} $
       </Stat>
     </div>
   );

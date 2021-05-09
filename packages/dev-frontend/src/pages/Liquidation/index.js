@@ -204,18 +204,11 @@ const RiskyTroves = ({ pageSize = 10 }) => {
               <p className={classes.tableHeadText}>
                 Liquidation
                 <br />
-                Price
-              </p>
-              <p className={classes.tableHeadUnit}>
-                {COIN} / {ETH}
+                Price <span className={classes.tableHeadUnit}>$</span>
               </p>
             </div>
             <div className={classes.tableHeadBox}>
-              <p className={classes.tableHeadText}>
-                Potential
-                <br />
-                Profit
-              </p>
+              <p className={classes.tableHeadText}>Potential Profit</p>
               <p className={classes.tableHeadUnit}>{COIN}</p>
             </div>
             <Button disabled className={classes.hiddenButton}>

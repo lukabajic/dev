@@ -196,22 +196,22 @@ export const LiquityFrontend = () => {
                 </Modal>
               )}
 
+              {changeWalletModal && (
+                <Modal title="Connect your wallet" onClose={() => setChangeWalletModal(null)}>
+                  <ConnectWalletWidget
+                    activate={activate}
+                    deactivate={deactivate}
+                    dispatch={dispatch}
+                    injectedConnector={injectedConnector}
+                    walletConnectConnector={walletConnectConnector}
+                    walletLinkConnector={walletLinkConnector}
+                    onItemClick={() => setWalletModal(null)}
+                  />
+                </Modal>
+              )}
+
               <Header>
                 <UserAccount onWalletClick={() => setWalletModal(true)} />
-
-                {changeWalletModal && (
-                  <Modal title="Connect your wallet" onClose={() => setChangeWalletModal(null)}>
-                    <ConnectWalletWidget
-                      activate={activate}
-                      deactivate={deactivate}
-                      dispatch={dispatch}
-                      injectedConnector={injectedConnector}
-                      walletConnectConnector={walletConnectConnector}
-                      walletLinkConnector={walletLinkConnector}
-                      onItemClick={() => setWalletModal(null)}
-                    />
-                  </Modal>
-                )}
               </Header>
 
               <KickbackRate />

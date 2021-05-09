@@ -105,14 +105,14 @@ const detectMetaMask = () => window.ethereum?.isMetaMask ?? false;
 export const LiquityFrontend = () => {
   const [walletModal, setWalletModal] = useState(null);
   const [changeWalletModal, setChangeWalletModal] = useState(null);
+  const { activate, deactivate, active, error, connector } = useWeb3React();
   const { account, provider, liquity } = useLiquity();
   const [connectionState, dispatch] = useReducer(connectionReducer, {
     type: "inactive",
-    connector: injectedConnector
+    connector: connector
   });
   const isMetaMask = detectMetaMask();
-  const isMetamaskConnection = isMetaMask && connectionState.connector === injectedConnector;
-  const { activate, deactivate, active, error } = useWeb3React();
+  const isMetamaskConnection = isMetaMask && connector === injectedConnector;
 
   Object.assign(window, {
     account,
@@ -197,7 +197,7 @@ export const LiquityFrontend = () => {
               )}
 
               {changeWalletModal && (
-                <Modal title="Connect your wallet" onClose={() => setChangeWalletModal(null)}>
+                <Modal title="Change your wallet" onClose={() => setChangeWalletModal(null)}>
                   <ConnectWalletWidget
                     activate={activate}
                     deactivate={deactivate}
@@ -205,7 +205,7 @@ export const LiquityFrontend = () => {
                     injectedConnector={injectedConnector}
                     walletConnectConnector={walletConnectConnector}
                     walletLinkConnector={walletLinkConnector}
-                    onItemClick={() => setWalletModal(null)}
+                    onItemClick={() => setChangeWalletModal(null)}
                   />
                 </Modal>
               )}

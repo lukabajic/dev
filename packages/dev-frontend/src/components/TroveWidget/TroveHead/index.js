@@ -101,6 +101,14 @@ const ActiveTrove = () => {
 
   useEffect(() => {
     fetchTroves();
+
+    const id = setInterval(() => {
+      fetchTroves();
+    }, 10 * 60 * 1000);
+
+    return () => {
+      clearInterval(id);
+    };
   }, [fetchTroves]);
 
   const liquidationRisk = collateralRatio.mul(100).lt(150)

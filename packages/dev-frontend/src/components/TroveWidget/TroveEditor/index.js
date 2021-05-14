@@ -155,6 +155,7 @@ export const TroveDeposit = ({
               className={classes.staticRowInfo}
               label="Recieve"
               inputId="trove-recieve-value"
+              unit={COIN}
               amount={Decimal.from(borrow || 0).prettify(2)}
             />
           )}
@@ -165,6 +166,7 @@ export const TroveDeposit = ({
               inputId="trove-total-debt"
               amount={Decimal.from(borrow || 0)
                 .add(totalFee)
+                .add(original.debt)
                 .prettify(2)}
               unit={COIN}
               tooltip="The total amount of LUSD your Trove will hold"
@@ -323,14 +325,12 @@ export const TroveWithdraw = ({
 
       {(withdraw > 0 || repay > 0) && (
         <div className={classes.statickInfo}>
-          {withdraw > 0 && (
-            <StaticRow
-              label="Withdraw"
-              inputId="trove-collateral-value"
-              amount={Decimal.from(withdraw).prettify()}
-              unit={ETH}
-            />
-          )}
+          <StaticRow
+            label="Withdraw"
+            inputId="trove-collateral-value"
+            amount={Decimal.from(withdraw || 0).prettify()}
+            unit={ETH}
+          />
 
           {repay > 0 && (
             <StaticRow
@@ -338,6 +338,22 @@ export const TroveWithdraw = ({
               inputId="trove-repay-value"
               amount={Decimal.from(repay).prettify()}
               unit={COIN}
+            />
+          )}
+
+          {repay && (
+            <StaticRow
+              label="Total debt"
+              inputId="trove-total-debt"
+              amount={
+                Decimal.from(repay || 0).gt(maxRepay)
+                  ? original.debt.gt(Decimal.from(repay || 0))
+                    ? original.debt.sub(Decimal.from(repay || 0)).prettify(2)
+                    : Decimal.ZERO.prettify(2)
+                  : original.debt.sub(Decimal.from(repay || 0)).prettify(2)
+              }
+              unit={COIN}
+              tooltip="The total amount of LUSD your Trove will hold"
             />
           )}
 

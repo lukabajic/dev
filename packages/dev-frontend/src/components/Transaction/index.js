@@ -115,7 +115,7 @@ export function Transaction({ id, tooltip, showFailure, requires, send, children
     <Tippy
       className={classes.wrapper}
       interactive={true}
-      placement="bottom"
+      placement="right"
       content={tooltip}
       maxWidth="268px"
     >

@@ -11,6 +11,7 @@ import { Spinner } from "../../Loader";
 import StaticRow from "../../StaticRow";
 import { useTransactionFunction } from "../../Transaction";
 import ErrorDescription from "../../ErrorDescription";
+import { InfoIcon } from "../../InfoIcon";
 import { Amount } from "../../Amount";
 import { useMyTransactionState } from "../../Transaction";
 
@@ -224,7 +225,10 @@ close trove?"
                 >
                   {liquidationRisk}
                 </p>
-                <p className={classes.troveRisksInfo}>liquidation price</p>
+                <p className={classes.troveRisksInfo}>
+                  liquidation price{" "}
+                  <InfoIcon tooltip="ETH value in USD at which Trove CR will drop below 110%, and will be liquidated." />
+                </p>
                 <p className={classes.troveRisksAmount}>
                   {trove.debt.mulDiv(1.1, trove.collateral).prettify()} $
                 </p>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import cn from "classnames";
 
 import { Decimal } from "@liquity/lib-base";
@@ -12,7 +12,8 @@ import Button from "../../Button";
 import Modal from "../../Modal";
 import Input from "../../Input";
 import ErrorDescription from "../../ErrorDescription";
-import { Amount } from "../../ActionDescription";
+import ActionDescription from "../../ActionDescription";
+import { Amount } from "../../Amount";
 
 import { useStakingView } from "./../context/StakingViewContext";
 import StakingManagerAction from "../StakingManagerAction";
@@ -25,6 +26,22 @@ const select = ({ lqtyBalance, totalStakedLQTY, lusdBalance }) => ({
   totalStakedLQTY,
   lusdBalance
 });
+
+const validate = ({ change, lqtyBalance }) =>
+  !change
+    ? [undefined, undefined]
+    : change.stakeLQTY?.gt(lqtyBalance)
+    ? [
+        undefined,
+        <ErrorDescription>
+          The amount you're trying to stake exceeds your balance by{" "}
+          <Amount>
+            {change.stakeLQTY.sub(lqtyBalance).prettify()} {GT}
+          </Amount>
+          .
+        </ErrorDescription>
+      ]
+    : [change, undefined];
 
 const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, dispatchView }) => {
   const { lqtyBalance, totalStakedLQTY } = useLiquitySelector(select);
@@ -44,20 +61,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
 
   const change = originalStake.whatChanged(editedLQTY);
 
-  const [validChange, error] = !change
-    ? [undefined, undefined]
-    : change.stakeLQTY?.gt(lqtyBalance)
-    ? [
-        undefined,
-        <ErrorDescription>
-          The amount you're trying to stake exceeds your balance by{" "}
-          <Amount>
-            {change.stakeLQTY.sub(lqtyBalance).prettify()} {GT}
-          </Amount>
-          .
-        </ErrorDescription>
-      ]
-    : [change, undefined];
+  const [validChange, error] = validate({ change, lqtyBalance });
 
   return (
     <div className={classes.wrapper}>
@@ -128,7 +132,11 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
               maxedOut={Decimal.from(increment || 0).eq(lqtyBalance)}
             />
 
-            {error}
+            {error || (
+              <ActionDescription>
+                Adjusting the position automatically collects rewards.
+              </ActionDescription>
+            )}
 
             <div className={classes.modalActions}>
               {validChange ? (
@@ -170,17 +178,20 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
               maxedOut={Decimal.from(decrement || 0).eq(staked)}
             />
 
-            {error}
-
-            {Decimal.from(decrement || 0).gt(originalStake.stakedLQTY) && (
-              <ErrorDescription>
-                The amount you're trying to unstake exceeds your stake by{" "}
-                <Amount>
-                  {Decimal.from(decrement).sub(originalStake.stakedLQTY).prettify()} {GT}
-                </Amount>
-                .
-              </ErrorDescription>
-            )}
+            {error ||
+              (Decimal.from(decrement || 0).gt(originalStake.stakedLQTY) ? (
+                <ErrorDescription>
+                  The amount you're trying to unstake exceeds your stake by{" "}
+                  <Amount>
+                    {Decimal.from(decrement).sub(originalStake.stakedLQTY).prettify()} {GT}
+                  </Amount>
+                  .
+                </ErrorDescription>
+              ) : (
+                <ActionDescription>
+                  Adjusting the position automatically collects rewards.
+                </ActionDescription>
+              ))}
 
             <div className={classes.modalActions}>
               {validChange && !Decimal.from(decrement || 0).gt(originalStake.stakedLQTY) ? (

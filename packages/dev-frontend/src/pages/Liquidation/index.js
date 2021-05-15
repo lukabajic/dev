@@ -13,6 +13,7 @@ import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { Transaction } from "../../components/Transaction";
 import { LiquidationManager } from "../../components/LiquidationManager";
 import Button from "../../components/Button";
+import { InfoIcon } from "../../components/InfoIcon";
 import { Spinner } from "../../components/Loader";
 import CopyToClipboard from "../../components/CopyToClipboard";
 
@@ -87,6 +88,14 @@ const RiskyTroves = ({ pageSize = 10 }) => {
     }
   };
 
+  const goToLastPage = () => {
+    setPage(numberOfPages - 1);
+  };
+
+  const goToFirstPage = () => {
+    setPage(0);
+  };
+
   useEffect(() => {
     if (page !== clampedPage) {
       setPage(clampedPage);
@@ -156,6 +165,12 @@ const RiskyTroves = ({ pageSize = 10 }) => {
               of {numberOfTroves}
             </p>
 
+            {page > 0 && (
+              <Button secondary uppercase className={classes.goToLast} onClick={goToFirstPage}>
+                first page
+              </Button>
+            )}
+
             <Button
               className={classes.arrowButton}
               onClick={previousPage}
@@ -171,6 +186,12 @@ const RiskyTroves = ({ pageSize = 10 }) => {
             >
               <ion-icon name="chevron-forward-outline"></ion-icon>
             </Button>
+
+            {page !== numberOfPages - 1 && (
+              <Button secondary uppercase className={classes.goToLast} onClick={goToLastPage}>
+                last page
+              </Button>
+            )}
 
             <Button onClick={forceReload} className={classes.reloadButton}>
               <ion-icon name="refresh-outline"></ion-icon>
@@ -205,11 +226,14 @@ const RiskyTroves = ({ pageSize = 10 }) => {
                 Liquidation
                 <br />
                 Price <span className={classes.tableHeadUnit}>$</span>
+                <InfoIcon tooltip="ETH value in USD at which Trove CR will drop below 110%, and will be liquidated." />
               </p>
             </div>
             <div className={classes.tableHeadBox}>
               <p className={classes.tableHeadText}>Potential Profit</p>
-              <p className={classes.tableHeadUnit}>{COIN}</p>
+              <p className={classes.tableHeadUnit}>
+                {COIN} <InfoIcon tooltip="Profit of liquidation for Stability Pool in LUSD." />
+              </p>
             </div>
             <Button disabled className={classes.hiddenButton}>
               Liquidate

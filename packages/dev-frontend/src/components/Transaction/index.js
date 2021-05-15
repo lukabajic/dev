@@ -1,14 +1,14 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import { hexDataSlice, hexDataLength } from "@ethersproject/bytes";
 import { defaultAbiCoder } from "@ethersproject/abi";
+import Tippy from "@tippyjs/react";
 
-import "react-circular-progressbar/dist/styles.css";
+import { useLiquity } from "../../hooks/LiquityContext";
 
-import { useLiquity } from "../hooks/LiquityContext";
+import Modal from "./../Modal";
+import { Spinner } from "./../Loader";
 
-import { Tooltip } from "./Tooltips";
-import Modal from "./Modal";
-import { Spinner } from "./Loader";
+import classes from "./Transaction.module.css";
 
 const TransactionContext = React.createContext(undefined);
 
@@ -76,15 +76,7 @@ export const useTransactionFunction = (id, send) => {
   return [sendTransaction, transactionState];
 };
 
-export function Transaction({
-  id,
-  tooltip,
-  tooltipPlacement,
-  showFailure,
-  requires,
-  send,
-  children
-}) {
+export function Transaction({ id, tooltip, showFailure, requires, send, children }) {
   const [sendTransaction, transactionState] = useTransactionFunction(id, send);
   const trigger = React.Children.only(children);
 
@@ -119,7 +111,19 @@ export function Transaction({
     tooltip = failureReasons[0];
   }
 
-  return clonedTrigger;
+  return tooltip ? (
+    <Tippy
+      className={classes.wrapper}
+      interactive={true}
+      placement="right"
+      content={tooltip}
+      maxWidth="268px"
+    >
+      <span style={{ display: "inline-flex", flex: 0 }}>{clonedTrigger}</span>
+    </Tippy>
+  ) : (
+    <span style={{ display: "inline-flex", flex: 0 }}>{clonedTrigger}</span>
+  );
 }
 
 // Doesn't work on Kovan:

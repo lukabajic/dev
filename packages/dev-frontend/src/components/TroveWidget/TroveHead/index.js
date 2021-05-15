@@ -11,7 +11,8 @@ import { Spinner } from "../../Loader";
 import StaticRow from "../../StaticRow";
 import { useTransactionFunction } from "../../Transaction";
 import ErrorDescription from "../../ErrorDescription";
-import { Amount } from "../../ActionDescription";
+import { InfoIcon } from "../../InfoIcon";
+import { Amount } from "../../Amount";
 import { useMyTransactionState } from "../../Transaction";
 
 import { COIN, ETH } from "../../../strings";
@@ -109,7 +110,8 @@ const ActiveTrove = () => {
     return () => {
       clearInterval(id);
     };
-  }, [fetchTroves]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const liquidationRisk = collateralRatio.mul(100).lt(150)
     ? "high"
@@ -223,7 +225,10 @@ close trove?"
                 >
                   {liquidationRisk}
                 </p>
-                <p className={classes.troveRisksInfo}>liquidation price</p>
+                <p className={classes.troveRisksInfo}>
+                  liquidation price{" "}
+                  <InfoIcon tooltip="ETH value in USD at which Trove CR will drop below 110%, and will be liquidated." />
+                </p>
                 <p className={classes.troveRisksAmount}>
                   {trove.debt.mulDiv(1.1, trove.collateral).prettify()} $
                 </p>

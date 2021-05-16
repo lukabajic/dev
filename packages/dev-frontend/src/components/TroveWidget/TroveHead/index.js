@@ -304,7 +304,7 @@ const LiquidatedTrove = () => {
 
   return (
     <>
-      <Heading>Your Trove has been redeemed</Heading>
+      <Heading>Your Trove has been liquidated</Heading>
       <Body>
         {hasSurplusCollateral
           ? "Please reclaim your remaining collateral before opening a new Trove."

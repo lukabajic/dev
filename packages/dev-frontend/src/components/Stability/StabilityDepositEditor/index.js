@@ -110,7 +110,7 @@ export const StabilityDepositEditor = ({
               )}
             </div>
 
-            <StaticRow label="Pool share" amount={newPoolShare.prettify(1)} unit="%" />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}

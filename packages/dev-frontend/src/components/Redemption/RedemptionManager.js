@@ -66,6 +66,12 @@ const RedemptionManager = () => {
   const myTransactionState = useMyTransactionState(transactionId);
 
   useEffect(() => {
+    if (myTransactionState.type === "confirmedOneShot") {
+      setValue("");
+    }
+  }, [myTransactionState]);
+
+  useEffect(() => {
     if (
       myTransactionState.type === "waitingForApproval" ||
       myTransactionState.type === "waitingForConfirmation"

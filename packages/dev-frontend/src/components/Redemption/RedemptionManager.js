@@ -10,6 +10,7 @@ import { LoadingOverlay } from "../LoadingOverlay";
 import StaticRow from "../StaticRow";
 import { Amount } from "../Amount";
 import ErrorDescription from "../ErrorDescription";
+import ActionDescription from "../ActionDescription";
 import { useMyTransactionState } from "../Transaction";
 import Input from "../Input";
 import RedemptionAction from "./RedemptionAction";
@@ -78,7 +79,7 @@ const RedemptionManager = () => {
     }
   }, [myTransactionState.type, setChangePending, setLUSDAmount]);
 
-  const [canRedeem, description] = validateRedemption({ total, price, lusdAmount, lusdBalance });
+  const [canRedeem, error] = validateRedemption({ total, price, lusdAmount, lusdBalance });
 
   return (
     <div className={classes.wrapper}>
@@ -100,7 +101,12 @@ const RedemptionManager = () => {
         autoFocus
       />
 
-      {description}
+      {error || (
+        <ActionDescription>
+          Please note that if entered amount leaves any trove starting from riskiest below minimal
+          total debt, the transaction will fail automatically.
+        </ActionDescription>
+      )}
 
       <div className={classes.action}>
         <RedemptionAction

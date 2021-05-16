@@ -13,7 +13,7 @@ const RedemptionAction = ({ transactionId, disabled, lusdAmount, maxRedemptionRa
   );
 
   return (
-    <Button primary uppercase large disabled={disabled} onClick={sendTransaction}>
+    <Button primary large disabled={disabled} onClick={sendTransaction}>
       Confirm
     </Button>
   );

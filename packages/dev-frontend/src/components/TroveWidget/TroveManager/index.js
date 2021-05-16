@@ -230,7 +230,7 @@ const TroveManager = ({ collateral, debt, activeTab }) => {
             Confirm
           </TroveAction>
         ) : (
-          <Button large primary disabled uppercase className={classes.action}>
+          <Button large primary disabled className={classes.action}>
             Confirm
           </Button>
         )}

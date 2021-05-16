@@ -325,12 +325,14 @@ export const TroveWithdraw = ({
 
       {(withdraw > 0 || repay > 0) && (
         <div className={classes.statickInfo}>
-          <StaticRow
-            label="Withdraw"
-            inputId="trove-collateral-value"
-            amount={Decimal.from(withdraw || 0).prettify()}
-            unit={ETH}
-          />
+          {withdraw > 0 && (
+            <StaticRow
+              label="Withdraw"
+              inputId="trove-collateral-value"
+              amount={Decimal.from(withdraw || 0).prettify(4)}
+              unit={ETH}
+            />
+          )}
 
           {repay > 0 && (
             <StaticRow

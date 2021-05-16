@@ -285,7 +285,8 @@ export const TroveWithdraw = ({
   let maxWithdraw = null;
 
   if (data) {
-    const ETHEREUM_IN_USD = data.ethereum.usd;
+    // const ETHEREUM_IN_USD = data.ethereum.usd;
+    const ETHEREUM_IN_USD = price;
     const LUSD_IN_USD = data["liquity-usd"].usd;
 
     const ethereumInLusd = ETHEREUM_IN_USD / LUSD_IN_USD;

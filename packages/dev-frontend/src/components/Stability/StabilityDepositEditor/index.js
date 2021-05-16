@@ -98,7 +98,11 @@ export const StabilityDepositEditor = ({
               maxedOut={maxedOut}
             />
 
-            {error}
+            {error || (
+              <ActionDescription>
+                Adjusting the position automatically collects rewards.
+              </ActionDescription>
+            )}
 
             <div className={classes.modalActions}>
               {validChange ? (
@@ -195,8 +199,7 @@ export const StabilityDepositEditor = ({
                 </ErrorDescription>
               ) : !error ? (
                 <ActionDescription>
-                  You are withdrawing <Amount>{Decimal.from(decrement || 0).prettify(2)}</Amount>{" "}
-                  LUSD to your wallet.
+                  Adjusting the position automatically collects rewards.
                 </ActionDescription>
               ) : null)}
 

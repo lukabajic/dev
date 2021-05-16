@@ -2,7 +2,12 @@ import { useState, useEffect, useCallback } from "react";
 import cn from "classnames";
 
 import { useLiquitySelector } from "@liquity/lib-react";
-import { CRITICAL_COLLATERAL_RATIO, Decimal, Percent } from "@liquity/lib-base";
+import {
+  CRITICAL_COLLATERAL_RATIO,
+  Decimal,
+  Percent,
+  LUSD_LIQUIDATION_RESERVE
+} from "@liquity/lib-base";
 import { useLiquity } from "../../../hooks/LiquityContext";
 
 import Button from "../../Button";
@@ -163,7 +168,14 @@ close trove?"
               unit={ETH}
               boldAmount
             />
-            <StaticRow label="Repay" amount={trove.debt.prettify(2)} unit={COIN} boldAmount />
+
+            <StaticRow
+              label="Repay"
+              tooltip={`Total Debt - Liquidation Reserve (${LUSD_LIQUIDATION_RESERVE} LUSD)`}
+              amount={trove.debt.sub(LUSD_LIQUIDATION_RESERVE).prettify(2)}
+              unit={COIN}
+              boldAmount
+            />
 
             {trove.debt.gt(lusdBalance) && (
               <ErrorDescription>

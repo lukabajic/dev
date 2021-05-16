@@ -39,6 +39,7 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="Stake"
               unit={LP}
               icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}

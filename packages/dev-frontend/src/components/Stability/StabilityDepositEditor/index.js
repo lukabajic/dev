@@ -83,6 +83,7 @@ export const StabilityDepositEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="stake"
               unit={COIN}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
@@ -125,6 +126,7 @@ export const StabilityDepositEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="stake"
               unit={COIN}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
@@ -167,6 +169,7 @@ export const StabilityDepositEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="unstake"
               unit={COIN}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}

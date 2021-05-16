@@ -152,15 +152,3 @@ const StabilityDepositManager = () => {
 };
 
 export default StabilityDepositManager;
-
-// <Button variant="cancel" onClick={handleCancel}>
-// Cancel
-// </Button>
-
-// {validChange ? (
-//   <StabilityDepositAction transactionId={transactionId} change={validChange}>
-//     Confirm
-//   </StabilityDepositAction>
-// ) : (
-//   <Button disabled>Confirm</Button>
-// )}

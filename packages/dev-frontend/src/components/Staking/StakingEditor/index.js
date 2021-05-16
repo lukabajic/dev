@@ -104,6 +104,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
             </div>
 
             <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={GT} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -151,6 +152,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
             </div>
 
             <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={GT} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -207,6 +209,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
             </div>
 
             <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={GT} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}

@@ -117,6 +117,7 @@ export const Adjusting = () => {
               amount={liquidityMiningStake.add(Decimal.from(increment || 0)).prettify(2)}
               unit={LP}
             />
+            <StaticRow label="Pool share" amount={poolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -185,6 +186,7 @@ export const Adjusting = () => {
               }
               unit={LP}
             />
+            <StaticRow label="Pool share" amount={poolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}

@@ -158,6 +158,7 @@ export const StabilityDepositEditor = ({
             </div>
 
             <StaticRow label="Staked" amount={editedLUSD.prettify(2)} unit={COIN} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -214,6 +215,7 @@ export const StabilityDepositEditor = ({
             </div>
 
             <StaticRow label="Staked" amount={editedLUSD.prettify(2)} unit={COIN} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -231,9 +233,7 @@ export const StabilityDepositEditor = ({
           label="Reward"
           amount={reward.prettify(2)}
           unit={GT}
-          tooltip=" Although the LQTY rewards accrue every minute, the value on the UI only updates
-                      when a user transacts with the Stability Pool. Therefore you may receive more
-                      rewards than is displayed when you claim or adjust your deposit."
+          tooltip="Although the LQTY rewards accrue every minute, the value on the UI only updates when a user transacts with the Stability Pool. Therefore you may receive more rewards than is displayed when you claim or adjust your deposit."
         />
       </div>
 

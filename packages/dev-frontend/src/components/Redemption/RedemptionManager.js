@@ -101,12 +101,19 @@ const RedemptionManager = () => {
         autoFocus
       />
 
-      {error || (
-        <ActionDescription>
-          Please note that if entered amount leaves any trove starting from riskiest below minimal
-          total debt, the transaction will fail automatically.
-        </ActionDescription>
-      )}
+      {error ||
+        (!value && (
+          <>
+            <ActionDescription>
+              Redemption is not for repaying your loan. To repay your loan, adjust your Trove on
+              Withdraw tab, or press Close Trove button above.
+              <br />
+              <br />
+              Please note that if entered amount leaves any trove starting from riskiest below
+              minimal total debt, the transaction will fail automatically.
+            </ActionDescription>
+          </>
+        ))}
 
       <div className={classes.action}>
         <RedemptionAction

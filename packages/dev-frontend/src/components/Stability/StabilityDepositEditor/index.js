@@ -98,11 +98,7 @@ export const StabilityDepositEditor = ({
               maxedOut={maxedOut}
             />
 
-            {error || (
-              <ActionDescription>
-                Adjusting the position automatically collects rewards.
-              </ActionDescription>
-            )}
+            {error}
 
             <div className={classes.modalActions}>
               {validChange ? (
@@ -145,7 +141,11 @@ export const StabilityDepositEditor = ({
               maxedOut={Decimal.from(increment || 0).eq(lusdBalance)}
             />
 
-            {error}
+            {error || (
+              <ActionDescription>
+                Adjusting the position automatically collects rewards.
+              </ActionDescription>
+            )}
 
             <div className={classes.modalActions}>
               {validChange && !editedLUSD.gt(lusdBalance) ? (
@@ -197,11 +197,11 @@ export const StabilityDepositEditor = ({
                   </Amount>
                   .
                 </ErrorDescription>
-              ) : !error ? (
+              ) : (
                 <ActionDescription>
                   Adjusting the position automatically collects rewards.
                 </ActionDescription>
-              ) : null)}
+              ))}
 
             <div className={classes.modalActions}>
               {validChange && !Decimal.from(decrement || 0).gt(originalDeposit.currentLUSD) ? (

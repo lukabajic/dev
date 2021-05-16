@@ -50,7 +50,7 @@ const reduce = (state, action) => {
       return { ...state, changePending: false };
 
     case "setDeposit":
-      return { ...state, editedLUSD: Decimal.from(action.newValue) };
+      return { ...state, editedLUSD: Decimal.from(action.newValue || 0) };
 
     case "revert":
       return { ...state, editedLUSD: originalDeposit.currentLUSD };

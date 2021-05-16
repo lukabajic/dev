@@ -12,7 +12,7 @@ import { useLiquitySelector } from "@liquity/lib-react";
 import { LoadingOverlay } from "../../LoadingOverlay";
 import Input from "../../Input";
 import StaticRow from "../../StaticRow";
-import { WithdrawPreview } from "../../../pages/WalletConnector/Preview";
+import { WithdrawPreview, DepositPreview } from "../../../pages/WalletConnector/Preview";
 import ErrorDescription from "../../ErrorDescription";
 
 import { ETH, COIN } from "../../../strings";
@@ -30,7 +30,12 @@ const getColor = ratio =>
     ? "danger"
     : "muted";
 
-const select = ({ price, accountBalance, lusdBalance }) => ({ price, accountBalance, lusdBalance });
+const select = ({ price, accountBalance, lusdBalance, hasSurplusCollateral }) => ({
+  price,
+  accountBalance,
+  lusdBalance,
+  hasSurplusCollateral
+});
 
 export const TroveDeposit = ({
   children,
@@ -40,7 +45,8 @@ export const TroveDeposit = ({
   borrowingRate,
   changePending,
   dispatch,
-  transactionType
+  transactionType,
+  hasSurplusCollateral
 }) => {
   const { price, accountBalance } = useLiquitySelector(select);
   const [deposit, setDeposit] = useState("");
@@ -82,37 +88,43 @@ export const TroveDeposit = ({
 
   return (
     <div className={classes.wrapper}>
-      <Input
-        label="deposit"
-        placeholder={Decimal.from(deposit || 0).prettify(4)}
-        unit={ETH}
-        value={deposit}
-        onChange={v => {
-          setDeposit(v);
-          dispatch({ type: "setCollateral", newValue: v });
-        }}
-        available={`Wallet: ${maxEth.prettify(4)}`}
-        icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
-        maxAmount={maxEth.toString()}
-        maxedOut={maxEth.toString() === deposit.toString()}
-        min={0}
-        step={0.1}
-        autoFocus
-      />
+      {hasSurplusCollateral ? (
+        <DepositPreview onClick={() => {}} />
+      ) : (
+        <>
+          <Input
+            label="deposit"
+            placeholder={Decimal.from(deposit || 0).prettify(4)}
+            unit={ETH}
+            value={deposit}
+            onChange={v => {
+              setDeposit(v);
+              dispatch({ type: "setCollateral", newValue: v });
+            }}
+            available={`Wallet: ${maxEth.prettify(4)}`}
+            icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
+            maxAmount={maxEth.toString()}
+            maxedOut={maxEth.toString() === deposit.toString()}
+            min={0}
+            step={0.1}
+            autoFocus
+          />
 
-      <Input
-        label="borrow"
-        placeholder={Decimal.from(borrow || 0).prettify(4)}
-        unit={COIN}
-        value={borrow}
-        onChange={v => {
-          setBorrow(v);
-          dispatch({ type: "setDebt", newValue: v, fee: totalFee });
-        }}
-        icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
-        min={0}
-        step={100}
-      />
+          <Input
+            label="borrow"
+            placeholder={Decimal.from(borrow || 0).prettify(4)}
+            unit={COIN}
+            value={borrow}
+            onChange={v => {
+              setBorrow(v);
+              dispatch({ type: "setDebt", newValue: v, fee: totalFee });
+            }}
+            icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+            min={0}
+            step={100}
+          />
+        </>
+      )}
 
       {children}
 
@@ -209,7 +221,7 @@ export const TroveWithdraw = ({
   dispatch,
   transactionType
 }) => {
-  const { price, lusdBalance } = useLiquitySelector(select);
+  const { price, lusdBalance, hasSurplusCollateral } = useLiquitySelector(select);
   const [withdraw, setWithdraw] = useState("");
   const [repay, setRepay] = useState("");
   const [data, setData] = useState(null);
@@ -286,40 +298,46 @@ export const TroveWithdraw = ({
 
   return (
     <div className={classes.wrapper}>
-      <Input
-        label="withdraw"
-        placeholder={Decimal.from(withdraw || 0).prettify(4)}
-        unit={ETH}
-        value={withdraw}
-        onChange={v => {
-          setWithdraw(v);
-          dispatch({ type: "substractCollateral", newValue: v });
-        }}
-        available={`Available: ${maxWithdraw?.prettify(4) || ""}`}
-        icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
-        maxAmount={maxWithdraw?.toString() || ""}
-        maxedOut={maxWithdraw?.toString() === withdraw.toString()}
-        min={0}
-        step={0.1}
-        autoFocus
-      />
+      {hasSurplusCollateral ? (
+        <WithdrawPreview onClick={() => {}} />
+      ) : (
+        <>
+          <Input
+            label="withdraw"
+            placeholder={Decimal.from(withdraw || 0).prettify(4)}
+            unit={ETH}
+            value={withdraw}
+            onChange={v => {
+              setWithdraw(v);
+              dispatch({ type: "substractCollateral", newValue: v });
+            }}
+            available={`Available: ${maxWithdraw?.prettify(4) || ""}`}
+            icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
+            maxAmount={maxWithdraw?.toString() || ""}
+            maxedOut={maxWithdraw?.toString() === withdraw.toString()}
+            min={0}
+            step={0.1}
+            autoFocus
+          />
 
-      <Input
-        label="repay"
-        placeholder={Decimal.from(repay || 0).prettify(4)}
-        unit={COIN}
-        value={repay}
-        onChange={v => {
-          setRepay(v);
-          dispatch({ type: "substractDebt", newValue: v });
-        }}
-        available={`Available: ${maxRepay.prettify(2)}`}
-        icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
-        maxAmount={maxRepay.toString()}
-        maxedOut={maxRepay.toString() === repay.toString()}
-        min={0}
-        step={100}
-      />
+          <Input
+            label="repay"
+            placeholder={Decimal.from(repay || 0).prettify(4)}
+            unit={COIN}
+            value={repay}
+            onChange={v => {
+              setRepay(v);
+              dispatch({ type: "substractDebt", newValue: v });
+            }}
+            available={`Available: ${maxRepay.prettify(2)}`}
+            icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+            maxAmount={maxRepay.toString()}
+            maxedOut={maxRepay.toString() === repay.toString()}
+            min={0}
+            step={100}
+          />
+        </>
+      )}
 
       {children}
 

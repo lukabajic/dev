@@ -52,7 +52,7 @@ export const WithdrawPreview = ({ onClick, children }) => (
   </>
 );
 
-const DepositPreview = ({ onClick }) => (
+export const DepositPreview = ({ onClick }) => (
   <>
     <Row label="deposit" unit={ETH}>
       <StaticAmounts

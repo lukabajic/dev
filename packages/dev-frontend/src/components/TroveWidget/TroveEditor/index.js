@@ -14,6 +14,7 @@ import Input from "../../Input";
 import StaticRow from "../../StaticRow";
 import { WithdrawPreview, DepositPreview } from "../../../pages/WalletConnector/Preview";
 import ErrorDescription from "../../ErrorDescription";
+import ActionDescription from "../../ActionDescription";
 
 import { ETH, COIN } from "../../../strings";
 
@@ -337,6 +338,13 @@ export const TroveWithdraw = ({
             step={100}
           />
         </>
+      )}
+
+      {maxWithdraw?.toString() === withdraw.toString() && (
+        <ActionDescription>
+          Position with 110% CR is highly risky. Keeping your CR above 150% can help avoid
+          liquidation
+        </ActionDescription>
       )}
 
       {children}

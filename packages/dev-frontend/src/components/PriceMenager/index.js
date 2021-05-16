@@ -3,6 +3,8 @@ import cn from "classnames";
 
 import { useLiquitySelector } from "@liquity/lib-react";
 
+import { InfoIcon } from "../InfoIcon";
+
 import { COIN, GT, ETH } from "../../strings";
 
 import classes from "./PriceManager.module.css";
@@ -17,27 +19,37 @@ const DATA = {
     order: 1,
     currency: COIN,
     icon: `${process.env.PUBLIC_URL}/icons/128-lusd-icon.svg`
+  },
+  ethereum: {
+    order: 0,
+    currency: ETH,
+    icon: `${process.env.PUBLIC_URL}/icons/ethereum-eth.svg`
   }
 };
 
-const DataRow = ({ currency, percentage, increase, amount, icon }) => (
+const DataRow = ({ currency, percentage, increase, amount, icon, tooltip }) => (
   <div className={classes.item}>
     <div className={classes.row}>
-      <div className={classes.currency}>{currency}</div>
+      <div className={classes.currency}>
+        {currency}
+        {tooltip && <InfoIcon tooltip={tooltip} />}
+      </div>
       <div className={classes.icon}>
         <img src={icon} alt={currency} className={classes.iconImage} />
       </div>
     </div>
     <div className={classes.row}>
       <div className={classes.amount}>${amount}</div>
-      <div className={classes.percentage}>{percentage}%</div>
-      <div
-        className={cn(classes.change, {
-          [classes.decrease]: !increase
-        })}
-      >
-        <ion-icon name="caret-up-outline"></ion-icon>
-      </div>
+      {percentage && <div className={classes.percentage}>{percentage}%</div>}
+      {increase !== undefined && (
+        <div
+          className={cn(classes.change, {
+            [classes.decrease]: !increase
+          })}
+        >
+          <ion-icon name="caret-up-outline"></ion-icon>
+        </div>
+      )}
     </div>
   </div>
 );
@@ -84,12 +96,10 @@ const PriceManager = () => {
         key={ETH}
         currency={ETH}
         icon={`${process.env.PUBLIC_URL}/icons/ethereum-eth.svg`}
-        percentage={data.ethereum.usd_24h_change.toFixed(1).toString().replace("-", "")}
-        increase={data.ethereum.usd_24h_change > 0}
         amount={price.prettify(2)}
+        tooltip="Oracle price"
       />
       {Object.keys(data)
-        .filter(k => k !== "ethereum")
         .sort((a, b) => DATA[a].order - DATA[b].order)
         .map(c => (
           <DataRow

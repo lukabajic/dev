@@ -31,11 +31,11 @@ const getColor = ratio =>
     ? "danger"
     : "muted";
 
-const select = ({ price, accountBalance, lusdBalance, hasSurplusCollateral }) => ({
+const select = ({ price, accountBalance, lusdBalance, collateralSurplusBalance }) => ({
   price,
   accountBalance,
   lusdBalance,
-  hasSurplusCollateral
+  hasSurplusCollateral: !collateralSurplusBalance.isZero
 });
 
 export const TroveDeposit = ({
@@ -46,10 +46,9 @@ export const TroveDeposit = ({
   borrowingRate,
   changePending,
   dispatch,
-  transactionType,
-  hasSurplusCollateral
+  transactionType
 }) => {
-  const { price, accountBalance } = useLiquitySelector(select);
+  const { price, accountBalance, hasSurplusCollateral } = useLiquitySelector(select);
   const [deposit, setDeposit] = useState("");
   const [borrow, setBorrow] = useState("");
 

@@ -155,7 +155,7 @@ const feeFrom = (original, edited, borrowingRate) => {
 const select = state => ({
   fees: state.fees,
   validationContext: selectForTroveChangeValidation(state),
-  hasSurplusCollateral: state.hasSurplusCollateral
+  hasSurplusCollateral: !state.collateralSurplusBalance.isZero
 });
 
 const transactionIdPrefix = "trove-";

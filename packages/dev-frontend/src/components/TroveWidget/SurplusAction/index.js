@@ -45,8 +45,8 @@ const SurplusAction = () => {
         id={myTransactionId}
         send={liquity.claimCollateralSurplus.bind(liquity, undefined)}
       >
-        <Button primary round large sx={{ mx: 2 }}>
-          Claim {collateralSurplusBalance.prettify()} ETH
+        <Button primary round large>
+          Claim {collateralSurplusBalance.prettify(4)} ETH
         </Button>
       </Transaction>
     </div>

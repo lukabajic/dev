@@ -116,6 +116,8 @@ const ActiveTrove = () => {
     if (myTransactionState.type === "confirmedOneShot") {
       fetchTroves();
     }
+
+    return () => {};
   }, [fetchTroves, myTransactionState]);
 
   useEffect(() => {

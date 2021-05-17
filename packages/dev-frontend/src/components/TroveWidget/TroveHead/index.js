@@ -69,6 +69,7 @@ const ActiveTrove = () => {
   const [expanded, setExpanded] = useState(expandedTroveInfo || false);
   const [loading, setLoading] = useState(false);
   const [troves, setTroves] = useState(null);
+  const [lusdInUsd, setLusdInUsd] = useState(null);
   const myTransactionState = useMyTransactionState(transactionIdMatcher);
 
   const { trove, price, lusdBalance, blockTag, total } = useLiquitySelector(selectActive);
@@ -99,6 +100,18 @@ const ActiveTrove = () => {
       });
   }, [blockTag, liquity]);
 
+  const fetchPrice = useCallback(() => {
+    fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=liquity-usd&vs_currencies=usd&include_24hr_change=true",
+      {
+        method: "GET"
+      }
+    )
+      .then(res => res.json())
+      .then(data => setLusdInUsd(data["liquity-usd"].usd))
+      .catch(console.warn);
+  }, []);
+
   useEffect(() => {
     if (myTransactionState.type === "confirmedOneShot") {
       fetchTroves();
@@ -107,9 +120,11 @@ const ActiveTrove = () => {
 
   useEffect(() => {
     fetchTroves();
+    fetchPrice();
 
     const id = setInterval(() => {
       fetchTroves();
+      fetchPrice();
     }, 10 * 60 * 1000);
 
     return () => {
@@ -130,13 +145,19 @@ const ActiveTrove = () => {
     debtInFrontOfMe = debtInFrontOfMe.add(troves[i].debt);
   }
 
-  const debtInFrontPct = total.debt.mulDiv(
-    100,
-    debtInFrontOfMe.gt(0) ? debtInFrontOfMe : Decimal.from(1)
-  );
-  const redemptionRisk = debtInFrontPct.lt(5)
+  const debtInFrontPct = debtInFrontOfMe.mulDiv(100, total.debt);
+
+  let lowerLimit = 5;
+  let upperLimit = 15;
+
+  if (lusdInUsd < 1) {
+    lowerLimit = 10;
+    upperLimit = 30;
+  }
+
+  const redemptionRisk = debtInFrontPct.lt(lowerLimit)
     ? "high"
-    : debtInFrontPct.gte(5) && debtInFrontPct.lte(15)
+    : debtInFrontPct.gte(lowerLimit) && debtInFrontPct.lte(upperLimit)
     ? "medium"
     : "low";
 

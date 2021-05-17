@@ -27,7 +27,7 @@ const Footer = () => (
       </a>
     </div>
     <div className={classes.email}>team@liquityland.com</div>
-    <div className={classes.version}>v1.0.2</div>
+    <div className={classes.version}>v1.0.3</div>
   </footer>
 );
 

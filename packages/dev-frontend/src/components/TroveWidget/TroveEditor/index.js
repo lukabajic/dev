@@ -42,7 +42,6 @@ export const TroveDeposit = ({
   children,
   original,
   edited,
-  fee,
   borrowingRate,
   changePending,
   dispatch,
@@ -72,6 +71,8 @@ export const TroveDeposit = ({
   useEffect(() => {
     dispatch({ type: "revert" });
   }, [dispatch]);
+
+  const fee = Decimal.from(borrow || 0).mul(borrowingRate);
 
   const feePct = new Percent(borrowingRate);
 
@@ -117,7 +118,13 @@ export const TroveDeposit = ({
             value={borrow}
             onChange={v => {
               setBorrow(v);
-              dispatch({ type: "setDebt", newValue: v, fee: totalFee });
+              dispatch({
+                type: "setDebt",
+                newValue: v,
+                fee: original.isEmpty
+                  ? LUSD_LIQUIDATION_RESERVE.add(Decimal.from(v || 0).mul(borrowingRate))
+                  : Decimal.from(v || 0).mul(borrowingRate)
+              });
             }}
             icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
             min={0}

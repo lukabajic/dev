@@ -211,7 +211,6 @@ const TroveManager = ({ collateral, debt, activeTab }) => {
     <TroveComponent
       original={original}
       edited={edited}
-      fee={feeFrom(original, edited, borrowingRate)}
       borrowingRate={borrowingRate}
       changePending={changePending}
       dispatch={dispatch}

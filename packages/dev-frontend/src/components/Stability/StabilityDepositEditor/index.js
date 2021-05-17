@@ -83,6 +83,7 @@ export const StabilityDepositEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="stake"
               unit={COIN}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
@@ -109,7 +110,7 @@ export const StabilityDepositEditor = ({
               )}
             </div>
 
-            <StaticRow label="Pool share" amount={newPoolShare.prettify(1)} unit="%" />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -125,6 +126,7 @@ export const StabilityDepositEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="stake"
               unit={COIN}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
@@ -139,7 +141,11 @@ export const StabilityDepositEditor = ({
               maxedOut={Decimal.from(increment || 0).eq(lusdBalance)}
             />
 
-            {error}
+            {error || (
+              <ActionDescription>
+                Adjusting the position automatically collects rewards.
+              </ActionDescription>
+            )}
 
             <div className={classes.modalActions}>
               {validChange && !editedLUSD.gt(lusdBalance) ? (
@@ -152,6 +158,7 @@ export const StabilityDepositEditor = ({
             </div>
 
             <StaticRow label="Staked" amount={editedLUSD.prettify(2)} unit={COIN} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -167,6 +174,7 @@ export const StabilityDepositEditor = ({
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="unstake"
               unit={COIN}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
@@ -190,12 +198,11 @@ export const StabilityDepositEditor = ({
                   </Amount>
                   .
                 </ErrorDescription>
-              ) : !error ? (
+              ) : (
                 <ActionDescription>
-                  You are withdrawing <Amount>{Decimal.from(decrement || 0).prettify(2)}</Amount>{" "}
-                  LUSD to your wallet.
+                  Adjusting the position automatically collects rewards.
                 </ActionDescription>
-              ) : null)}
+              ))}
 
             <div className={classes.modalActions}>
               {validChange && !Decimal.from(decrement || 0).gt(originalDeposit.currentLUSD) ? (
@@ -208,6 +215,7 @@ export const StabilityDepositEditor = ({
             </div>
 
             <StaticRow label="Staked" amount={editedLUSD.prettify(2)} unit={COIN} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -225,9 +233,7 @@ export const StabilityDepositEditor = ({
           label="Reward"
           amount={reward.prettify(2)}
           unit={GT}
-          tooltip=" Although the LQTY rewards accrue every minute, the value on the UI only updates
-                      when a user transacts with the Stability Pool. Therefore you may receive more
-                      rewards than is displayed when you claim or adjust your deposit."
+          tooltip="Although the LQTY rewards accrue every minute, the value on the UI only updates when a user transacts with the Stability Pool. Therefore you may receive more rewards than is displayed when you claim or adjust your deposit."
         />
       </div>
 

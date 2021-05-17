@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import { Decimal } from "@liquity/lib-base";
+import { useLiquitySelector } from "@liquity/lib-react";
+
 import { LP, GT } from "../../../../strings";
 import { LoadingOverlay } from "../../../LoadingOverlay";
 import { useMyTransactionState } from "../../../Transaction";
@@ -18,7 +20,10 @@ import classes from "./Staking.module.css";
 
 const transactionId = /farm-/;
 
+const selector = ({ totalStakedUniTokens }) => ({ totalStakedUniTokens });
+
 export const Staking = ({ hasApproved, dispatchEvent }) => {
+  const { totalStakedUniTokens } = useLiquitySelector(selector);
   const transactionState = useMyTransactionState(transactionId);
   const isTransactionPending =
     transactionState.type === "waitingForApproval" ||
@@ -26,6 +31,10 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
 
   const [stake, setStake] = useState(null);
   const { maximumStake, hasSetMaximumStake, isValid } = useValidationState(Decimal.from(stake || 0));
+
+  const nextTotalStakedUniTokens = totalStakedUniTokens.add(stake || 0);
+
+  const poolShare = Decimal.from(stake || 0).mulDiv(100, nextTotalStakedUniTokens);
 
   return (
     <>
@@ -39,6 +48,7 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="Stake"
               unit={LP}
               icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
@@ -58,6 +68,7 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
             </div>
 
             <StaticRow label="Staked" amount={Decimal.from(stake || 0).prettify(2)} unit={LP} />
+            <StaticRow label="Pool share" amount={poolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}

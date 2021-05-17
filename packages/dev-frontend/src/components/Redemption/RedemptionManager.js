@@ -10,6 +10,7 @@ import { LoadingOverlay } from "../LoadingOverlay";
 import StaticRow from "../StaticRow";
 import { Amount } from "../Amount";
 import ErrorDescription from "../ErrorDescription";
+import ActionDescription from "../ActionDescription";
 import { useMyTransactionState } from "../Transaction";
 import Input from "../Input";
 import RedemptionAction from "./RedemptionAction";
@@ -65,6 +66,12 @@ const RedemptionManager = () => {
   const myTransactionState = useMyTransactionState(transactionId);
 
   useEffect(() => {
+    if (myTransactionState.type === "confirmedOneShot") {
+      setValue("");
+    }
+  }, [myTransactionState]);
+
+  useEffect(() => {
     if (
       myTransactionState.type === "waitingForApproval" ||
       myTransactionState.type === "waitingForConfirmation"
@@ -78,7 +85,7 @@ const RedemptionManager = () => {
     }
   }, [myTransactionState.type, setChangePending, setLUSDAmount]);
 
-  const [canRedeem, description] = validateRedemption({ total, price, lusdAmount, lusdBalance });
+  const [canRedeem, error] = validateRedemption({ total, price, lusdAmount, lusdBalance });
 
   return (
     <div className={classes.wrapper}>
@@ -100,7 +107,19 @@ const RedemptionManager = () => {
         autoFocus
       />
 
-      {description}
+      {error ||
+        (!value && (
+          <>
+            <ActionDescription>
+              Redemption is not for repaying your loan. To repay your loan, adjust your Trove on
+              Withdraw tab, or press Close Trove button above.
+              <br />
+              <br />
+              Please note that if entered amount leaves any trove starting from riskiest below
+              minimal total debt, the transaction will fail automatically.
+            </ActionDescription>
+          </>
+        ))}
 
       <div className={classes.action}>
         <RedemptionAction

@@ -58,25 +58,33 @@ export const Adjusting = () => {
     transactionState.type === "waitingForApproval" ||
     transactionState.type === "waitingForConfirmation";
 
-  const isDirty = !liquidityMiningStake.eq(liquidityMiningStake);
+  const hasStakeAndRewards = !liquidityMiningStake.isZero && !liquidityMiningLQTYReward.isZero;
+
+  const cannotDecrement = Decimal.from(decrement || 0).gt(liquidityMiningStake);
+
+  const incrementedAmount = liquidityMiningStake.add(Decimal.from(increment || 0));
+  const decrementedAmount = !cannotDecrement
+    ? liquidityMiningStake.sub(Decimal.from(decrement || 0))
+    : Decimal.ZERO;
+
+  const isDirty =
+    !incrementedAmount.eq(liquidityMiningStake) || !decrementedAmount.eq(liquidityMiningStake);
 
   const nextTotalStakedUniTokens = isDirty
     ? totalStakedUniTokens.sub(liquidityMiningStake).add(liquidityMiningStake)
     : totalStakedUniTokens;
 
-  const poolShare = liquidityMiningStake.mulDiv(100, nextTotalStakedUniTokens);
-
-  const hasStakeAndRewards = !liquidityMiningStake.isZero && !liquidityMiningLQTYReward.isZero;
-
-  const cannotDecrement = Decimal.from(decrement || 0).gt(liquidityMiningStake);
+  const originalPoolShare = liquidityMiningStake.mulDiv(100, totalStakedUniTokens);
+  const incrementedPoolShare = incrementedAmount.mulDiv(100, nextTotalStakedUniTokens);
+  const decrementedPoolShare = decrementedAmount.mulDiv(100, nextTotalStakedUniTokens);
 
   return (
     <>
       <div className={classes.infos}>
-        {poolShare.infinite ? (
+        {originalPoolShare.infinite ? (
           <StaticRow label="Pool share" inputId="farm-share" amount="N/A" />
         ) : (
-          <StaticRow label="Pool share" amount={poolShare.prettify(4)} unit="%" />
+          <StaticRow label="Pool share" amount={originalPoolShare.prettify(4)} unit="%" />
         )}
 
         <StaticRow label="Reward" amount={liquidityMiningLQTYReward.prettify(2)} unit={GT} />
@@ -92,6 +100,7 @@ export const Adjusting = () => {
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="stake"
               unit={LP}
               icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
@@ -105,17 +114,14 @@ export const Adjusting = () => {
               maxedOut={Decimal.from(increment || 0).eq(uniTokenBalance)}
             />
 
-            <Validation amount={liquidityMiningStake.add(Decimal.from(increment || 0))} />
+            <Validation amount={incrementedAmount} />
 
             <div className={classes.actions}>
-              <Confirm amount={liquidityMiningStake.add(Decimal.from(increment || 0))} />
+              <Confirm amount={incrementedAmount} />
             </div>
 
-            <StaticRow
-              label="Staked"
-              amount={liquidityMiningStake.add(Decimal.from(increment || 0)).prettify(2)}
-              unit={LP}
-            />
+            <StaticRow label="Staked" amount={incrementedAmount.prettify(2)} unit={LP} />
+            <StaticRow label="Pool share" amount={incrementedPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -130,6 +136,7 @@ export const Adjusting = () => {
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="unstake"
               unit={LP}
               icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
@@ -183,6 +190,7 @@ export const Adjusting = () => {
               }
               unit={LP}
             />
+            <StaticRow label="Pool share" amount={decrementedPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}

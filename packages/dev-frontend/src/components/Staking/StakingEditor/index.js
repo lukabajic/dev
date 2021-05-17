@@ -76,6 +76,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="stake"
               unit={GT}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
@@ -103,6 +104,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
             </div>
 
             <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={GT} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -118,6 +120,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="stake"
               unit={GT}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
@@ -149,6 +152,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
             </div>
 
             <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={GT} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}
@@ -164,6 +168,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
         >
           <div className={classes.modalContent}>
             <Input
+              autoFocus
               label="unstake"
               unit={GT}
               icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
@@ -204,6 +209,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
             </div>
 
             <StaticRow label="Staked" amount={editedLQTY.prettify(2)} unit={GT} />
+            <StaticRow label="Pool share" amount={newPoolShare.prettify(4)} unit="%" />
           </div>
         </Modal>
       )}

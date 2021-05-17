@@ -10,6 +10,7 @@ import { TroveDeposit, TroveWithdraw } from "../TroveEditor";
 import TroveAction from "../TroveAction";
 import useTroveView from "../context/TroveViewContext";
 import Button from "../../Button";
+import SurplusAction from "../SurplusAction";
 
 import {
   selectForTroveChangeValidation,
@@ -153,7 +154,8 @@ const feeFrom = (original, edited, borrowingRate) => {
 
 const select = state => ({
   fees: state.fees,
-  validationContext: selectForTroveChangeValidation(state)
+  validationContext: selectForTroveChangeValidation(state),
+  hasSurplusCollateral: !state.collateralSurplusBalance.isZero
 });
 
 const transactionIdPrefix = "trove-";
@@ -161,7 +163,7 @@ const transactionIdMatcher = new RegExp(`^${transactionIdPrefix}`);
 
 const TroveManager = ({ collateral, debt, activeTab }) => {
   const [{ original, edited, changePending }, dispatch] = useLiquityReducer(reduce, init);
-  const { fees, validationContext } = useLiquitySelector(select);
+  const { fees, validationContext, hasSurplusCollateral } = useLiquitySelector(select);
 
   useEffect(() => {
     if (collateral !== undefined) {
@@ -218,7 +220,9 @@ const TroveManager = ({ collateral, debt, activeTab }) => {
       <div className={classes.container}>
         {description}
 
-        {validChange ? (
+        {hasSurplusCollateral ? (
+          <SurplusAction />
+        ) : validChange ? (
           <TroveAction
             transactionId={`${transactionIdPrefix}${validChange.type}`}
             change={validChange}
@@ -230,7 +234,7 @@ const TroveManager = ({ collateral, debt, activeTab }) => {
             Confirm
           </TroveAction>
         ) : (
-          <Button large primary disabled uppercase className={classes.action}>
+          <Button large primary disabled className={classes.action}>
             Confirm
           </Button>
         )}

@@ -50,7 +50,7 @@ const reduce = (state, action) => {
       return { ...state, changePending: false };
 
     case "setDeposit":
-      return { ...state, editedLUSD: Decimal.from(action.newValue) };
+      return { ...state, editedLUSD: Decimal.from(action.newValue || 0) };
 
     case "revert":
       return { ...state, editedLUSD: originalDeposit.currentLUSD };
@@ -152,15 +152,3 @@ const StabilityDepositManager = () => {
 };
 
 export default StabilityDepositManager;
-
-// <Button variant="cancel" onClick={handleCancel}>
-// Cancel
-// </Button>
-
-// {validChange ? (
-//   <StabilityDepositAction transactionId={transactionId} change={validChange}>
-//     Confirm
-//   </StabilityDepositAction>
-// ) : (
-//   <Button disabled>Confirm</Button>
-// )}

@@ -212,7 +212,7 @@ const WalletConnector = ({ children }) => {
             text: "Cancel"
           }}
           content={
-            "Confirm the request that&apos;s just appeared." + isMetamaskConnection
+            isMetamaskConnection
               ? " If you can't see a request, open your MetaMask extension via your browser."
               : " If you can't see a request, you might have to open your wallet."
           }

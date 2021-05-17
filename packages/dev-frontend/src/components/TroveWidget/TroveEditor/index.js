@@ -12,8 +12,9 @@ import { useLiquitySelector } from "@liquity/lib-react";
 import { LoadingOverlay } from "../../LoadingOverlay";
 import Input from "../../Input";
 import StaticRow from "../../StaticRow";
-import { WithdrawPreview } from "../../../pages/WalletConnector/Preview";
+import { WithdrawPreview, DepositPreview } from "../../../pages/WalletConnector/Preview";
 import ErrorDescription from "../../ErrorDescription";
+import ActionDescription from "../../ActionDescription";
 
 import { ETH, COIN } from "../../../strings";
 
@@ -30,7 +31,12 @@ const getColor = ratio =>
     ? "danger"
     : "muted";
 
-const select = ({ price, accountBalance, lusdBalance }) => ({ price, accountBalance, lusdBalance });
+const select = ({ price, accountBalance, lusdBalance, collateralSurplusBalance }) => ({
+  price,
+  accountBalance,
+  lusdBalance,
+  hasSurplusCollateral: !collateralSurplusBalance.isZero
+});
 
 export const TroveDeposit = ({
   children,
@@ -42,7 +48,7 @@ export const TroveDeposit = ({
   dispatch,
   transactionType
 }) => {
-  const { price, accountBalance } = useLiquitySelector(select);
+  const { price, accountBalance, hasSurplusCollateral } = useLiquitySelector(select);
   const [deposit, setDeposit] = useState("");
   const [borrow, setBorrow] = useState("");
 
@@ -82,37 +88,43 @@ export const TroveDeposit = ({
 
   return (
     <div className={classes.wrapper}>
-      <Input
-        label="deposit"
-        placeholder={Decimal.from(deposit || 0).prettify(4)}
-        unit={ETH}
-        value={deposit}
-        onChange={v => {
-          setDeposit(v);
-          dispatch({ type: "setCollateral", newValue: v });
-        }}
-        available={`Wallet: ${maxEth.prettify(4)}`}
-        icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
-        maxAmount={maxEth.toString()}
-        maxedOut={maxEth.toString() === deposit.toString()}
-        min={0}
-        step={0.1}
-        autoFocus
-      />
+      {hasSurplusCollateral ? (
+        <DepositPreview onClick={() => {}} />
+      ) : (
+        <>
+          <Input
+            label="deposit"
+            placeholder={Decimal.from(deposit || 0).prettify(4)}
+            unit={ETH}
+            value={deposit}
+            onChange={v => {
+              setDeposit(v);
+              dispatch({ type: "setCollateral", newValue: v });
+            }}
+            available={`Wallet: ${maxEth.prettify(4)}`}
+            icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
+            maxAmount={maxEth.toString()}
+            maxedOut={maxEth.toString() === deposit.toString()}
+            min={0}
+            step={0.1}
+            autoFocus
+          />
 
-      <Input
-        label="borrow"
-        placeholder={Decimal.from(borrow || 0).prettify(4)}
-        unit={COIN}
-        value={borrow}
-        onChange={v => {
-          setBorrow(v);
-          dispatch({ type: "setDebt", newValue: v, fee: totalFee });
-        }}
-        icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
-        min={0}
-        step={100}
-      />
+          <Input
+            label="borrow"
+            placeholder={Decimal.from(borrow || 0).prettify(4)}
+            unit={COIN}
+            value={borrow}
+            onChange={v => {
+              setBorrow(v);
+              dispatch({ type: "setDebt", newValue: v, fee: totalFee });
+            }}
+            icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+            min={0}
+            step={100}
+          />
+        </>
+      )}
 
       {children}
 
@@ -209,7 +221,7 @@ export const TroveWithdraw = ({
   dispatch,
   transactionType
 }) => {
-  const { price, lusdBalance } = useLiquitySelector(select);
+  const { price, lusdBalance, hasSurplusCollateral } = useLiquitySelector(select);
   const [withdraw, setWithdraw] = useState("");
   const [repay, setRepay] = useState("");
   const [data, setData] = useState(null);
@@ -272,7 +284,8 @@ export const TroveWithdraw = ({
   let maxWithdraw = null;
 
   if (data) {
-    const ETHEREUM_IN_USD = data.ethereum.usd;
+    // const ETHEREUM_IN_USD = data.ethereum.usd;
+    const ETHEREUM_IN_USD = price;
     const LUSD_IN_USD = data["liquity-usd"].usd;
 
     const ethereumInLusd = ETHEREUM_IN_USD / LUSD_IN_USD;
@@ -286,51 +299,66 @@ export const TroveWithdraw = ({
 
   return (
     <div className={classes.wrapper}>
-      <Input
-        label="withdraw"
-        placeholder={Decimal.from(withdraw || 0).prettify(4)}
-        unit={ETH}
-        value={withdraw}
-        onChange={v => {
-          setWithdraw(v);
-          dispatch({ type: "substractCollateral", newValue: v });
-        }}
-        available={`Available: ${maxWithdraw?.prettify(4) || ""}`}
-        icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
-        maxAmount={maxWithdraw?.toString() || ""}
-        maxedOut={maxWithdraw?.toString() === withdraw.toString()}
-        min={0}
-        step={0.1}
-        autoFocus
-      />
+      {hasSurplusCollateral ? (
+        <WithdrawPreview onClick={() => {}} />
+      ) : (
+        <>
+          <Input
+            label="withdraw"
+            placeholder={Decimal.from(withdraw || 0).prettify(4)}
+            unit={ETH}
+            value={withdraw}
+            onChange={v => {
+              setWithdraw(v);
+              dispatch({ type: "substractCollateral", newValue: v });
+            }}
+            available={`Available: ${maxWithdraw?.prettify(4) || ""}`}
+            icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
+            maxAmount={maxWithdraw?.toString() || ""}
+            maxedOut={maxWithdraw?.toString() === withdraw.toString()}
+            min={0}
+            step={0.1}
+            autoFocus
+          />
 
-      <Input
-        label="repay"
-        placeholder={Decimal.from(repay || 0).prettify(4)}
-        unit={COIN}
-        value={repay}
-        onChange={v => {
-          setRepay(v);
-          dispatch({ type: "substractDebt", newValue: v });
-        }}
-        available={`Available: ${maxRepay.prettify(2)}`}
-        icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
-        maxAmount={maxRepay.toString()}
-        maxedOut={maxRepay.toString() === repay.toString()}
-        min={0}
-        step={100}
-      />
+          <Input
+            label="repay"
+            placeholder={Decimal.from(repay || 0).prettify(4)}
+            unit={COIN}
+            value={repay}
+            onChange={v => {
+              setRepay(v);
+              dispatch({ type: "substractDebt", newValue: v });
+            }}
+            available={`Available: ${maxRepay.prettify(2)}`}
+            icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+            maxAmount={maxRepay.toString()}
+            maxedOut={maxRepay.toString() === repay.toString()}
+            min={0}
+            step={100}
+          />
+        </>
+      )}
+
+      {maxWithdraw?.toString() === withdraw.toString() && (
+        <ActionDescription>
+          Position with 110% CR is highly risky. Keeping your CR above 150% can help avoid
+          liquidation
+        </ActionDescription>
+      )}
 
       {children}
 
       {(withdraw > 0 || repay > 0) && (
         <div className={classes.statickInfo}>
-          <StaticRow
-            label="Withdraw"
-            inputId="trove-collateral-value"
-            amount={Decimal.from(withdraw || 0).prettify()}
-            unit={ETH}
-          />
+          {withdraw > 0 && (
+            <StaticRow
+              label="Withdraw"
+              inputId="trove-collateral-value"
+              amount={Decimal.from(withdraw || 0).prettify(4)}
+              unit={ETH}
+            />
+          )}
 
           {repay > 0 && (
             <StaticRow

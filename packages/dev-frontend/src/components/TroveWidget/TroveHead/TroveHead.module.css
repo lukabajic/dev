@@ -28,6 +28,7 @@
   letter-spacing: -0.4px;
   text-align: center;
   color: var(--black);
+  max-width: 42rem;
 }
 
 .actions {
@@ -230,4 +231,3 @@
   display: flex;
   justify-content: center;
 }
-

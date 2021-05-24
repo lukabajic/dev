@@ -1,5 +1,5 @@
 import { useState, useReducer, useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { Wallet } from "@ethersproject/wallet";
 import { useWeb3React } from "@web3-react/core";
 
@@ -220,21 +220,23 @@ export const LiquityFrontend = () => {
 
               <Body>
                 <Switch>
-                  <Route path="/" exact>
+                  <Route path="/trove" exact>
                     <TrovePage />
                   </Route>
 
-                  <Route path="/stability-pool">
+                  <Route path="/stability-pool" exact>
                     <StabilityPool />
                   </Route>
 
-                  <Route path="/stake">
+                  <Route path="/stake" exact>
                     <Stake />
                   </Route>
 
-                  <Route path="/liquidation">
+                  <Route path="/liquidation" exact>
                     <Liquidation />
                   </Route>
+
+                  <Redirect to="/trove" />
                 </Switch>
               </Body>
             </FarmViewProvider>

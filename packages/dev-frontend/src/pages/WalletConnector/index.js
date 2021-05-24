@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { HashRouter as Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import { injectedConnector } from "../../connectors/injectedConnector";
 import { useAuthorizedConnection } from "../../hooks/useAuthorizedConnection";
@@ -134,21 +134,23 @@ const WalletConnector = ({ children }) => {
       <KickbackRate />
       <Body>
         <Switch>
-          <Route path="/" exact>
-            <TrovePreview showModal={() => setWalletModal(true)} />
+          <Route path="/trove" exact>
+            <TrovePreview showModal={() => setWalletModal(true)} exact />
           </Route>
 
           <Route path="/stability-pool">
-            <StabilityPrevies showModal={() => setWalletModal(true)} />
+            <StabilityPrevies showModal={() => setWalletModal(true)} exact />
           </Route>
 
           <Route path="/stake">
-            <StakingPreview showModal={() => setWalletModal(true)} />
+            <StakingPreview showModal={() => setWalletModal(true)} exact />
           </Route>
 
           <Route path="/liquidation">
-            <LiquidationPrevriew showModal={() => setWalletModal(true)} />
+            <LiquidationPrevriew showModal={() => setWalletModal(true)} exact />
           </Route>
+
+          <Redirect to="/trove" />
         </Switch>
       </Body>
 

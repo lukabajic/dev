@@ -1,8 +1,10 @@
 import { useState } from "react";
+import cn from "classnames";
 import { Decimal, Percent } from "@liquity/lib-base";
 
 import Row from "../../../components/Row";
 import StaticAmounts from "../../../components/StaticAmounts";
+import InfoIcon from "../../../components/InfoIcon";
 import Tabs from "../../../components/Tabs";
 import Button from "../../../components/Button";
 import ErrorDescription from "../../../components/ErrorDescription";
@@ -285,7 +287,7 @@ export const LiquidationPrevriew = ({ showModal }) => (
     </div>
     <div className={liqClasses.table}>
       <div className={liqClasses.tableHead}>
-        <p className={liqClasses.tableHeadText}>Owner</p>
+        <p className={cn(liqClasses.tableHeadText, liqClasses.firstChild)}>Owner</p>
         <div className={liqClasses.tableHeadBox}>
           <p className={liqClasses.tableHeadText}>Collateral</p>
           <p className={liqClasses.tableHeadUnit}>{ETH}</p>
@@ -303,12 +305,19 @@ export const LiquidationPrevriew = ({ showModal }) => (
           <p className={liqClasses.tableHeadText}>
             Liquidation
             <br />
-            Price
-          </p>
-          <p className={liqClasses.tableHeadUnit}>
-            {COIN} / {ETH}
+            Price <span className={liqClasses.tableHeadUnit}>$</span>
+            <InfoIcon tooltip="ETH value in USD at which Trove CR will drop below 110%, and will be liquidated." />
           </p>
         </div>
+        <div className={liqClasses.tableHeadBox}>
+          <p className={liqClasses.tableHeadText}>Potential Profit</p>
+          <p className={liqClasses.tableHeadUnit}>
+            {COIN} <InfoIcon tooltip="Profit of liquidation for Stability Pool in LUSD." />
+          </p>
+        </div>
+        <Button disabled className={liqClasses.hiddenButton}>
+          Liquidate
+        </Button>
       </div>
 
       <div className={liqClasses.tableBody}>
@@ -330,6 +339,8 @@ export const LiquidationPrevriew = ({ showModal }) => (
 
               <p className={liqClasses.tableData}>{Decimal.ZERO.prettify(2)}</p>
 
+              <p className={liqClasses.tableData}>{Decimal.ZERO.prettify(0)}</p>
+
               <Button className={liqClasses.liquidationButton} onClick={showModal}>
                 Liquidate
               </Button>
@@ -340,3 +351,5 @@ export const LiquidationPrevriew = ({ showModal }) => (
     </div>
   </div>
 );
+
+export default LiquidationPrevriew;

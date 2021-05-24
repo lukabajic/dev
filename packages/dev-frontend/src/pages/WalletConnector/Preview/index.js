@@ -4,7 +4,7 @@ import { Decimal, Percent } from "@liquity/lib-base";
 
 import Row from "../../../components/Row";
 import StaticAmounts from "../../../components/StaticAmounts";
-import InfoIcon from "../../../components/InfoIcon";
+import { InfoIcon } from "../../../components/InfoIcon";
 import Tabs from "../../../components/Tabs";
 import Button from "../../../components/Button";
 import ErrorDescription from "../../../components/ErrorDescription";

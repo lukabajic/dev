@@ -83,7 +83,7 @@ const connectionReducer = (state, action) => {
 const detectMetaMask = () => window.ethereum?.isMetaMask ?? false;
 
 const WalletConnector = ({ children }) => {
-  const [walletModal, setWalletModal] = useState(null);
+  const [walletModal, setWalletModal] = useState(true);
 
   const { activate, deactivate, active, error } = useWeb3React();
   const triedAuthorizedConnection = useAuthorizedConnection();

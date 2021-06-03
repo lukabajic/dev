@@ -15,6 +15,8 @@ export const Disabled = () => {
   const { liquidityMiningStake, liquidityMiningLQTYReward } = useLiquitySelector(selector);
   const hasStake = !liquidityMiningStake.isZero;
 
+  const hasStakeAndRewards = !liquidityMiningStake.isZero && !liquidityMiningLQTYReward.isZero;
+
   return (
     <>
       {hasStake && (
@@ -36,7 +38,7 @@ export const Disabled = () => {
           </div>
 
           <div className={classes.actions}>
-            <UnstakeAndClaim />
+            <UnstakeAndClaim hasStakeAndRewards={hasStakeAndRewards} />
           </div>
         </>
       )}

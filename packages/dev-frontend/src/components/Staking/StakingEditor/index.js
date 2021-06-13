@@ -95,7 +95,13 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
 
             <div className={classes.modalActions}>
               {validChange ? (
-                <StakingManagerAction change={validChange} whenDone={() => setStake(null)} />
+                <StakingManagerAction
+                  change={validChange}
+                  whenDone={() => {
+                    setStake(null);
+                    dispatch({ type: "revert" });
+                  }}
+                />
               ) : (
                 <Button large primary disabled>
                   Confirm
@@ -143,7 +149,13 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
 
             <div className={classes.modalActions}>
               {validChange ? (
-                <StakingManagerAction change={validChange} whenDone={() => setIncrement(null)} />
+                <StakingManagerAction
+                  change={validChange}
+                  whenDone={() => {
+                    setIncrement(null);
+                    dispatch({ type: "revert" });
+                  }}
+                />
               ) : (
                 <Button large primary disabled>
                   Confirm
@@ -200,7 +212,13 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
 
             <div className={classes.modalActions}>
               {validChange && !Decimal.from(decrement || 0).gt(originalStake.stakedLQTY) ? (
-                <StakingManagerAction change={validChange} whenDone={() => setDecrement(null)} />
+                <StakingManagerAction
+                  change={validChange}
+                  whenDone={() => {
+                    setDecrement(null);
+                    dispatch({ type: "revert" });
+                  }}
+                />
               ) : (
                 <Button large primary disabled>
                   Confirm

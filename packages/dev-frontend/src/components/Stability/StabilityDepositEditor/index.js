@@ -148,7 +148,7 @@ export const StabilityDepositEditor = ({
             )}
 
             <div className={classes.modalActions}>
-              {validChange && !editedLUSD.gt(lusdBalance) ? (
+              {validChange && !Decimal.from(increment || 0).gt(lusdBalance) ? (
                 <StabilityDepositAction transactionId={transactionId} change={validChange} />
               ) : (
                 <Button large primary disabled>

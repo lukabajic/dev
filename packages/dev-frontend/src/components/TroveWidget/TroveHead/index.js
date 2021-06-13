@@ -82,7 +82,7 @@ const ActiveTrove = () => {
     liquity.send.closeTrove.bind(liquity.send)
   );
 
-  const fetchTroves = useCallback(() => {
+  const fetchTroves = () => {
     setLoading(true);
 
     liquity
@@ -98,7 +98,7 @@ const ActiveTrove = () => {
         setTroves(troves);
         setLoading(false);
       });
-  }, [blockTag, liquity]);
+  };
 
   const fetchPrice = useCallback(() => {
     fetch(

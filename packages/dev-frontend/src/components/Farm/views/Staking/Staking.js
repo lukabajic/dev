@@ -20,10 +20,13 @@ import classes from "./Staking.module.css";
 
 const transactionId = /farm-/;
 
-const selector = ({ totalStakedUniTokens }) => ({ totalStakedUniTokens });
+const selector = ({ totalStakedUniTokens, uniTokenBalance }) => ({
+  totalStakedUniTokens,
+  uniTokenBalance
+});
 
 export const Staking = ({ hasApproved, dispatchEvent }) => {
-  const { totalStakedUniTokens } = useLiquitySelector(selector);
+  const { totalStakedUniTokens, uniTokenBalance } = useLiquitySelector(selector);
   const transactionState = useMyTransactionState(transactionId);
   const isTransactionPending =
     transactionState.type === "waitingForApproval" ||
@@ -59,6 +62,7 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
               placeholder={Decimal.from(stake || 0).prettify(2)}
               maxAmount={maximumStake.toString()}
               maxedOut={hasSetMaximumStake}
+              available={`Available: ${uniTokenBalance.prettify(2)}`}
             />
 
             {stake && <Validation amount={Decimal.from(stake)} />}

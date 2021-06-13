@@ -20,7 +20,7 @@ const Footer = () => (
         className={classes.link}
         target="_blank"
         rel="noreferrer"
-        href="https://discord.com/invite/wAWuxAuD"
+        href="https://discord.gg/uzCPwxXQ"
       >
         <ion-icon name="logo-discord"></ion-icon>
         <p>discord</p>

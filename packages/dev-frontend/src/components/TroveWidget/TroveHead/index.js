@@ -82,7 +82,7 @@ const ActiveTrove = () => {
     liquity.send.closeTrove.bind(liquity.send)
   );
 
-  const fetchTroves = useCallback(() => {
+  const fetchTroves = () => {
     setLoading(true);
 
     liquity
@@ -98,7 +98,7 @@ const ActiveTrove = () => {
         setTroves(troves);
         setLoading(false);
       });
-  }, [blockTag, liquity]);
+  };
 
   const fetchPrice = useCallback(() => {
     fetch(
@@ -135,9 +135,9 @@ const ActiveTrove = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const liquidationRisk = collateralRatio.mul(100).lt(150)
+  const liquidationRisk = collateralRatio.mul(100).lt(130)
     ? "high"
-    : collateralRatio.mul(100).gte(150) && collateralRatio.mul(100).lte(190)
+    : collateralRatio.mul(100).gte(130) && collateralRatio.mul(100).lte(170)
     ? "medium"
     : "low";
 

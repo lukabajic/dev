@@ -17,6 +17,7 @@ import ErrorDescription from "../../ErrorDescription";
 import ActionDescription from "../../ActionDescription";
 
 import { ETH, COIN } from "../../../strings";
+import { lusdIcon, lqtyIcon, ethereumIcon } from "../../../images";
 
 import classes from "./TroveEditor.module.css";
 
@@ -103,7 +104,7 @@ export const TroveDeposit = ({
               dispatch({ type: "setCollateral", newValue: v });
             }}
             available={`Wallet: ${maxEth.prettify(4)}`}
-            icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
+            icon={ethereumIcon}
             maxAmount={maxEth.toString()}
             maxedOut={maxEth.toString() === deposit.toString()}
             min={0}
@@ -126,7 +127,7 @@ export const TroveDeposit = ({
                   : Decimal.from(v || 0).mul(borrowingRate)
               });
             }}
-            icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+            icon={lusdIcon}
             min={0}
             step={100}
           />
@@ -320,7 +321,7 @@ export const TroveWithdraw = ({
               dispatch({ type: "substractCollateral", newValue: v });
             }}
             available={`Available: ${maxWithdraw?.prettify(4) || ""}`}
-            icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"}
+            icon={ethereumIcon}
             maxAmount={maxWithdraw?.toString() || ""}
             maxedOut={maxWithdraw?.toString() === withdraw.toString()}
             min={0}
@@ -338,7 +339,7 @@ export const TroveWithdraw = ({
               dispatch({ type: "substractDebt", newValue: v });
             }}
             available={`Available: ${maxRepay.prettify(2)}`}
-            icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+            icon={lusdIcon}
             maxAmount={maxRepay.toString()}
             maxedOut={maxRepay.toString() === repay.toString()}
             min={0}

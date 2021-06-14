@@ -3,6 +3,8 @@ import cn from "classnames";
 import Button from "../Button";
 import { Icon } from "../Icon";
 
+import { connectWalletIcon, coinBaseIcon, metamaskIcon } from "../../images";
+
 import classes from "./ConnectWalletWidget.module.css";
 
 export const ConnectWalletButton = ({ onClick }) => (
@@ -14,24 +16,20 @@ export const ConnectWalletButton = ({ onClick }) => (
     <div className={classes.icons}>
       <div className={classes.icon}>
         <img
-          src={`${process.env.PUBLIC_URL}/icons/connect wallet.png`}
+          src={connectWalletIcon}
           alt="Connect wallet"
           className={cn(classes.iconContent, classes.backgroundWhite)}
         />
       </div>
       <div className={classes.icon}>
         <img
-          src={`${process.env.PUBLIC_URL}/icons/coinbase.png`}
+          src={coinBaseIcon}
           alt="Coinbase"
           className={cn(classes.iconContent, classes.backgroundWhite)}
         />
       </div>
       <div className={classes.icon}>
-        <img
-          src={`${process.env.PUBLIC_URL}/icons/metamask.png`}
-          alt="Connect wallet"
-          className={classes.iconContent}
-        />
+        <img src={metamaskIcon} alt="Connect wallet" className={classes.iconContent} />
       </div>
     </div>
   </div>
@@ -51,11 +49,7 @@ const Metamask = ({ dispatch, activate, injectedConnector, onItemClick, connecte
     }}
   >
     <p className={classes.itemContent}>Metamask</p>
-    <img
-      src={`${process.env.PUBLIC_URL}/icons/metamask.png`}
-      alt="Metamask Icon"
-      className={classes.itemIcon}
-    />
+    <img src={metamaskIcon} alt="Metamask Icon" className={classes.itemIcon} />
   </div>
 );
 
@@ -73,11 +67,7 @@ const WalletConnect = ({ dispatch, activate, walletConnectConnector, onItemClick
     }}
   >
     <p className={classes.itemContent}>WalletConnect</p>
-    <img
-      src={`${process.env.PUBLIC_URL}/icons/connect wallet.png`}
-      alt="Wallet Connect"
-      className={classes.itemIcon}
-    />
+    <img src={connectWalletIcon} alt="Wallet Connect" className={classes.itemIcon} />
   </div>
 );
 
@@ -95,11 +85,7 @@ const WalletLink = ({ dispatch, activate, walletLinkConnector, onItemClick, conn
     }}
   >
     <p className={classes.itemContent}>Coinbase</p>
-    <img
-      src={`${process.env.PUBLIC_URL}/icons/coinbase.png`}
-      alt="CoinBase"
-      className={classes.itemIcon}
-    />
+    <img src={coinBaseIcon} alt="CoinBase" className={classes.itemIcon} />
   </div>
 );
 

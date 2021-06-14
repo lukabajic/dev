@@ -18,6 +18,8 @@ import { Amount } from "../../../Amount";
 import { UnstakeAndClaim } from "../UnstakeAndClaim";
 import { ClaimReward } from "../Active/ClaimReward";
 
+import { uniswapIcon } from "../../../../images";
+
 import classes from "./Adjusting.module.css";
 
 const selector = ({
@@ -103,7 +105,7 @@ export const Adjusting = () => {
               autoFocus
               label="stake"
               unit={LP}
-              icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
+              icon={uniswapIcon}
               value={increment}
               onChange={v => {
                 setIncrement(v);
@@ -139,7 +141,7 @@ export const Adjusting = () => {
               autoFocus
               label="unstake"
               unit={LP}
-              icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
+              icon={uniswapIcon}
               value={decrement}
               onChange={v => {
                 setDecrement(v);

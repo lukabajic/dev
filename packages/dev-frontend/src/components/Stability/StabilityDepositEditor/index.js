@@ -19,6 +19,8 @@ import ErrorDescription from "../../ErrorDescription";
 import ActionDescription from "../../ActionDescription";
 import { Amount } from "../../Amount";
 
+import { lusdIcon } from "../../../images";
+
 import classes from "./StabilityDepositEditor.module.css";
 
 const select = ({ lusdBalance, lusdInStabilityPool, stabilityDeposit }) => ({
@@ -86,7 +88,7 @@ export const StabilityDepositEditor = ({
               autoFocus
               label="stake"
               unit={COIN}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={lusdIcon}
               value={stake}
               onChange={v => {
                 setStake(v);
@@ -129,7 +131,7 @@ export const StabilityDepositEditor = ({
               autoFocus
               label="stake"
               unit={COIN}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={lusdIcon}
               value={increment}
               onChange={v => {
                 setIncrement(v);
@@ -177,7 +179,7 @@ export const StabilityDepositEditor = ({
               autoFocus
               label="unstake"
               unit={COIN}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={lusdIcon}
               value={decrement}
               onChange={v => {
                 setDecrement(v);

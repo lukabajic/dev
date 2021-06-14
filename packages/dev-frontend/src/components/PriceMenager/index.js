@@ -6,6 +6,7 @@ import { useLiquitySelector } from "@liquity/lib-react";
 import { InfoIcon } from "../InfoIcon";
 
 import { COIN, GT, ETH } from "../../strings";
+import { lusdIcon, lqtyIcon, ethereumIcon } from "../../images";
 
 import classes from "./PriceManager.module.css";
 
@@ -13,17 +14,17 @@ const DATA = {
   liquity: {
     order: 2,
     currency: GT,
-    icon: `${process.env.PUBLIC_URL}/icons/LQTY icon.png`
+    icon: lqtyIcon
   },
   "liquity-usd": {
     order: 1,
     currency: COIN,
-    icon: `${process.env.PUBLIC_URL}/icons/128-lusd-icon.svg`
+    icon: lusdIcon
   },
   ethereum: {
     order: 0,
     currency: ETH,
-    icon: `${process.env.PUBLIC_URL}/icons/ethereum-eth.svg`
+    icon: ethereumIcon
   }
 };
 
@@ -95,7 +96,7 @@ const PriceManager = () => {
       <DataRow
         key={ETH}
         currency={ETH}
-        icon={`${process.env.PUBLIC_URL}/icons/ethereum-eth.svg`}
+        icon={ethereumIcon}
         amount={price.prettify(2)}
         tooltip="Oracle price"
       />

@@ -17,7 +17,7 @@ import ErrorDescription from "../../ErrorDescription";
 import ActionDescription from "../../ActionDescription";
 
 import { ETH, COIN } from "../../../strings";
-import { lusdIcon, lqtyIcon, ethereumIcon } from "../../../images";
+import { lusdIcon, ethereumIcon } from "../../../images";
 
 import classes from "./TroveEditor.module.css";
 

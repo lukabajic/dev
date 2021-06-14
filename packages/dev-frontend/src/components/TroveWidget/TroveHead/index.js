@@ -70,6 +70,7 @@ const ActiveTrove = () => {
   const [loading, setLoading] = useState(false);
   const [troves, setTroves] = useState(null);
   const [lusdInUsd, setLusdInUsd] = useState(null);
+  // const [debtInFrontOfMe, setDebtInFrontOfMe] = useState(Decimal.from(0));
   const myTransactionState = useMyTransactionState(transactionIdMatcher);
 
   const { trove, price, lusdBalance, blockTag, total } = useLiquitySelector(selectActive);
@@ -82,7 +83,7 @@ const ActiveTrove = () => {
     liquity.send.closeTrove.bind(liquity.send)
   );
 
-  const fetchTroves = () => {
+  const fetchTroves = useCallback(() => {
     setLoading(true);
 
     liquity
@@ -98,7 +99,7 @@ const ActiveTrove = () => {
         setTroves(troves);
         setLoading(false);
       });
-  };
+  }, [liquity, blockTag]);
 
   const fetchPrice = useCallback(() => {
     fetch(
@@ -146,6 +147,8 @@ const ActiveTrove = () => {
   for (let i = 0; i < userIndex; i++) {
     debtInFrontOfMe = debtInFrontOfMe.add(troves[i].debt);
   }
+
+  console.log(debtInFrontOfMe);
 
   const debtInFrontPct = debtInFrontOfMe.mulDiv(100, total.debt);
 

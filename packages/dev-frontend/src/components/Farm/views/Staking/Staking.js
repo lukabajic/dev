@@ -16,6 +16,8 @@ import ErrorDescription from "../../../ErrorDescription";
 import { useValidationState } from "../../context/useValidationState";
 import { Validation } from "../Validation";
 
+import { uniswapIcon } from "../../../../images";
+
 import classes from "./Staking.module.css";
 
 const transactionId = /farm-/;
@@ -54,7 +56,7 @@ export const Staking = ({ hasApproved, dispatchEvent }) => {
               autoFocus
               label="Stake"
               unit={LP}
-              icon={process.env.PUBLIC_URL + "/icons/uniswap-uni-logo.png"}
+              icon={uniswapIcon}
               value={stake}
               onChange={v => {
                 setStake(v);

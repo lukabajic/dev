@@ -15,6 +15,8 @@ import { useMyTransactionState } from "../Transaction";
 import Input from "../Input";
 import RedemptionAction from "./RedemptionAction";
 
+import { lusdIcon } from "../../images";
+
 import classes from "./Redemption.module.css";
 
 const mcrPercent = new Percent(MINIMUM_COLLATERAL_RATIO).toString(0);
@@ -103,7 +105,7 @@ const RedemptionManager = () => {
         }}
         step={100}
         min={0}
-        icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+        icon={lusdIcon}
         autoFocus
       />
 

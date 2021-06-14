@@ -14,6 +14,7 @@ import CopyToClipboard from "../../../components/CopyToClipboard";
 import { shortenAddress } from "../../../utils/shortenAddress";
 
 import { ETH, COIN, GT, LP } from "../../../strings";
+import { ethereumIcon, lusdIcon } from "../../../images";
 
 import classes from "./Preview.module.css";
 import liqClasses from "../../Liquidation/Liquidation.module.css";
@@ -35,7 +36,7 @@ export const WithdrawPreview = ({ onClick, children }) => (
         unit={ETH}
         className={classes.staticAmount}
       >
-        <ContentRight unit={ETH} icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"} />
+        <ContentRight unit={ETH} icon={ethereumIcon} />
       </StaticAmounts>
     </Row>
 
@@ -46,7 +47,7 @@ export const WithdrawPreview = ({ onClick, children }) => (
         unit={COIN}
         className={classes.staticAmount}
       >
-        <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} />
+        <ContentRight unit={COIN} icon={lusdIcon} />
       </StaticAmounts>
     </Row>
 
@@ -64,7 +65,7 @@ export const DepositPreview = ({ onClick }) => (
         unit={ETH}
         className={classes.staticAmount}
       >
-        <ContentRight unit={ETH} icon={process.env.PUBLIC_URL + "/icons/ethereum-eth.svg"} />
+        <ContentRight unit={ETH} icon={ethereumIcon} />
       </StaticAmounts>
     </Row>
 
@@ -75,7 +76,7 @@ export const DepositPreview = ({ onClick }) => (
         unit={COIN}
         className={classes.staticAmount}
       >
-        <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} />
+        <ContentRight unit={COIN} icon={lusdIcon} />
       </StaticAmounts>
     </Row>
   </>
@@ -90,7 +91,7 @@ const RedemptionPreview = ({ onClick }) => (
       unit={COIN}
       className={classes.staticAmount}
     >
-      <ContentRight unit={COIN} icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"} />
+      <ContentRight unit={COIN} icon={lusdIcon} />
     </StaticAmounts>
   </Row>
 );

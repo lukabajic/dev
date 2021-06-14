@@ -35,6 +35,8 @@ import { walletLinkConnector } from "../connectors/coinbase";
 import { injectedConnector } from "../connectors/injectedConnector";
 import { walletConnectConnector } from "../connectors/walletConnect";
 
+import { metamaskIcon } from "../images";
+
 import classes from "./LiquityFrontend.module.css";
 
 const connectionReducer = (state, action) => {
@@ -168,11 +170,7 @@ export const LiquityFrontend = () => {
                     <p className={classes.connection}>
                       {isMetamaskConnection ? "Connected with MetaMask" : "Connected"}{" "}
                       {isMetamaskConnection && (
-                        <img
-                          className={classes.metaMaskIcon}
-                          src={`${process.env.PUBLIC_URL}/icons/metamask.png`}
-                          alt="MetaMask"
-                        />
+                        <img className={classes.metaMaskIcon} src={metamaskIcon} alt="MetaMask" />
                       )}
                     </p>
                     <div className={classes.actions}>

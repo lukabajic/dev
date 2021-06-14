@@ -19,6 +19,8 @@ import { useStakingView } from "./../context/StakingViewContext";
 import StakingManagerAction from "../StakingManagerAction";
 import StakingGainsAction from "../StakingGainsAction";
 
+import { lusdIcon } from "../../../images";
+
 import classes from "./StakingEditor.module.css";
 
 const select = ({ lqtyBalance, totalStakedLQTY, lusdBalance }) => ({
@@ -79,7 +81,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
               autoFocus
               label="stake"
               unit={GT}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={lusdIcon}
               value={stake}
               onChange={v => {
                 setStake(v);
@@ -129,7 +131,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
               autoFocus
               label="stake"
               unit={GT}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={lusdIcon}
               value={increment}
               onChange={v => {
                 setIncrement(v);
@@ -183,7 +185,7 @@ const StakingEditor = ({ view, children, originalStake, editedLQTY, dispatch, di
               autoFocus
               label="unstake"
               unit={GT}
-              icon={process.env.PUBLIC_URL + "/icons/128-lusd-icon.svg"}
+              icon={lusdIcon}
               value={decrement}
               onChange={v => {
                 setDecrement(v);
